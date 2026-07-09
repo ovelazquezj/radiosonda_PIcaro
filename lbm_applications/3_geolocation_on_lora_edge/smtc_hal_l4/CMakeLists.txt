@@ -20,6 +20,8 @@ add_library(st_hal OBJECT
     ${ST_HAL_DIR}/Src/stm32l4xx_hal_rtc_ex.c
     ${ST_HAL_DIR}/Src/stm32l4xx_hal_rtc.c
     ${ST_HAL_DIR}/Src/stm32l4xx_hal_spi.c
+    ${ST_HAL_DIR}/Src/stm32l4xx_hal_i2c.c
+    ${ST_HAL_DIR}/Src/stm32l4xx_hal_i2c_ex.c
     ${ST_HAL_DIR}/Src/stm32l4xx_hal_uart.c
     ${ST_HAL_DIR}/Src/stm32l4xx_hal_uart_ex.c
     ${ST_HAL_DIR}/Src/stm32l4xx_hal.c
@@ -48,6 +50,7 @@ add_library(smtc_hal STATIC
     smtc_hal_rng.c
     smtc_hal_rtc.c
     smtc_hal_spi.c
+    smtc_hal_i2c.c
     smtc_hal_trace.c
     smtc_hal_uart.c
     smtc_hal_watchdog.c

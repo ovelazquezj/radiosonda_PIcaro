@@ -60,6 +60,11 @@
 
 #include "modem_pinout.h"
 
+#include "smtc_hal_gpio_pin_names.h"
+#include "smtc_hal_i2c.h"
+#include "bmp280.h"
+#include "bmp280_payload.h"
+
 /*
  * -----------------------------------------------------------------------------
  * --- PRIVATE MACROS-----------------------------------------------------------
@@ -258,6 +263,64 @@ void main_geolocation( void )
  * --- PRIVATE FUNCTIONS DEFINITION --------------------------------------------
  */
 
+/*
+ * -----------------------------------------------------------------------------
+ * --- BMP280 ENVIRONMENTAL SENSOR (I2C) ---------------------------------------
+ */
+
+/*! @brief I2C peripheral id and pins used for the BMP280 (SCL=PB_8, SDA=PB_9). */
+#define SENSOR_I2C_ID ( 1 )
+#define SENSOR_I2C_SCL PB_8
+#define SENSOR_I2C_SDA PB_9
+
+/*! @brief true once a BMP280 has been detected on the I2C bus at startup. */
+static bool bmp280_present = false;
+
+/**
+ * @brief Initialize the I2C bus and the BMP280 sensor.
+ *
+ * A missing sensor is non-fatal: GNSS keeps working, only the environmental
+ * uplinks (fport 10) are disabled.
+ */
+static void sensor_init( void )
+{
+    smtc_hal_i2c_init( SENSOR_I2C_ID, SENSOR_I2C_SDA, SENSOR_I2C_SCL );
+    bmp280_present = bmp280_init( SENSOR_I2C_ID, BMP280_I2C_ADDR_PRIMARY );
+    if( bmp280_present == true )
+    {
+        SMTC_HAL_TRACE_INFO( "BMP280 detected (chip-id 0x58)\n" );
+    }
+    else
+    {
+        SMTC_HAL_TRACE_WARNING( "BMP280 not detected - environmental uplinks disabled\n" );
+    }
+}
+
+/**
+ * @brief Read the BMP280 and request an environmental uplink on fport 10.
+ *
+ * Silently skipped if no sensor is present or the read fails.
+ */
+static void send_environmental_uplink( uint8_t stack_id )
+{
+    bmp280_data_t data                         = { 0 };
+    uint8_t       payload[BMP280_PAYLOAD_SIZE] = { 0 };
+
+    if( bmp280_present == false )
+    {
+        return;
+    }
+    if( bmp280_read( &data ) == false )
+    {
+        SMTC_HAL_TRACE_WARNING( "BMP280 read failed - skipping environmental uplink\n" );
+        return;
+    }
+    SMTC_HAL_TRACE_INFO( "BMP280: T=%d cC, P=%d hPa\n", ( int ) ( data.temperature_c * 100 ),
+                         ( int ) data.pressure_hpa );
+    bmp280_payload_encode( &data, payload );
+    smtc_modem_request_uplink( stack_id, BMP280_PAYLOAD_FPORT, false, payload, BMP280_PAYLOAD_SIZE );
+}
+
 /**
  * @brief User callback for modem event
  *
@@ -290,6 +353,9 @@ static void modem_event_callback( void )
                 SMTC_HAL_TRACE_ERROR( "LR11xx firmware version is not compatible with this example\n" );
                 break;
             }
+
+            /* Initialize the BMP280 environmental sensor over I2C */
+            sensor_init( );
 
 #if !defined( USE_LR11XX_CREDENTIALS )
             /* Set user credentials */
@@ -327,6 +393,8 @@ static void modem_event_callback( void )
         case SMTC_MODEM_EVENT_ALARM:
             SMTC_HAL_TRACE_INFO( "Event received: ALARM\n" );
             smtc_modem_request_uplink( stack_id, KEEP_ALIVE_PORT, false, keep_alive_payload, KEEP_ALIVE_SIZE );
+            /* Read BMP280 and send environmental data on fport 10 (GNSS flow untouched) */
+            send_environmental_uplink( stack_id );
             smtc_modem_alarm_start_timer( KEEP_ALIVE_PERIOD_S );
             break;
 

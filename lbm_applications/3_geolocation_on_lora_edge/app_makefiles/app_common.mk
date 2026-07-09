@@ -274,7 +274,9 @@ endif
 
 ifeq ($(MODEM_APP),EXAMPLE_GEOLOCATION)
 APP_C_SOURCES += \
-	main_geolocation/main_geolocation.c
+	main_geolocation/main_geolocation.c \
+	main_geolocation/bmp280.c \
+	main_geolocation/bmp280_payload.c
 endif
 
 ifeq ($(MODEM_APP),EXAMPLE_FULL_ALMANAC_UPDATE)

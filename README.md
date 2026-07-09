@@ -1,97 +1,86 @@
-# LoRa Basic Modem
+# radiosonda_PIcaro — Laboratorios didácticos de LoRaWAN con LR1110 y ChirpStack
 
-**LoRa Basic Modem** proposes a full implementation of the [TS001-LoRaWAN L2 1.0.4](https://resources.lora-alliance.org/technical-specifications/ts001-1-0-4-lorawan-l2-1-0-4-specification) and [Regional Parameters RP2-1.0.3](https://resources.lora-alliance.org/technical-specifications/rp2-1-0-3-lorawan-regional-parameters) specifications.
+> **Hands-on LoRaWAN labs** with the Semtech **LR1110** & **LoRa Basics Modem (SWL2001)** and
+> **ChirpStack v4** — OTAA join, BMP280 sensor uplinks, GNSS/Wi-Fi geolocation, TTGO ESP32 nodes,
+> and REST/MQTT API provisioning for IoT dashboards.
 
-**LoRa Basic Modem** embeds an implementation of all LoRaWAN packages dedicated to Firmware Update Over The Air (FUOTA):
+**radiosonda_PIcaro** es un proyecto **educativo** para aprender **LoRa** y **LoRaWAN** de forma
+práctica: desde el primer *join* OTAA hasta enviar datos de un sensor **BMP280**, hacer
+**geolocalización GNSS/Wi-Fi** con el **Semtech LR1110**, integrar nodos **TTGO ESP32**, y
+**provisionar y consumir** todo desde **ChirpStack** por API para construir dashboards.
 
-- Application Layer Clock Synchronization (ALCSync) [TS003-1.0.0](https://resources.lora-alliance.org/technical-specifications/lorawan-application-layer-clock-synchronization-specification-v1-0-0) / [TS003-2.0.0](https://resources.lora-alliance.org/technical-specifications/ts003-2-0-0-application-layer-clock-synchronization)
-- Fragmented Data Block Transport [TS004-1.0.0](https://resources.lora-alliance.org/technical-specifications/lorawan-fragmented-data-block-transport-specification-v1-0-0) / [TS004-2.0.0](https://resources.lora-alliance.org/technical-specifications/ts004-2-0-0-fragmented-data-block-transport)
-- Remote Multicast Setup [TS005-1.0.0](https://resources.lora-alliance.org/technical-specifications/lorawan-remote-multicast-setup-specification-v1-0-0) / [TS005-2.0.0](https://resources.lora-alliance.org/technical-specifications/ts005-2-0-0-remote-multicast-setup)
-- Firmware Management Protocol (FMP) [TS006-1.0.0](https://resources.lora-alliance.org/technical-specifications/ts006-1-0-0-firmware-management-protocol)
-- Multi-Package Access (MPA) [TS007-1.0.0](https://resources.lora-alliance.org/technical-specifications/ts007-1-0-0-multi-package-access)
+---
 
-**LoRa Basic Modem** embeds an implementation of the Relay LoRaWAN® Specification [TS011-1.0.1](https://resources.lora-alliance.org/technical-specifications/ts011-1-0-1-relay)
+## 🎓 Objetivo didáctico
 
-- Relay Tx (relayed end-device)
-- Relay Rx
-```
-          +--------------------+       +------------------+
-          | Wake On Radio      |       |     LoRaWAN      |
-          | protocol + LoRaWAN |       | Class A, B, or C |
-          +--------------------+       +------------------+
-                    \                        /
-                     \                      /
-                      \                    /
-         Relay Tx      v                  v
-      ( End-Device ) <----> (Relay Rx) <----> (Gateway) <----> (Network Server)
-              ^                                 ^
-               \                               /
-                -------------------------------
-```
+Está pensado para **estudiantes y docentes**: cada ejercicio es **autocontenido**, va de lo simple a
+lo avanzado, y explica el *porqué* de cada paso (incluyendo los errores típicos y cómo depurarlos).
+No necesitas experiencia previa en LoRaWAN para empezar.
 
-**LoRa Basic Modem** embeds an implementation of the LoRaWAN certification process
-- LoRaWAN certification process [TS009-1.2.1](https://resources.lora-alliance.org/technical-specifications/ts009-1-2-1-certification-protocol)
+## 🙏 Basado en el trabajo original de Semtech (atribución)
 
-**LoRa Basic Modem** offers:
-- Geolocation services in combination with LoRa Edge chips
+Este repositorio **deriva de** **LoRa Basics Modem (SWL2001)** de **Semtech Corporation**:
 
-## Prerequisites
+- Repo original: **https://github.com/Lora-net/SWL2001**
+- Copyright © **Semtech Corporation**. Licencia **Clear BSD** (ver [`LICENSE.txt`](LICENSE.txt) y [`LICENSES.txt`](LICENSES.txt)).
+- El README original de Semtech se conserva íntegro en **[`README.SWL2001.md`](README.SWL2001.md)**.
 
-- **GNU Arm Embedded Toolchain**  
-  The LoRa Basics Modem library is developed using:  
-  **GNU Arm Embedded Toolchain 13.2.rel1-2 (13.2.1 20231009)**  
-  Ensure this version (or a compatible one) is installed and available in your `PATH`.  
+Todo el crédito de la pila LoRa Basics Modem (`lbm_lib/`) es de Semtech. Este proyecto **solo añade
+material didáctico y de integración** encima, bajo la misma licencia.
 
-- **Make** (if building with Make)  
-  Make is typically available by default on Linux systems.
+## ✨ Qué añade radiosonda_PIcaro sobre el original
 
-- **CMake** (if building with CMake)  
-  Install CMake and ensure it is available in your `PATH`.
-  
-- **Ninja** (optional, if using CMake with Ninja generator)  
-  Ninja must be installed if you choose to build with CMake + Ninja.
+- **Driver del sensor BMP280 + HAL I²C** para STM32L4 (no existían en el stack).
+- **Provisión y consumo de ChirpStack por API** (REST + MQTT) con scripts reproducibles.
+- **6 ejercicios guiados (00–06)** listos para clase, con credenciales, provisión y dashboards.
+- **Especificaciones SDD (SRS)**, diagrama de **pinout** y guías de flasheo/ChirpStack.
+- Integración de un **nodo TTGO ESP32 (SX1276)** de terceros vía Arduino/LMIC.
 
-## LoRa Basics Modem library
+## 🗂️ Estructura del repositorio
 
-LBM library code can be found in folder [lbm_lib](lbm_lib/).  
-Please refer to [README.md](lbm_lib/README.md) to get all information related to LoRa Basics Modem library
+| Carpeta | Contenido |
+|---------|-----------|
+| [`specs/exercises/`](specs/exercises/) | **Empieza aquí** — los 6 ejercicios didácticos (00 ChirpStack → 06 TTGO+BMP280) |
+| [`specs/bme280-gnss-tracker/`](specs/bme280-gnss-tracker/) | Proyecto del tracker BMP280+GNSS: SRS, pinout, guía de flasheo/ChirpStack |
+| [`specs/demos/`](specs/demos/) | Binarios de demo y guía de flasheo/registro por API |
+| `lbm_lib/` | Pila **LoRa Basics Modem** de Semtech (upstream, sin modificar salvo lo indicado) |
+| `lbm_examples/` · `lbm_applications/` | Ejemplos y aplicaciones (la de geolocalización, extendida con el BMP280) |
 
-## Examples
+## 🔧 Requisitos
 
-Under `lbm_examples` folder, there are few examples on how to use the LoRa Basics Modem stack.
+- **GNU Arm Embedded Toolchain** 13.2.rel1 (`arm-none-eabi-gcc`) + `make` — para los binarios LR1110.
+- **Arduino IDE** con las librerías MCCI LMIC, U8g2 y Adafruit BMP280 — para los nodos TTGO.
+- **ChirpStack v4** (se incluye un `docker-compose` de referencia en el ejercicio 00).
+- **Hardware:** Nucleo-L476RG + shield **LR1110** (ej. 01–04); **TTGO ESP32 LoRa** + **BMP280** (ej. 05–06).
 
-- Hardware Modem (Implements a hardware modem controlled by a serial interface)
-- Periodical uplink (joins the network and then sends periodic uplinks and each time the button is pushed)
-- Porting tests (Allows to verify if the project porting process is correct)
-- LCTT certification (to run LoRaWAN certification)
+## 🚀 Primeros pasos
 
-The examples are targeted for the Nucleo L476 kit featuring an STM32L476 micro-controller.
-For further details please refer to `lbm_examples` directory [README](lbm_examples/README.md) file.
+1. **Clona** el repositorio.
+2. Levanta **ChirpStack** → [`specs/exercises/00_chirpstack-docker/`](specs/exercises/00_chirpstack-docker/).
+3. Empieza por el **ejercicio 01** → [`specs/exercises/01_periodical-uplink/`](specs/exercises/01_periodical-uplink/).
+4. **Compila** el binario de tu ejercicio → [`specs/exercises/COMMON_BUILD.md`](specs/exercises/COMMON_BUILD.md).
+5. **Flaséalo** → [`specs/exercises/COMMON_FLASH.md`](specs/exercises/COMMON_FLASH.md).
+6. **Provisiona y consume** en ChirpStack → [`specs/exercises/COMMON_CHIRPSTACK_API.md`](specs/exercises/COMMON_CHIRPSTACK_API.md).
 
-To build the periodical uplink example targeting the LR1110 Semtech radio the following should be executed on the command line:
+👉 Índice completo de la ruta didáctica: **[`specs/exercises/README.md`](specs/exercises/README.md)**
 
-```bash
-make -C lbm_examples full_lr1110 MODEM_APP=PERIODICAL_UPLINK
-```
+## 📚 Wiki
 
-Or, with CMake:
+Los **fundamentos de LoRa, LoRaWAN y cómo usar este proyecto** están en la **[Wiki del repositorio](https://github.com/ovelazquezj/radiosonda_PIcaro/wiki)** — ideal si empiezas de cero.
 
-```bash
-cd lbm_examples
-cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=MinSizeRel -DLBM_CMAKE_CONFIG_AUTO=ON -DBOARD=NUCLEO_L476 -DLBM_RADIO=lr1110 -DAPP=periodical_uplink
-cd build
-ninja
-# This will flash a connected stm32 nucleo board
-ninja flash
-```
+## 📄 Licencia
 
-## Applications
+Publicado bajo la **Clear BSD License** (la misma del proyecto original de Semtech). Consulta
+[`LICENSE.txt`](LICENSE.txt) y [`LICENSES.txt`](LICENSES.txt). Las adiciones didácticas de
+radiosonda_PIcaro se distribuyen bajo la misma licencia.
 
-Under `lbm_applications` folder, there are 3 specific applications that are using the LoRa Basics Modem stack.
+---
 
-- A ThreadX Operating System running on STM32U5 ([lbm_applications/1_thread_x_on_stm32_u5/README.md](lbm_applications/1_thread_x_on_stm32_u5/README.md))
-- A LBM porting on Nordic NRF52840 ([lbm_applications/2_porting_nrf_52840/README.md](lbm_applications/2_porting_nrf_52840/README.md))  
-- A Geolocation application running on Lora Edge ([lbm_applications/3_geolocation_on_lora_edge/README.md](lbm_applications/3_geolocation_on_lora_edge/README.md))
+## 🛠️ Modifica el firmware y haz tus propios binarios
 
-An integration in Zephyr OS is available in another repository, instructions to download this integration and LoRa Basics Modem
-are available at [LBM_Zephyr](https://github.com/Lora-net/LBM_Zephyr/blob/master/README.md).
+Ninguno de los binarios viene precompilado a propósito: **la idea es que los generes tú**. Cambia el
+periodo de envío, el formato del payload, activa/desactiva servicios (GNSS/Wi-Fi), integra otro
+sensor… y recompila para crear **tus propias variantes**. Todo el flujo (compilar → flashear →
+provisionar → consumir) está documentado para que experimentes sin miedo.
+
+**Happy hacking 🚀**

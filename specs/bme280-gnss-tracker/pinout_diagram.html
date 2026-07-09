@@ -1,0 +1,329 @@
+<title>BMP280 → STM32 Nucleo-L476RG · Diagrama de conexión</title>
+<style>
+  :root {
+    --ground: #eef1f5;
+    --surface: #ffffff;
+    --surface-2: #f5f7fa;
+    --ink: #18202e;
+    --muted: #5a6472;
+    --hair: #d7dde6;
+    --accent: #0e7c86;
+    --accent-soft: #d3ebed;
+    --board-mcu: #1f6f52;
+    --board-mcu-edge: #14513c;
+    --board-sensor: #1c3a55;
+    --board-sensor-edge: #122a3f;
+    --pad: #e9c46a;
+    /* Wire colours (protoboard convention) */
+    --w-vcc: #e5484d;
+    --w-gnd: #3b4250;
+    --w-scl: #d9930b;
+    --w-sda: #2f6fdb;
+    --shadow: 0 1px 2px rgba(20,30,45,.06), 0 8px 30px rgba(20,30,45,.08);
+    --mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+    --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ground: #0d1219;
+      --surface: #151c25;
+      --surface-2: #1b2430;
+      --ink: #e7ecf3;
+      --muted: #97a2b2;
+      --hair: #29323f;
+      --accent: #37bfca;
+      --accent-soft: #123840;
+      --board-mcu: #237a5b;
+      --board-mcu-edge: #0f4732;
+      --board-sensor: #244a6b;
+      --board-sensor-edge: #14304a;
+      --pad: #e9c46a;
+      --w-vcc: #f0676b;
+      --w-gnd: #aab4c2;
+      --w-scl: #edb54a;
+      --w-sda: #5b9cf8;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 34px rgba(0,0,0,.45);
+    }
+  }
+  :root[data-theme="light"] {
+    --ground: #eef1f5; --surface: #ffffff; --surface-2: #f5f7fa; --ink: #18202e;
+    --muted: #5a6472; --hair: #d7dde6; --accent: #0e7c86; --accent-soft: #d3ebed;
+    --board-mcu: #1f6f52; --board-mcu-edge: #14513c; --board-sensor: #1c3a55; --board-sensor-edge: #122a3f;
+    --w-vcc:#e5484d; --w-gnd:#3b4250; --w-scl:#d9930b; --w-sda:#2f6fdb;
+    --shadow: 0 1px 2px rgba(20,30,45,.06), 0 8px 30px rgba(20,30,45,.08);
+  }
+  :root[data-theme="dark"] {
+    --ground:#0d1219; --surface:#151c25; --surface-2:#1b2430; --ink:#e7ecf3;
+    --muted:#97a2b2; --hair:#29323f; --accent:#37bfca; --accent-soft:#123840;
+    --board-mcu:#237a5b; --board-mcu-edge:#0f4732; --board-sensor:#244a6b; --board-sensor-edge:#14304a;
+    --w-vcc:#f0676b; --w-gnd:#aab4c2; --w-scl:#edb54a; --w-sda:#5b9cf8;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 34px rgba(0,0,0,.45);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--ground); color: var(--ink);
+    font-family: var(--sans); line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 40px 24px 72px; }
+
+  header { margin-bottom: 28px; }
+  .eyebrow {
+    font-family: var(--mono); font-size: 12px; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--accent); margin: 0 0 10px;
+  }
+  h1 {
+    font-size: clamp(26px, 4.4vw, 40px); line-height: 1.08; margin: 0 0 12px;
+    font-weight: 780; letter-spacing: -.02em; text-wrap: balance;
+  }
+  .lede { color: var(--muted); font-size: 17px; max-width: 62ch; margin: 0; }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 22px 0 0; }
+  .chip {
+    font-family: var(--mono); font-size: 12.5px; color: var(--ink);
+    background: var(--surface); border: 1px solid var(--hair); border-radius: 999px;
+    padding: 6px 12px; display: inline-flex; gap: 7px; align-items: center;
+  }
+  .chip b { color: var(--accent); font-weight: 600; }
+
+  .card {
+    background: var(--surface); border: 1px solid var(--hair); border-radius: 16px;
+    box-shadow: var(--shadow); padding: 22px; margin-top: 26px;
+  }
+  .card > h2 {
+    font-size: 13px; font-family: var(--mono); text-transform: uppercase;
+    letter-spacing: .1em; color: var(--muted); margin: 0 0 4px; font-weight: 600;
+  }
+  .card > .sub { color: var(--muted); font-size: 14px; margin: 0 0 16px; }
+
+  .figscroll { overflow-x: auto; }
+  svg.diagram { display: block; width: 100%; min-width: 620px; height: auto; }
+
+  /* SVG semantic styling through tokens */
+  .board-mcu   { fill: var(--board-mcu); stroke: var(--board-mcu-edge); }
+  .board-sensor{ fill: var(--board-sensor); stroke: var(--board-sensor-edge); }
+  .board-label { fill: #fff; font-family: var(--mono); font-weight: 600; }
+  .board-sub   { fill: rgba(255,255,255,.7); font-family: var(--mono); }
+  .conn-tag    { fill: var(--muted); font-family: var(--mono); font-size: 12px; letter-spacing:.08em; }
+  .pin-txt     { fill: #fff; font-family: var(--mono); font-size: 13px; }
+  .pad-ring    { fill: var(--surface); }
+
+  .wire { fill: none; stroke-width: 4.5; stroke-linecap: round; transition: stroke-width .15s, opacity .15s; }
+  .wire.vcc { stroke: var(--w-vcc); } .end.vcc { fill: var(--w-vcc); }
+  .wire.gnd { stroke: var(--w-gnd); } .end.gnd { fill: var(--w-gnd); }
+  .wire.scl { stroke: var(--w-scl); } .end.scl { fill: var(--w-scl); }
+  .wire.sda { stroke: var(--w-sda); } .end.sda { fill: var(--w-sda); }
+  .wire.rail { stroke-dasharray: 2 9; stroke-width: 3.5; }
+
+  svg.diagram.focus .wire, svg.diagram.focus .end { opacity: .16; }
+  svg.diagram.focus .wire.active, svg.diagram.focus .end.active { opacity: 1; stroke-width: 6; }
+
+  /* Connection table */
+  table { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+  .figscroll table { min-width: 560px; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--hair); }
+  thead th {
+    font-family: var(--mono); font-size: 11.5px; text-transform: uppercase;
+    letter-spacing: .08em; color: var(--muted); font-weight: 600;
+  }
+  td.mono, th.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  tbody tr { cursor: default; transition: background .12s; }
+  tbody tr:hover, tbody tr.active { background: var(--accent-soft); }
+  tbody tr:last-child td { border-bottom: 0; }
+  .swatch { display: inline-block; width: 14px; height: 14px; border-radius: 4px; vertical-align: -2px; margin-right: 8px; border: 1px solid rgba(0,0,0,.15); }
+  .tag { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+  .yes { color: var(--accent); font-weight: 600; }
+
+  /* Pin strips */
+  .strips { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  @media (max-width: 720px) { .strips { grid-template-columns: 1fr; } }
+  .strip h3 { margin: 0 0 10px; font-size: 14px; font-family: var(--mono); }
+  .strip h3 small { color: var(--muted); font-weight: 400; }
+  .pinrow { display: flex; align-items: center; gap: 10px; padding: 7px 10px; border-radius: 8px; font-family: var(--mono); font-size: 13px; }
+  .pinrow + .pinrow { margin-top: 3px; }
+  .pinrow .n { color: var(--muted); width: 34px; flex: none; }
+  .pinrow .lbl { font-weight: 600; }
+  .pinrow .mcu { color: var(--muted); margin-left: auto; }
+  .pinrow.use { background: var(--accent-soft); }
+  .pinrow.use .lbl { color: var(--accent); }
+  .pinrow.dim { opacity: .5; }
+
+  .note { display: flex; gap: 12px; align-items: flex-start; font-size: 14px; color: var(--muted); }
+  .note .k { color: var(--ink); font-weight: 600; }
+  .note + .note { margin-top: 12px; }
+  code { font-family: var(--mono); background: var(--surface-2); padding: 1px 6px; border-radius: 5px; font-size: 13px; color: var(--ink); }
+  footer { margin-top: 30px; color: var(--muted); font-size: 12.5px; font-family: var(--mono); }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Tracker BMP280 + GNSS · LR1110</p>
+    <h1>Conexión del BMP280 a la STM32 Nucleo-L476RG</h1>
+    <p class="lede">Cableado I²C del sensor de temperatura y presión hacia la placa de desarrollo,
+      tal como lo espera el firmware compilado. Seis conexiones, cuatro pines de la Nucleo.</p>
+    <div class="chips">
+      <span class="chip"><b>Bus</b> I²C1</span>
+      <span class="chip"><b>SCL</b> PB_8 · D15</span>
+      <span class="chip"><b>SDA</b> PB_9 · D14</span>
+      <span class="chip"><b>Dirección</b> 0x76</span>
+      <span class="chip"><b>Velocidad</b> 100 kHz</span>
+    </div>
+  </header>
+
+  <section class="card">
+    <h2>Diagrama de cableado</h2>
+    <p class="sub">Pasa el cursor por una fila de la tabla (o por un cable) para resaltar la conexión.</p>
+    <div class="figscroll">
+      <svg class="diagram" viewBox="0 0 860 470" role="img"
+           aria-label="Diagrama de conexión entre el módulo BMP280 y la Nucleo-L476RG">
+        <!-- Sensor board -->
+        <rect class="board-sensor" x="70" y="95" width="160" height="300" rx="14" stroke-width="2"/>
+        <text class="board-label" x="150" y="128" text-anchor="middle" font-size="16">BMP280</text>
+        <text class="board-sub" x="150" y="146" text-anchor="middle" font-size="10.5">GY-BMP280</text>
+
+        <!-- MCU board -->
+        <rect class="board-mcu" x="630" y="70" width="200" height="350" rx="16" stroke-width="2"/>
+        <text class="board-label" x="730" y="102" text-anchor="middle" font-size="15">Nucleo-L476RG</text>
+        <text class="conn-tag" x="648" y="140">CN6</text>
+        <text class="conn-tag" x="648" y="222">CN5</text>
+
+        <!-- Wires: BMP280 pin (x=230) -> Nucleo pad (x=630) -->
+        <!-- VCC -> 3V3 -->
+        <path class="wire vcc" data-id="vcc" d="M230,150 C380,150 480,175 630,175"/>
+        <!-- CSB -> 3V3 (power rail, dashed) -->
+        <path class="wire vcc rail" data-id="csb" d="M230,318 C400,318 470,190 630,175"/>
+        <!-- GND -> GND -->
+        <path class="wire gnd" data-id="gnd" d="M230,192 C410,192 470,360 630,360"/>
+        <!-- SDO -> GND (ground rail, dashed) -->
+        <path class="wire gnd rail" data-id="sdo" d="M230,360 C400,360 480,360 630,360"/>
+        <!-- SCL -> D15 -->
+        <path class="wire scl" data-id="scl" d="M230,234 C390,234 480,250 630,250"/>
+        <!-- SDA -> D14 -->
+        <path class="wire sda" data-id="sda" d="M230,276 C390,276 480,292 630,292"/>
+
+        <!-- BMP280 pin pads + labels -->
+        <g font-size="13">
+          <circle class="end vcc" data-id="vcc" cx="230" cy="150" r="5.5"/><text class="pin-txt" x="214" y="154" text-anchor="end">VCC</text>
+          <circle class="end gnd" data-id="gnd" cx="230" cy="192" r="5.5"/><text class="pin-txt" x="214" y="196" text-anchor="end">GND</text>
+          <circle class="end scl" data-id="scl" cx="230" cy="234" r="5.5"/><text class="pin-txt" x="214" y="238" text-anchor="end">SCL</text>
+          <circle class="end sda" data-id="sda" cx="230" cy="276" r="5.5"/><text class="pin-txt" x="214" y="280" text-anchor="end">SDA</text>
+          <circle class="end vcc" data-id="csb" cx="230" cy="318" r="5.5"/><text class="pin-txt" x="214" y="322" text-anchor="end">CSB</text>
+          <circle class="end gnd" data-id="sdo" cx="230" cy="360" r="5.5"/><text class="pin-txt" x="214" y="364" text-anchor="end">SDO</text>
+        </g>
+
+        <!-- Nucleo target pads + labels -->
+        <g>
+          <circle class="end vcc" data-id="vcc" cx="630" cy="175" r="5.5"/>
+          <text class="pin-txt" x="648" y="172" font-size="13">3V3</text>
+          <text class="board-sub" x="648" y="187" font-size="10">alimentación</text>
+
+          <circle class="end scl" data-id="scl" cx="630" cy="250" r="5.5"/>
+          <text class="pin-txt" x="648" y="247" font-size="13">D15 · PB_8</text>
+          <text class="board-sub" x="648" y="262" font-size="10">I2C1_SCL</text>
+
+          <circle class="end sda" data-id="sda" cx="630" cy="292" r="5.5"/>
+          <text class="pin-txt" x="648" y="289" font-size="13">D14 · PB_9</text>
+          <text class="board-sub" x="648" y="304" font-size="10">I2C1_SDA</text>
+
+          <circle class="end gnd" data-id="gnd" cx="630" cy="360" r="5.5"/>
+          <text class="pin-txt" x="648" y="357" font-size="13">GND</text>
+          <text class="board-sub" x="648" y="372" font-size="10">masa común</text>
+        </g>
+      </svg>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Las seis conexiones</h2>
+    <p class="sub">Líneas discontinuas = el pin va a un riel de alimentación/masa para fijar el modo y la dirección.</p>
+    <div class="figscroll">
+      <table id="conn">
+        <thead>
+          <tr>
+            <th>Cable</th><th>Pin BMP280</th><th>Destino Nucleo</th>
+            <th class="mono">Pin físico</th><th class="mono">MCU</th><th>Motivo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-id="vcc"><td><span class="swatch" style="background:var(--w-vcc)"></span>rojo</td><td class="mono">VCC</td><td class="mono yes">3V3</td><td class="mono">CN6-4</td><td class="mono">—</td><td>Alimentación 3.3 V</td></tr>
+          <tr data-id="gnd"><td><span class="swatch" style="background:var(--w-gnd)"></span>negro</td><td class="mono">GND</td><td class="mono yes">GND</td><td class="mono">CN6-6</td><td class="mono">—</td><td>Masa común</td></tr>
+          <tr data-id="scl"><td><span class="swatch" style="background:var(--w-scl)"></span>ámbar</td><td class="mono">SCL</td><td class="mono yes">D15</td><td class="mono">CN5-10</td><td class="mono">PB_8</td><td>Reloj I²C</td></tr>
+          <tr data-id="sda"><td><span class="swatch" style="background:var(--w-sda)"></span>azul</td><td class="mono">SDA</td><td class="mono yes">D14</td><td class="mono">CN5-9</td><td class="mono">PB_9</td><td>Datos I²C</td></tr>
+          <tr data-id="csb"><td><span class="swatch" style="background:var(--w-vcc)"></span>rojo ┄</td><td class="mono">CSB</td><td class="mono yes">3V3</td><td class="mono">CN6-4</td><td class="mono">—</td><td>Fuerza modo I²C (no SPI)</td></tr>
+          <tr data-id="sdo"><td><span class="swatch" style="background:var(--w-gnd)"></span>negro ┄</td><td class="mono">SDO</td><td class="mono yes">GND</td><td class="mono">CN6-6</td><td class="mono">—</td><td>Fija dirección <b>0x76</b> (VCC → 0x77)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Ubicación física de los pines</h2>
+    <p class="sub">Sólo los conectores que usamos. Resaltados los pines de destino; rótulos según la serigrafía de la placa.</p>
+    <div class="strips">
+      <div class="strip">
+        <h3>CN5 &nbsp;<small>digital, lado derecho alto</small></h3>
+        <div class="pinrow use"><span class="n">10</span><span class="lbl">D15 · SCL</span><span class="mcu">PB_8</span></div>
+        <div class="pinrow use"><span class="n">9</span><span class="lbl">D14 · SDA</span><span class="mcu">PB_9</span></div>
+        <div class="pinrow dim"><span class="n">8</span><span class="lbl">AVDD</span><span class="mcu">—</span></div>
+        <div class="pinrow"><span class="n">7</span><span class="lbl">GND</span><span class="mcu">alt.</span></div>
+        <div class="pinrow dim"><span class="n">6</span><span class="lbl">D13 · SCK</span><span class="mcu">PA_5</span></div>
+        <div class="pinrow dim"><span class="n">5</span><span class="lbl">D12 · MISO</span><span class="mcu">PA_6</span></div>
+      </div>
+      <div class="strip">
+        <h3>CN6 &nbsp;<small>alimentación, lado izquierdo alto</small></h3>
+        <div class="pinrow dim"><span class="n">3</span><span class="lbl">NRST</span><span class="mcu">—</span></div>
+        <div class="pinrow use"><span class="n">4</span><span class="lbl">3V3</span><span class="mcu">VCC · CSB</span></div>
+        <div class="pinrow dim"><span class="n">5</span><span class="lbl">5V</span><span class="mcu">no usar</span></div>
+        <div class="pinrow use"><span class="n">6</span><span class="lbl">GND</span><span class="mcu">GND · SDO</span></div>
+        <div class="pinrow"><span class="n">7</span><span class="lbl">GND</span><span class="mcu">alt.</span></div>
+        <div class="pinrow dim"><span class="n">8</span><span class="lbl">VIN</span><span class="mcu">—</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Antes de dar por buena la conexión</h2>
+    <div class="note"><span class="k">Verifica&nbsp;por&nbsp;UART</span><span>Al arrancar (115200 8N1) la traza debe mostrar <code>BMP280 detected (chip-id 0x58)</code>. Si aparece <code>BMP280 not detected</code>, revisa 3V3, <code>CSB→3V3</code>, <code>SDO→GND</code> y que SDA/SCL no estén invertidos.</span></div>
+    <div class="note"><span class="k">Pull-ups</span><span>La mayoría de módulos GY-BMP280 ya las traen (~4.7 kΩ) y el HAL activa las internas del STM32; normalmente no hacen falta externas. Con cables largos, añade 4.7 kΩ de SDA y SCL a 3V3.</span></div>
+    <div class="note"><span class="k">¿Es un BME280?</span><span>Un BME280 (chip-id 0x60) <b>no</b> será detectado: el driver valida explícitamente 0x58. El GNSS seguirá funcionando igual.</span></div>
+    <div class="note"><span class="k">Morpho</span><span>PB_8/PB_9 y pines 3V3/GND también están replicados en los conectores morpho <code>CN7</code>/<code>CN10</code> si prefieres cablear por ahí.</span></div>
+  </section>
+
+  <footer>Firmware: I2C1 · SCL=PB_8 · SDA=PB_9 · addr 0x76 · 100 kHz — coherente con el binario compilado (tracker-bme280-gnss_lr1110). Foto oficial: ST UM1724.</footer>
+</div>
+
+<script>
+  (function () {
+    var svg  = document.querySelector('svg.diagram');
+    var rows = Array.prototype.slice.call(document.querySelectorAll('#conn tbody tr'));
+    // csb/sdo share the physical destination pad with vcc/gnd; map them for highlighting.
+    var padAlias = { csb: 'vcc', sdo: 'gnd' };
+
+    function setFocus(id) {
+      svg.classList.add('focus');
+      var wireSel = '.wire[data-id="' + id + '"]';
+      var endIds = [id];
+      if (padAlias[id]) endIds.push(padAlias[id]);
+      document.querySelectorAll(wireSel).forEach(function (w) { w.classList.add('active'); });
+      endIds.forEach(function (e) {
+        document.querySelectorAll('.end[data-id="' + e + '"]').forEach(function (n) { n.classList.add('active'); });
+      });
+      rows.forEach(function (r) { if (r.dataset.id === id) r.classList.add('active'); });
+    }
+    function clearFocus() {
+      svg.classList.remove('focus');
+      document.querySelectorAll('.active').forEach(function (n) { n.classList.remove('active'); });
+    }
+
+    rows.forEach(function (r) {
+      r.addEventListener('mouseenter', function () { setFocus(r.dataset.id); });
+      r.addEventListener('mouseleave', clearFocus);
+    });
+    document.querySelectorAll('.wire, .end').forEach(function (el) {
+      el.addEventListener('mouseenter', function () { setFocus(el.dataset.id); });
+      el.addEventListener('mouseleave', clearFocus);
+    });
+  })();
+</script>

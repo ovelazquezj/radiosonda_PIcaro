@@ -62,6 +62,11 @@ option(APP_TRACE "choose to enable or disable application trace print (default: 
 add_executable(lbm_example.elf)
 
 target_sources(lbm_example.elf PRIVATE main_${APP}/main_${APP}.c)
+if( APP STREQUAL "geolocation")
+    target_sources(lbm_example.elf PRIVATE
+        main_geolocation/bmp280.c
+        main_geolocation/bmp280_payload.c)
+endif()
 if( APP STREQUAL "wifi_region_detection")
     target_sources(lbm_example.elf PRIVATE main_wifi_region_detection/wifi_region_finder.c)
 endif()

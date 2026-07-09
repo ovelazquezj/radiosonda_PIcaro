@@ -24,6 +24,8 @@ BOARD_C_SOURCES = \
 	mcu_drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rtc.c \
 	mcu_drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rtc_ex.c \
 	mcu_drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_spi.c \
+	mcu_drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c.c \
+	mcu_drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c_ex.c \
 	mcu_drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_uart.c \
 	mcu_drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_iwdg.c \
 	mcu_drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal.c \
@@ -44,6 +46,7 @@ BOARD_C_SOURCES = \
 	smtc_hal_l4/smtc_hal_rtc.c\
 	smtc_hal_l4/smtc_hal_rng.c\
 	smtc_hal_l4/smtc_hal_spi.c\
+	smtc_hal_l4/smtc_hal_i2c.c\
 	smtc_hal_l4/smtc_hal_lp_timer.c\
 	smtc_hal_l4/smtc_hal_trace.c\
 	smtc_hal_l4/smtc_hal_uart.c\
