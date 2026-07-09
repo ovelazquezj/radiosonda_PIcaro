@@ -9,7 +9,7 @@ ahora dependías de un gateway ajeno; aquí **el gateway también es tuyo**.
 | | |
 |---|---|
 | Hardware | **TTGO ESP32 LoRa** (SX1276) — la misma placa de los ej. 05/06 |
-| Firmware | **ESP-1ch-Gateway** v6.2.8 (Arduino IDE o PlatformIO) — *software de terceros* |
+| Firmware | **ESP-1ch-Gateway** — commit `3b02352` (v6.2.8 interno, sin release formal) — *terceros* |
 | Tipo | Gateway **single-channel** (un solo canal) — solo demos/educación |
 | Protocolo hacia el NS | **Semtech UDP Packet Forwarder** → puerto **1700/UDP** |
 | Network Server | **ChirpStack v4** (Gateway Bridge, backend Semtech UDP) |
@@ -54,15 +54,22 @@ solo puede escuchar **una frecuencia**:
 - **Entorno:** **Arduino IDE** con soporte ESP32, o **PlatformIO** (recomendado; el repo trae
   `platformio.ini`).
 - **Firmware (terceros):** clona el repositorio oficial
-  **https://github.com/things4u/ESP-1ch-Gateway**. El sketch principal es
-  `src/ESP-sc-gway.ino`.
+  **https://github.com/things4u/ESP-1ch-Gateway** y **fija el commit probado** (el repo **no publica
+  releases ni tags**, así que se ancla por SHA — ver [`VERSIONS.md`](VERSIONS.md)). El sketch
+  principal es `src/ESP-sc-gway.ino`.
+- **Dependencias:** casi todas van **vendorizadas** en `lib/` del propio repo (ArduinoJson,
+  WiFiManager, TinyGPS++, Streaming, Time, OLED SSD1306, aes, gBase64…), así que al fijar el commit
+  quedan congeladas; la única que PlatformIO descarga aparte es `sandeepmistry/LoRa 0.8.0`. Ver
+  [`VERSIONS.md`](VERSIONS.md).
 - **Red:** el gateway y el host de ChirpStack deben verse por IP (misma LAN o rutado), con el
   **puerto 1700/UDP** abierto en el host de ChirpStack.
 
 ```bash
 git clone https://github.com/things4u/ESP-1ch-Gateway.git
 cd ESP-1ch-Gateway
-# Abre src/ESP-sc-gway.ino en Arduino IDE, o usa PlatformIO.
+git checkout 3b023527bd23cf33657dc7ffdf5bedaf1b85cdcc   # v6.2.8 (2021-10-18), sin release formal
+# Compila con PlatformIO (recomendado; env de TTGO por USB en VERSIONS.md) o abre
+# src/ESP-sc-gway.ino en Arduino IDE.
 ```
 
 ---
@@ -83,24 +90,29 @@ para nuestro caso (TTGO ESP32, EU868, canal 0, apuntando a ChirpStack) están re
 | `_SPREADING` | `SF9` | Factor de dispersión por defecto |
 | `_CAD` | `1` | Escucha **todos los SF** en esa frecuencia (Channel Activity Detection) |
 | `_STRICT_1CH` | `1` | Devuelve los **downlinks en el mismo canal/SF** del uplink (clave para ACK/join) |
-| `_THINGSERVER` | `"<IP_DE_CHIRPSTACK>"` | **Servidor secundario → tu ChirpStack** |
-| `_THINGPORT` | `1700` | Puerto **UDP** del servidor (Semtech UDP) |
+| `_TTNSERVER` | `"<IP_DE_CHIRPSTACK>"` | **Servidor primario → apúntalo a tu ChirpStack** (lo más simple) |
+| `_TTNPORT` | `1700` | Puerto **UDP** (Semtech UDP / Gateway Bridge) |
 | `_SERVER` | `1` | Activa la **interfaz web** de administración (`http://<IP>:80`) |
 
-**`configNode.h` — identidad y red:**
+**`configNode.h` — WiFi, identidad y ubicación** (ver [`configNode.example.h`](configNode.example.h)):
 
-- `AP_NAME` / `AP_PASSWD`: tu **WiFi** (o activa `_WIFIMANAGER` para configurar por portal).
-- `_LAT` / `_LON` / `_ALT`: **ubicación** del gateway (ajústala a la real; ChirpStack la muestra en el mapa).
+- **WiFi:** rellena el array `wpa[]` con tu SSID/clave, p.ej. `wpas wpa[] = { { "MI_SSID", "MI_CLAVE" } };`
+  (en el repo viene **vacío**). Alternativa: portal por AP con `_WIFIMANAGER=1`.
+- **Identidad:** `_DESCRIPTION` (nombre), `_EMAIL`, `_PLATFORM` (pon `"ESP32"` para la TTGO).
+- **Ubicación:** `_LAT` / `_LON` / `_ALT` (ChirpStack la muestra en el mapa).
 
-> Puedes dejar `_TTNSERVER` como venga (servidor primario); lo que hace llegar los datos a
-> ChirpStack es el **secundario** (`_THINGSERVER` + `_THINGPORT 1700`).
+> **Dos rutas para enviar a ChirpStack** (elige una): **(a)** *simple* — pon `_TTNSERVER` (en
+> `configGway.h`) con la IP de tu ChirpStack; **(b)** *como secundario* — deja `_TTNSERVER` como
+> esté y **descomenta `_THINGSERVER`/`_THINGPORT` en `configNode.h`**. En ambos casos, **1700/UDP**.
 
 ---
 
 ## 3. Flashear y leer el **Gateway EUI real**
 
-1. Compila y flashea `src/ESP-sc-gway.ino` (Arduino IDE: placa *TTGO LoRa32* / *ESP32 Dev Module*;
-   o `pio run -t upload`).
+1. Compila y flashea `src/ESP-sc-gway.ino`. **Ojo:** el `platformio.ini` del repo trae **un único
+   entorno activo** (`[env:Gateway_38]`) para **Heltec por OTA**; para **TTGO por USB** usa el
+   entorno adaptado de [`VERSIONS.md`](VERSIONS.md) (`board = ttgo-lora32-v1`,
+   `upload_protocol = esptool`, `upload_port = COMx`). Con Arduino IDE: placa *TTGO LoRa32*, puerto COM correcto.
 2. Abre el **monitor serie a 115200**. En el arranque el firmware **genera el Gateway EUI (8 bytes)
    a partir de la MAC del ESP** y lo imprime (también aparece en la web `http://<IP>:80`).
 
@@ -190,7 +202,9 @@ escucha **uno**, hay que **fijar cada nodo** a esa misma frecuencia/SF (ej.: **8
 ## Archivos
 
 ```
-07_README.md               este documento (guía del ejercicio)
-configGway.example.h       #define clave para configGway.h (TTGO, EU868, canal 0, → ChirpStack)
+README.md                  este documento (guía del ejercicio)
+configGway.example.h       #define clave para configGway.h (TTGO, EU868, canal 0, SF9, _STRICT_1CH)
+configNode.example.h       WiFi (wpa[]), identidad y ubicacion del gateway (para configNode.h)
 register_gateway.sh        alta del gateway en ChirpStack v4 por API REST (idempotente)
+VERSIONS.md                commit exacto del firmware + versiones de librerias que compilan
 ```

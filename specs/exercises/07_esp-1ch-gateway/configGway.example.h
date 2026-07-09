@@ -57,13 +57,13 @@
 /* El firmware habla el protocolo Semtech UDP Packet Forwarder (puerto 1700/UDP),
  * que es exactamente el backend "Semtech UDP" del ChirpStack Gateway Bridge.
  *
- * Servidor PRIMARIO (puedes dejar el que trae por defecto, o el tuyo): */
-#define _TTNSERVER    "eu1.cloud.thethings.network"
-#define _TTNPORT      1700
+ * Ruta SIMPLE (un solo Network Server): apunta el servidor PRIMARIO a tu ChirpStack.
+ * _TTNSERVER / _TTNPORT SÍ viven en configGway.h. */
+#define _TTNSERVER    "<IP_DE_CHIRPSTACK>"   // p.ej. "192.168.1.50" (host del Gateway Bridge)
+#define _TTNPORT      1700                   // Semtech UDP
 
-/* Servidor SECUNDARIO -> TU CHIRPSTACK. Esto es lo que hace llegar los datos a ChirpStack. */
-#define _THINGSERVER  "<IP_DE_CHIRPSTACK>"   // p.ej. "192.168.1.50" (host del Gateway Bridge)
-#define _THINGPORT    1700                   // Semtech UDP
+/* Servidor SECUNDARIO (conservar TTN y AÑADIR ChirpStack): NO va aquí.
+ * _THINGSERVER / _THINGPORT se definen en configNode.h (ver configNode.example.h). */
 
 /* ---------------------------------------------------------------------------
  * 4) INTERFAZ WEB DE ADMINISTRACIÓN
