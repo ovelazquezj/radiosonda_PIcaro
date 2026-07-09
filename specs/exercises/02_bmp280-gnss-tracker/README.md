@@ -30,9 +30,9 @@ El BMP280 cuelga del **I²C1** del Nucleo. Configurado a **dirección 0x76** (pi
 | CSB | 3V3 | fuerza modo **I²C** (no SPI) |
 | SDO | GND | selecciona dirección **0x76** (a 3V3 sería 0x77) |
 
-Diagrama visual de pines: [`../../bme280-gnss-tracker/pinout_diagram.html`](../../bme280-gnss-tracker/pinout_diagram.html).
+Diagrama visual de pines: [`../../bmp280-gnss-tracker/pinout_diagram.html`](../../bmp280-gnss-tracker/pinout_diagram.html).
 Detalle de flasheo y alta paso a paso (apartado **1.bis**):
-[`../../bme280-gnss-tracker/FLASH_AND_CHIRPSTACK.md`](../../bme280-gnss-tracker/FLASH_AND_CHIRPSTACK.md).
+[`../../bmp280-gnss-tracker/FLASH_AND_CHIRPSTACK.md`](../../bmp280-gnss-tracker/FLASH_AND_CHIRPSTACK.md).
 
 ## Pasos del ejercicio
 

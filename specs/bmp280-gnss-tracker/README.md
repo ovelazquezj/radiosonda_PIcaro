@@ -3,8 +3,8 @@
 > **Nota de sensor:** el sensor de este proyecto es el **BMP280** (temperatura + presión, **sin
 > humedad**): chip-id `0x58`, payload de **5 bytes**, funciones `bmp280_*`. Originalmente se planteó
 > un BME280 (con humedad, chip-id `0x60`, 7 bytes); todas las specs de abajo ya están **reconciliadas
-> al BMP280 real** implementado en `main_geolocation/bmp280.[ch]`. El nombre de la carpeta y de algunos
-> ficheros conserva el prefijo `bme280` por motivos históricos, pero describen el BMP280.
+> al BMP280 real** implementado en `main_geolocation/bmp280.[ch]`. Las carpetas y ficheros usan el
+> prefijo `bmp280`, acorde al sensor real.
 > Bandas objetivo: **US_915** y **EU_868**, cada una como build independiente con credenciales propias.
 
 Conjunto de especificaciones para desarrollo **SDD (Spec-Driven Development)** pensadas para
@@ -31,7 +31,7 @@ Radio objetivo: **LR1110**. MCU objetivo: **Nucleo-L476RG (STM32L476)**.
 Implementar en orden. Para cada SRS, pedir al agente:
 
 ```
-Lee specs/bme280-gnss-tracker/SRS-00X-*.md y su sección "Archivos que debes leer primero".
+Lee specs/bmp280-gnss-tracker/SRS-00X-*.md y su sección "Archivos que debes leer primero".
 Implementa TODOS los requisitos REQ-* del documento.
 Al terminar, recorre la "Checklist de aceptación" y marca cada ítem como PASS/FAIL con evidencia
 (comando ejecutado o archivo:línea). No pases al siguiente SRS si algún ítem está en FAIL.
@@ -43,7 +43,7 @@ Al terminar, recorre la "Checklist de aceptación" y marca cada ítem como PASS/
 |---|-----------|-----------|-----------|
 | 0 | [SRS-000-overview.md](SRS-000-overview.md) | Alcance, glosario, restricciones globales, definición de "hecho" | — |
 | 1 | [SRS-001-i2c-hal.md](SRS-001-i2c-hal.md) | HAL I²C para STM32L4 (`smtc_hal_i2c.[ch]`) | SRS-000 |
-| 2 | [SRS-002-bme280-driver.md](SRS-002-bme280-driver.md) | Driver del BMP280 portable | SRS-001 |
+| 2 | [SRS-002-bmp280-driver.md](SRS-002-bmp280-driver.md) | Driver del BMP280 portable | SRS-001 |
 | 3 | [SRS-003-payload-format.md](SRS-003-payload-format.md) | Formato de payload + decoder del Network Server | SRS-000 |
 | 4 | [SRS-004-app-integration.md](SRS-004-app-integration.md) | Integración sensor+GNSS en el bucle de eventos | SRS-002, SRS-003 |
 | 5 | [SRS-005-build-and-verify.md](SRS-005-build-and-verify.md) | Compilación del binario y verificación E2E | SRS-004 |

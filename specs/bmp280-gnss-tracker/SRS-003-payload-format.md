@@ -32,7 +32,7 @@ datos del **BMP280** (temperatura + presión, **sin humedad**), y entregar un **
 - **REQ-003-5 — Decoder:** entregar `payload_decoder.js` con función
   `decodeUplink(input)` que, para fport 10, devuelva `{ data: { version, temperature, pressure } }`
   con los valores físicos ya escalados. Debe ignorar/derivar a GNSS los demás fports sin romper.
-  > Decoder entregado en [`../exercises/02_bme280-gnss-tracker/payload_decoder.js`](../exercises/02_bme280-gnss-tracker/payload_decoder.js).
+  > Decoder entregado en [`../exercises/02_bmp280-gnss-tracker/payload_decoder.js`](../exercises/02_bmp280-gnss-tracker/payload_decoder.js).
 - **REQ-003-6** — El decoder debe ser el **inverso exacto** de `bmp280_payload_encode` (round-trip
   del ejemplo de REQ-003-2 reproduce 23.45 / 1013).
 

@@ -12,7 +12,7 @@ de humedad**.
 
 ## Archivos que debes leer primero
 
-- `specs/bme280-gnss-tracker/SRS-001-i2c-hal.md` — API I²C disponible.
+- `specs/bmp280-gnss-tracker/SRS-001-i2c-hal.md` — API I²C disponible.
 - Datasheet BMP280 (registros clave): `0xD0` id (=`0x58`), `0xF3` status (bit `measuring`),
   `0xF4` ctrl_meas (oversampling + modo), `0xF5` config, `0xF7..0xFC` datos crudos (presión + temperatura),
   `0x88..0x9F` coeficientes de calibración (`dig_T1..T3`, `dig_P1..P9`).

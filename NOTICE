@@ -40,7 +40,7 @@ Semtech code.
 Added:
   - specs/exercises/         Six self-contained didactic exercises (00-06),
                              with ChirpStack provisioning/consumption scripts.
-  - specs/bme280-gnss-tracker/  BMP280 + GNSS tracker specs, pinout, guides.
+  - specs/bmp280-gnss-tracker/  BMP280 + GNSS tracker specs, pinout, guides.
   - specs/demos/            Flashing and API-registration guides.
   - wiki/                   LoRa/LoRaWAN teaching material.
   - BMP280 sensor driver and I2C HAL for STM32L4 (added to the geolocation

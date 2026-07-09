@@ -37,7 +37,7 @@ Para crear un ejercicio nuevo, copia [`_PLANTILLA/`](_PLANTILLA/) y rellena.
 |---|-----------|---------------|---------------|:----------:|---------------------|
 | [00](00_chirpstack-docker/) | ChirpStack (servidor) | — · Docker | Network Server LoRaWAN v4 (**prerequisito**) | — | — |
 | [01](01_periodical-uplink/) | Periodical Uplink | **LR1110** · Nucleo-L476RG | Join OTAA + uplinks periódicos | ✅ | Contador/keep-alive por MQTT |
-| [02](02_bme280-gnss-tracker/) | BMP280 + GNSS | **LR1110** · Nucleo-L476RG | Sensor I²C + GNSS/Wi-Fi | ✅ | Temperatura/presión decodificadas |
+| [02](02_bmp280-gnss-tracker/) | BMP280 + GNSS | **LR1110** · Nucleo-L476RG | Sensor I²C + GNSS/Wi-Fi | ✅ | Temperatura/presión decodificadas |
 | [03](03_hw-modem/) | Hardware Modem | **LR1110** · Nucleo-L476RG | Módem controlado por un host | ✅ (claves del host) | Lo que envíe el host |
 | [04](04_wifi-region-detection/) | Wi-Fi Region Detection | **LR1110** · Nucleo-L476RG | Escaneo Wi-Fi | ❌ | Solo por UART (no usa ChirpStack) |
 | [05](05_ttgo-lora32/) | TTGO ESP32 LoRa | **SX1276** · TTGO ESP32 | Nodo de terceros (LMIC) | ✅ | `counter`/`timestamp` por MQTT |

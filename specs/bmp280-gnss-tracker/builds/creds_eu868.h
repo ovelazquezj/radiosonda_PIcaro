@@ -1,7 +1,7 @@
 /**
  * @file      creds_eu868.h
  * @brief     Credenciales LoRaWAN + región para el build:
- *            tracker-bme280-gnss_lr1110_eu868
+ *            tracker-bmp280-gnss_lr1110_eu868
  *
  * ⚠️ LAB — valores de laboratorio deterministas. Reemplazar antes de una red productiva.
  *

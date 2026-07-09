@@ -13,8 +13,8 @@ LoRa Basics Modem (SWL2001).
 
 | Nombre del build | Región | DevEUI | JoinEUI | AppKey |
 |---|---|---|---|---|
-| `tracker-bme280-gnss_lr1110_us915` | US_915 | `AA BB CC DD 00 91 50 01` | `AA BB CC DD EE FF 00 00` | `A9 15 A9 15 A9 15 A9 15 A9 15 A9 15 A9 15 A9 15` |
-| `tracker-bme280-gnss_lr1110_eu868` | EU_868 | `AA BB CC DD 00 86 80 01` | `AA BB CC DD EE FF 00 00` | `A8 68 A8 68 A8 68 A8 68 A8 68 A8 68 A8 68 A8 68` |
+| `tracker-bmp280-gnss_lr1110_us915` | US_915 | `AA BB CC DD 00 91 50 01` | `AA BB CC DD EE FF 00 00` | `A9 15 A9 15 A9 15 A9 15 A9 15 A9 15 A9 15 A9 15` |
+| `tracker-bmp280-gnss_lr1110_eu868` | EU_868 | `AA BB CC DD 00 86 80 01` | `AA BB CC DD EE FF 00 00` | `A8 68 A8 68 A8 68 A8 68 A8 68 A8 68 A8 68 A8 68` |
 
 > **LAB — reemplazar antes de una red productiva.** Estas DevEUI/JoinEUI/AppKey son de
 > laboratorio. No las uses en una red real; genera credenciales propias y protégelas.
@@ -162,7 +162,7 @@ cd lbm_applications/3_geolocation_on_lora_edge
 
 Edita **`main_geolocation/example_options.h`**. Con crypto SOFT estos valores son los efectivos.
 
-**Build US915** (`tracker-bme280-gnss_lr1110_us915`):
+**Build US915** (`tracker-bmp280-gnss_lr1110_us915`):
 
 ```c
 #define USER_LORAWAN_DEVICE_EUI \
@@ -176,7 +176,7 @@ Edita **`main_geolocation/example_options.h`**. Con crypto SOFT estos valores so
 #define MODEM_EXAMPLE_REGION SMTC_MODEM_REGION_US_915
 ```
 
-**Build EU868** (`tracker-bme280-gnss_lr1110_eu868`):
+**Build EU868** (`tracker-bmp280-gnss_lr1110_eu868`):
 
 ```c
 #define USER_LORAWAN_DEVICE_EUI \

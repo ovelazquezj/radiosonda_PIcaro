@@ -35,6 +35,6 @@ Sensor **Bosch** de **temperatura y presión** (no mide humedad; ese es el BME28
 | 06 TTGO + BMP280 | TTGO ESP32 | SX1276 | BMP280 (I²C) + OLED |
 
 > Los detalles de **cableado del sensor** (pines) están en el README de los ejercicios 02 y 06 y en
-> el diagrama `specs/bme280-gnss-tracker/pinout_diagram.html`.
+> el diagrama `specs/bmp280-gnss-tracker/pinout_diagram.html`.
 
 > Siguiente: **[ChirpStack en 5 minutos](ChirpStack-en-5-minutos)** →

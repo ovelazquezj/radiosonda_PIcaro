@@ -12,7 +12,7 @@ Registro trazable de cada binario y sus credenciales LoRaWAN.
 
 ## Convención de nombre
 
-`tracker-bme280-gnss_<radio>_<region>`. El sensor físico es **BMP280** (temp+presión, sin humedad).
+`tracker-bmp280-gnss_<radio>_<region>`. El sensor físico es **BMP280** (temp+presión, sin humedad).
 
 ## Estado global
 
@@ -27,8 +27,8 @@ Registro trazable de cada binario y sus credenciales LoRaWAN.
 
 | Build | Región | DevEUI | JoinEUI | AppKey | Artefacto (.bin) | md5 |
 |---|---|---|---|---|---|---|
-| `tracker-bme280-gnss_lr1110_us915` | US_915 | `AABBCCDD00915001` | `AABBCCDDEEFF0000` | `A915A915A915A915A915A915A915A915` | `app_lr1110_US_915.bin` (135 720 B) | `1c32bcab3a65f5df2cf88fdf6ff65810` |
-| `tracker-bme280-gnss_lr1110_eu868` | EU_868 | `AABBCCDD00868001` | `AABBCCDDEEFF0000` | `A868A868A868A868A868A868A868A868` | `app_lr1110_EU_868.bin` (135 600 B) | `09c54117e14483135908babc523b0714` |
+| `tracker-bmp280-gnss_lr1110_us915` | US_915 | `AABBCCDD00915001` | `AABBCCDDEEFF0000` | `A915A915A915A915A915A915A915A915` | `app_lr1110_US_915.bin` (135 720 B) | `1c32bcab3a65f5df2cf88fdf6ff65810` |
+| `tracker-bmp280-gnss_lr1110_eu868` | EU_868 | `AABBCCDD00868001` | `AABBCCDDEEFF0000` | `A868A868A868A868A868A868A868A868` | `app_lr1110_EU_868.bin` (135 600 B) | `09c54117e14483135908babc523b0714` |
 
 Build: `make -C lbm_applications/3_geolocation_on_lora_edge full_lr1110 MODEM_APP=EXAMPLE_GEOLOCATION REGION=<banda>`
 

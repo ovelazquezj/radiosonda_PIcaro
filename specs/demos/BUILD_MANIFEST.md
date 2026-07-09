@@ -6,7 +6,7 @@ Binarios ya compilados en [`artifacts/`](artifacts/). Instrucciones paso a paso:
 
 > ⚠️ Credenciales de **LABORATORIO** deterministas (prefijo `AA:BB:CC:DD`).
 > **Reemplazar antes de una red productiva.**
-> El proyecto del sensor BMP280 vive aparte en [`../bme280-gnss-tracker/`](../bme280-gnss-tracker/).
+> El proyecto del sensor BMP280 vive aparte en [`../bmp280-gnss-tracker/`](../bmp280-gnss-tracker/).
 
 ## Esquema de credenciales
 

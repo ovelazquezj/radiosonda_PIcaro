@@ -196,4 +196,4 @@ st-flash --connect-under-reset write wifi-region-detection_lr1110_multiband.bin 
 
 - Manifiesto y credenciales: [`BUILD_MANIFEST.md`](BUILD_MANIFEST.md) · [`credentials.json`](credentials.json)
 - Registrar un device en ChirpStack **por API** (paso a paso, ejercicio EU868): [`REGISTRO_API_CHIRPSTACK.md`](REGISTRO_API_CHIRPSTACK.md)
-- Proyecto del sensor BMP280 (aparte): [`../bme280-gnss-tracker/`](../bme280-gnss-tracker/)
+- Proyecto del sensor BMP280 (aparte): [`../bmp280-gnss-tracker/`](../bmp280-gnss-tracker/)

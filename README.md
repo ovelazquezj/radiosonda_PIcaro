@@ -58,7 +58,7 @@ añade material didáctico y de integración** encima, bajo la misma licencia Cl
 | Carpeta | Contenido |
 |---------|-----------|
 | [`specs/exercises/`](specs/exercises/) | **Empieza aquí** — los 6 ejercicios didácticos (00 ChirpStack → 06 TTGO+BMP280) |
-| [`specs/bme280-gnss-tracker/`](specs/bme280-gnss-tracker/) | Proyecto del tracker BMP280+GNSS: SRS, pinout, guía de flasheo/ChirpStack |
+| [`specs/bmp280-gnss-tracker/`](specs/bmp280-gnss-tracker/) | Proyecto del tracker BMP280+GNSS: SRS, pinout, guía de flasheo/ChirpStack |
 | [`specs/demos/`](specs/demos/) | Binarios de demo y guía de flasheo/registro por API |
 | `lbm_lib/` | Pila **LoRa Basics Modem** de Semtech (upstream, sin modificar salvo lo indicado) |
 | `lbm_examples/` · `lbm_applications/` | Ejemplos y aplicaciones (la de geolocalización, extendida con el BMP280) |
