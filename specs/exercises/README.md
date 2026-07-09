@@ -32,6 +32,9 @@ Para crear un ejercicio nuevo, copia [`_PLANTILLA/`](_PLANTILLA/) y rellena.
 >   El binario ya viene **compilado** en cada carpeta `artifacts/`: **solo se flashea**.
 > - **Ejercicios 05–06 → TTGO ESP32 LoRa** (radio **SX1276**), firmware **Arduino/LMIC**.
 >   Traen el **sketch `.ino`** que **tú compilas** en el Arduino IDE.
+> - **Ejercicio 07 → gateway (infraestructura), NO un nodo.** Una TTGO ESP32 (SX1276) hace de
+>   **gateway *single-channel*** con firmware de terceros (ESP-1ch-Gateway) para que ChirpStack
+>   reciba los uplinks de los demás nodos.
 
 | # | Ejercicio | Radio · Placa | Qué demuestra | ChirpStack | Dato para dashboard |
 |---|-----------|---------------|---------------|:----------:|---------------------|
@@ -42,6 +45,7 @@ Para crear un ejercicio nuevo, copia [`_PLANTILLA/`](_PLANTILLA/) y rellena.
 | [04](04_wifi-region-detection/) | Wi-Fi Region Detection | **LR1110** · Nucleo-L476RG | Escaneo Wi-Fi | ❌ | Solo por UART (no usa ChirpStack) |
 | [05](05_ttgo-lora32/) | TTGO ESP32 LoRa | **SX1276** · TTGO ESP32 | Nodo de terceros (LMIC) | ✅ | `counter`/`timestamp` por MQTT |
 | [06](06_ttgo-bmp280/) | TTGO ESP32 + BMP280 | **SX1276** · TTGO ESP32 | Sensor I²C, uplink cada 60 s | ✅ | `temperature`/`pressure` por MQTT |
+| [07](07_esp-1ch-gateway/) | Gateway 1 canal | **SX1276** · TTGO ESP32 | Gateway *single-channel* → ChirpStack (recibe a los nodos) | ✅ (infra) | — (habilita el resto) |
 
 ## Arquitectura de datos (para dashboards)
 
