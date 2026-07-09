@@ -2,7 +2,7 @@
 
 ## Objetivo
 
-Integrar la lectura del BME280 y el envío de su payload dentro del bucle de eventos existente de
+Integrar la lectura del BMP280 y el envío de su payload dentro del bucle de eventos existente de
 la app de geolocalización, **manteniendo** el flujo de scan GNSS intacto.
 
 ## Archivos que debes leer primero
@@ -27,14 +27,14 @@ En `main_geolocation.c` ya existen estos manejadores dentro del `switch (current
 ## Requisitos funcionales
 
 - **REQ-004-1 — Init del sensor:** en el arranque (evento `RESET`/`JOINED`, antes del primer uplink)
-  llamar `smtc_hal_i2c_init(...)` y `bme280_init(...)`. Si `bme280_init` falla, registrar un
+  llamar `smtc_hal_i2c_init(...)` y `bmp280_init(...)`. Si `bmp280_init` falla, registrar un
   `SMTC_HAL_TRACE_WARNING` y continuar (el nodo sigue haciendo GNSS aunque no haya sensor).
 - **REQ-004-2 — Muestreo + uplink ambiental:** en el manejador de `SMTC_MODEM_EVENT_ALARM`
   (o donde hoy se hace el keep-alive), sustituir/añadir:
-  1. `bme280_read(&data)`,
-  2. `bme280_payload_encode(&data, buf)`,
-  3. `smtc_modem_request_uplink(stack_id, 10 /*fport*/, false, buf, 7)`.
-  Si `bme280_read` falla, **no** enviar payload ambiental (omitir ese uplink) y loguear WARNING.
+  1. `bmp280_read(&data)`,
+  2. `bmp280_payload_encode(&data, buf)`,
+  3. `smtc_modem_request_uplink(stack_id, 10 /*fport*/, false, buf, 5)`.
+  Si `bmp280_read` falla, **no** enviar payload ambiental (omitir ese uplink) y loguear WARNING.
 - **REQ-004-3 — GNSS intacto:** el flujo `GNSS_SCAN_DONE` → `GNSS_TERMINATED` →
   `smtc_modem_gnss_scan(...)` **no se modifica** en su lógica; el envío del paquete GNSS lo sigue
   gestionando el servicio de geolocalización (`smtc_modem_gnss_send_mode`).
@@ -46,7 +46,7 @@ En `main_geolocation.c` ya existen estos manejadores dentro del `switch (current
   puerto GNSS con `smtc_modem_gnss_set_port` si hace falta evitar colisión con 10.
 - **REQ-004-6 — Sin bloqueo:** la lectura del sensor ocurre dentro del manejador de evento y debe
   ser corta (RESTR-4). Prohibido `while(1)`/delays largos.
-- **REQ-004-7 — Includes/build:** añadir `#include "bme280.h"` y `#include "smtc_hal_i2c.h"`;
+- **REQ-004-7 — Includes/build:** añadir `#include "bmp280.h"` y `#include "smtc_hal_i2c.h"`;
   asegurar que ambos `.c` están en el build de la app.
 
 ## Estrategia de integración recomendada (para el agente)
@@ -59,11 +59,11 @@ En `main_geolocation.c` ya existen estos manejadores dentro del `switch (current
 
 ## Checklist de aceptación
 
-- [ ] **A1** Se llama a `smtc_hal_i2c_init` y `bme280_init` una vez en el arranque (REQ-004-1).
-- [ ] **A2** Existe la ruta read→encode→`smtc_modem_request_uplink(..., 10, ..., 7)` en `ALARM` (REQ-004-2).
+- [ ] **A1** Se llama a `smtc_hal_i2c_init` y `bmp280_init` una vez en el arranque (REQ-004-1).
+- [ ] **A2** Existe la ruta read→encode→`smtc_modem_request_uplink(..., 10, ..., 5)` en `ALARM` (REQ-004-2).
 - [ ] **A3** El manejador GNSS (`SCAN_DONE`/`TERMINATED`/`gnss_scan`) sigue presente y sin cambios de lógica (REQ-004-3).
 - [ ] **A4** El timer de alarma se reprograma con `SENSOR_UPLINK_PERIOD_S` (REQ-004-4).
 - [ ] **A5** fport 10 ≠ fport GNSS confirmado en código (REQ-004-5).
 - [ ] **A6** Fallo de sensor no cuelga el firmware ni impide el GNSS (revisar rutas de error, REQ-004-1/2).
-- [ ] **A7** Ambos `.c` (i2c hal, bme280) están en el build (REQ-004-7).
+- [ ] **A7** Ambos `.c` (i2c hal, bmp280) están en el build (REQ-004-7).
 - [ ] **A8** Ninguna función usada de `smtc_modem_*` es inventada — todas existen en `lbm_lib/smtc_modem_api/` (grep de cada símbolo).
