@@ -35,7 +35,7 @@ Se genera en la carpeta del proyecto compilado:
 ```
 build_lr1110_l4/app_lr1110_<REGION>.bin   (+ .hex y .elf)
 ```
-Cópialo a la carpeta `artifacts/` del ejercicio si quieres, y flaséalo (ver
+Cópialo a la carpeta `artifacts/` del ejercicio si quieres, y flashéalo (ver
 [`COMMON_FLASH.md`](COMMON_FLASH.md)).
 
 ## Modifica el firmware y crea tus propios binarios

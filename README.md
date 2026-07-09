@@ -76,7 +76,7 @@ añade material didáctico y de integración** encima, bajo la misma licencia Cl
 2. Levanta **ChirpStack** → [`specs/exercises/00_chirpstack-docker/`](specs/exercises/00_chirpstack-docker/).
 3. Empieza por el **ejercicio 01** → [`specs/exercises/01_periodical-uplink/`](specs/exercises/01_periodical-uplink/).
 4. **Compila** el binario de tu ejercicio → [`specs/exercises/COMMON_BUILD.md`](specs/exercises/COMMON_BUILD.md).
-5. **Flaséalo** → [`specs/exercises/COMMON_FLASH.md`](specs/exercises/COMMON_FLASH.md).
+5. **Flashéalo** → [`specs/exercises/COMMON_FLASH.md`](specs/exercises/COMMON_FLASH.md).
 6. **Provisiona y consume** en ChirpStack → [`specs/exercises/COMMON_CHIRPSTACK_API.md`](specs/exercises/COMMON_CHIRPSTACK_API.md).
 
 👉 Índice completo de la ruta didáctica: **[`specs/exercises/README.md`](specs/exercises/README.md)**

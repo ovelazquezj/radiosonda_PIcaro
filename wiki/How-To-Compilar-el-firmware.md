@@ -42,7 +42,7 @@ build_lr1110_l4/app_lr1110_<REGION>.bin      (+ .hex y .elf)
 Por ejemplo, tras compilar el 01 en US915:
 `lbm_examples/build_lr1110_l4/app_lr1110_US_915.bin`.
 
-Cópialo a la carpeta `artifacts/` del ejercicio si quieres conservarlo, y **flaséalo** →
+Cópialo a la carpeta `artifacts/` del ejercicio si quieres conservarlo, y **flashéalo** →
 [How-To Flashear y ver la serie](How-To-Flashear-y-ver-la-serie).
 
 ## Errores de compilación típicos
