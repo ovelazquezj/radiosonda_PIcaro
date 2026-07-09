@@ -1,0 +1,116 @@
+# How-To · Requisitos e instalación de prerequisitos
+
+Esta guía instala **todo lo necesario** para compilar, flashear y probar los ejercicios. Hazla una
+sola vez. Al final tendrás: toolchain ARM, `make`, Docker/ChirpStack, herramientas de flasheo/serie
+y (para los TTGO) el Arduino IDE con sus librerías.
+
+## ¿Qué necesito según el ejercicio?
+
+| Ejercicio | Toolchain necesario |
+|-----------|---------------------|
+| 01–04 (Nucleo + LR1110) | **Arm GCC + make** (compilas un `.bin`) |
+| 05–06 (TTGO ESP32) | **Arduino IDE + librerías** (compilas un sketch) |
+| Todos (join a la red) | **Docker + ChirpStack** y un **gateway** de tu banda |
+
+> Si solo vas a probar el **TTGO**, sáltate el toolchain ARM. Si solo vas a probar la **Nucleo**,
+> sáltate Arduino.
+
+---
+
+## 1 · Toolchain ARM (para los nodos LR1110, ej. 01–04)
+
+Necesitas **GNU Arm Embedded Toolchain 13.2.rel1** (`arm-none-eabi-gcc`) y **make** en el `PATH`.
+
+### Windows (recomendado con WSL2)
+Trabaja dentro de **WSL2 (Ubuntu)** para compilar y flashea desde Windows (ver
+[How-To Flashear](How-To-Flashear-y-ver-la-serie)):
+```bash
+sudo apt update
+sudo apt install -y make git python3 python3-pip
+# Toolchain ARM 13.2: descarga el tar de arm.com y añádelo al PATH
+cd /opt
+sudo wget -q https://developer.arm.com/-/media/Files/downloads/gnu/13.2.rel1/binrel/arm-gnu-toolchain-13.2.rel1-x86_64-arm-none-eabi.tar.xz
+sudo tar xf arm-gnu-toolchain-13.2.rel1-x86_64-arm-none-eabi.tar.xz
+echo 'export PATH=$PATH:/opt/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin' >> ~/.bashrc
+source ~/.bashrc
+```
+
+### Linux (Ubuntu/Debian)
+Igual que el bloque de WSL de arriba (WSL2 **es** Ubuntu).
+
+### macOS
+```bash
+brew install --cask gcc-arm-embedded   # instala arm-none-eabi-gcc 13.x
+brew install make
+```
+
+### Verifica
+```bash
+arm-none-eabi-gcc --version     # debe decir 13.2.x
+make --version
+```
+
+---
+
+## 2 · Docker + ChirpStack (para que el nodo se una a la red)
+
+ChirpStack v4 corre en Docker (ejercicio **00**). Necesitas **Docker** y **docker compose**.
+
+- **Windows:** instala **Docker Desktop** (con backend WSL2 activado).
+- **Linux:** `sudo apt install -y docker.io docker-compose-plugin` y añade tu usuario al grupo
+  `docker` (`sudo usermod -aG docker $USER`; reinicia sesión).
+- **macOS:** **Docker Desktop**.
+
+Verifica y levanta ChirpStack:
+```bash
+docker --version && docker compose version
+cd specs/exercises/00_chirpstack-docker
+docker compose up -d
+# Web de ChirpStack:  http://localhost:8080   (admin / admin)
+# API REST:           http://localhost:8090
+```
+
+> Detalles y objetos (tenant/app/device profile) en
+> [ChirpStack en 5 minutos](ChirpStack-en-5-minutos).
+
+---
+
+## 3 · Herramientas de flasheo y de puerto serie
+
+Para grabar el `.bin`/`.hex` en la Nucleo y ver la traza:
+- **STM32CubeProgrammer** (`STM32_Programmer_CLI`) — la más robusta (Windows/Linux/macOS).
+- o **st-link tools** (`st-flash`): `sudo apt install -y stlink-tools` (Linux).
+- **Terminal serie:** `tio`/`picocom`/`minicom` (Linux/mac) o **PuTTY**/**Tera Term** (Windows), a
+  **115200 8N1**.
+
+> En **WSL2** el USB no se ve por defecto: lo más simple es flashear **arrastrando** el `.hex` al
+> disco `NODE_L476RG` desde Windows. Ver [How-To Flashear](How-To-Flashear-y-ver-la-serie).
+
+---
+
+## 4 · Arduino IDE + librerías (para los TTGO, ej. 05–06)
+
+1. Instala el **Arduino IDE 2.x**.
+2. Añade el soporte **ESP32**: *Preferences → Additional Boards Manager URLs* →
+   `https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json`,
+   luego *Boards Manager → "esp32" → Install*.
+3. Instala las librerías (*Library Manager*):
+   - **MCCI LoRaWAN LMIC library**
+   - **U8g2** (pantalla OLED)
+   - **Adafruit BMP280 Library** (+ **Adafruit Unified Sensor**) — solo para el ejercicio 06
+4. Configura LMIC para tu banda editando `arduino_lmic_project_config.h` de la librería:
+   `#define CFG_us915 1` y `#define CFG_sx1276_radio 1` (para US915).
+
+> Detalle completo del flujo TTGO en
+> [How-To Compilar el TTGO en Arduino](How-To-Compilar-el-TTGO-en-Arduino).
+
+---
+
+## Checklist final
+- [ ] `arm-none-eabi-gcc --version` → 13.2.x (solo si usarás 01–04)
+- [ ] `make --version` OK
+- [ ] `docker compose version` OK y ChirpStack respondiendo en `:8080`
+- [ ] Herramienta de flasheo + terminal serie a 115200 listas
+- [ ] Arduino IDE con ESP32 + LMIC + U8g2 (+ BMP280 para el 06)
+
+> Siguiente: **[How-To Compilar el firmware](How-To-Compilar-el-firmware)** →

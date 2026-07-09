@@ -8,5 +8,12 @@
 - [5 · Cómo usar el proyecto](Cómo-usar-el-proyecto)
 - [6 · Glosario y recursos](Glosario-y-recursos)
 
+**🔧 Guías prácticas (How-To)**
+- [Requisitos e instalación](How-To-Requisitos-e-instalación)
+- [Compilar el firmware LR1110](How-To-Compilar-el-firmware)
+- [Flashear y ver la serie](How-To-Flashear-y-ver-la-serie)
+- [Compilar el TTGO en Arduino](How-To-Compilar-el-TTGO-en-Arduino)
+- [Provisionar en ChirpStack](How-To-Provisionar-en-ChirpStack)
+
 ---
 [Repo](https://github.com/ovelazquezj/radiosonda_PIcaro) · [Semtech SWL2001](https://github.com/Lora-net/SWL2001)
