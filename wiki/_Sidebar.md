@@ -14,6 +14,7 @@
 - [Flashear y ver la serie](How-To-Flashear-y-ver-la-serie)
 - [Compilar el TTGO en Arduino](How-To-Compilar-el-TTGO-en-Arduino)
 - [Provisionar en ChirpStack](How-To-Provisionar-en-ChirpStack)
+- [Montar un gateway de 1 canal](How-To-Montar-un-gateway-de-1-canal)
 
 ---
 [Repo](https://github.com/ovelazquezj/radiosonda_PIcaro) · [Semtech SWL2001](https://github.com/Lora-net/SWL2001)

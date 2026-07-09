@@ -23,6 +23,12 @@ Sensor **Bosch** de **temperatura y presión** (no mide humedad; ese es el BME28
 **I²C** (dirección 0x76). El proyecto trae su **driver**, el **decoder** de payload y la
 **documentación de pines** en cada ejercicio.
 
+## Gateway de 1 canal — TTGO ESP32 (ejercicio 07)
+La **misma TTGO ESP32 (SX1276)** puede hacer de **gateway** en vez de nodo, con el firmware de
+terceros **ESP-1ch-Gateway** (MIT, things4u). Es un gateway **single-channel** (escucha un solo
+canal): perfecto para **demos y aprender el flujo nodo → gateway → ChirpStack**, pero **no para
+producción**. Guía paso a paso: **[Montar un gateway de 1 canal](How-To-Montar-un-gateway-de-1-canal)**.
+
 ## ¿Qué usa cada ejercicio?
 
 | Ejercicio | Nodo | Radio | Extra |
@@ -33,6 +39,7 @@ Sensor **Bosch** de **temperatura y presión** (no mide humedad; ese es el BME28
 | 04 Wi-Fi Region Detection | Nucleo-L476 | LR1110 | escaneo Wi-Fi |
 | 05 TTGO LoRa | TTGO ESP32 | SX1276 | OLED |
 | 06 TTGO + BMP280 | TTGO ESP32 | SX1276 | BMP280 (I²C) + OLED |
+| 07 Gateway 1 canal | TTGO ESP32 | SX1276 | **gateway** (firmware de terceros) → ChirpStack |
 
 > Los detalles de **cableado del sensor** (pines) están en el README de los ejercicios 02 y 06 y en
 > el diagrama `specs/bmp280-gnss-tracker/pinout_diagram.html`.

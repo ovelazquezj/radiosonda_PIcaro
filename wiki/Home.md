@@ -10,7 +10,7 @@ ejercicios.
 2. **[¿Qué es LoRaWAN?](Qué-es-LoRaWAN)** — el protocolo de red encima de LoRa.
 3. **[Hardware del proyecto](Hardware-del-proyecto)** — LR1110, TTGO ESP32, BMP280.
 4. **[ChirpStack en 5 minutos](ChirpStack-en-5-minutos)** — el servidor de red LoRaWAN.
-5. **[Cómo usar el proyecto](Cómo-usar-el-proyecto)** — la ruta de ejercicios 00 → 06.
+5. **[Cómo usar el proyecto](Cómo-usar-el-proyecto)** — la ruta de ejercicios 00 → 07.
 6. **[Glosario y recursos](Glosario-y-recursos)** — términos y enlaces oficiales.
 
 ## 🔧 Guías prácticas (How-To)
@@ -20,12 +20,14 @@ ejercicios.
 3. **[Flashear y ver la serie](How-To-Flashear-y-ver-la-serie)** — grabar la Nucleo y leer la traza.
 4. **[Compilar el TTGO en Arduino](How-To-Compilar-el-TTGO-en-Arduino)** — ejercicios 05–06 (ESP32).
 5. **[Provisionar en ChirpStack](How-To-Provisionar-en-ChirpStack)** — registrar y consumir por API.
+6. **[Montar un gateway de 1 canal](How-To-Montar-un-gateway-de-1-canal)** — tu propio gateway TTGO → ChirpStack (ejercicio 07).
 
 ## ¿Qué vas a lograr?
 - Unir un dispositivo a una red LoRaWAN (**join OTAA**) y ver sus tramas.
 - Enviar datos de un **sensor BMP280** (temperatura y presión) por radio.
 - Hacer **geolocalización GNSS/Wi-Fi** con el LR1110.
 - **Provisionar y leer datos** desde ChirpStack por API (REST/MQTT) para dashboards.
+- **Montar tu propio gateway** de 1 canal (TTGO ESP32) para recibir a tus nodos en ChirpStack.
 - Modificar el firmware y **compilar tus propios binarios**.
 
 ## Atribución

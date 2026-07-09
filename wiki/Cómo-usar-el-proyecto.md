@@ -7,7 +7,7 @@ consumo.
 ## Requisitos
 - **Toolchain ARM** (`arm-none-eabi-gcc` 13.2) + `make` — para los nodos LR1110.
 - **Arduino IDE** (+ MCCI LMIC, U8g2, Adafruit BMP280) — para los TTGO.
-- **ChirpStack** en Docker + un **gateway** de tu banda con cobertura.
+- **ChirpStack** en Docker + un **gateway** de tu banda con cobertura (o **monta el tuyo** → ejercicio 07).
 - **Hardware** según el ejercicio (ver [Hardware del proyecto](Hardware-del-proyecto)).
 
 ## La ruta recomendada
@@ -21,6 +21,10 @@ consumo.
 | 4 | **04 · Wi-Fi Region Detection** | La capacidad **Wi-Fi** del LR1110 (solo UART) |
 | 5 | **05 · TTGO LoRa** | Integrar un **nodo de terceros** (ESP32/LMIC) |
 | 6 | **06 · TTGO + BMP280** | Un **sensor real** en el TTGO enviando cada minuto |
+| 7 | **07 · Gateway de 1 canal** | Montar **tu propio gateway** (TTGO) para recibir a los nodos |
+
+> El **07** es distinto: no es un nodo, es **infraestructura** — montas el gateway que reciben los
+> demás. Guía paso a paso: **[Montar un gateway de 1 canal](How-To-Montar-un-gateway-de-1-canal)**.
 
 ## El flujo de cada ejercicio (siempre igual)
 1. **Compila** el binario (LR1110) o el sketch (TTGO) — ver `COMMON_BUILD.md`.
