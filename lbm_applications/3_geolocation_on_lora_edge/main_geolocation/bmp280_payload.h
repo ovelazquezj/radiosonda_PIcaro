@@ -3,8 +3,13 @@
  *
  * \brief     Compact big-endian payload encoder for BMP280 environmental data.
  *
+ * Original contribution to radiosonda_PIcaro — an educational fork of Semtech
+ * LoRa Basics Modem (SWL2001). This file is NOT part of the original Semtech
+ * distribution; it was written for radiosonda_PIcaro and is provided under the
+ * same Clear BSD License as the rest of the project.
+ *
  * The Clear BSD License
- * Copyright Semtech Corporation 2021. All rights reserved.
+ * Copyright (c) 2026 radiosonda_PIcaro contributors. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted (subject to the limitations in the disclaimer

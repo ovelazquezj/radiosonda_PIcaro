@@ -1,3 +1,5 @@
+// radiosonda_PIcaro — codec educativo original (NO forma parte de Semtech SWL2001).
+// Provisto bajo Clear BSD License. (c) 2026 radiosonda_PIcaro contributors.
 // Codec ChirpStack para el ejercicio 06 (TTGO + BMP280).
 // Payload de 5 bytes en fPort 2 (big-endian):
 //   [0]    version = 0x01

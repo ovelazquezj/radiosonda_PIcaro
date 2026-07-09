@@ -1,3 +1,5 @@
+// radiosonda_PIcaro — sketch educativo original (NO forma parte de Semtech SWL2001).
+// Provisto bajo Clear BSD License. (c) 2026 radiosonda_PIcaro contributors.
 /*
  * =====================================================================
  * Ejercicio 06 — TTGO ESP32 LoRa v1 + BMP280  (OTAA, US915)

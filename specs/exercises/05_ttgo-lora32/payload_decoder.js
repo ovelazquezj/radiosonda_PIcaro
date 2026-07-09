@@ -1,3 +1,5 @@
+// radiosonda_PIcaro — codec educativo original (NO forma parte de Semtech SWL2001).
+// Provisto bajo Clear BSD License. (c) 2026 radiosonda_PIcaro contributors.
 // Codec ChirpStack para el TTGO ESP32 LoRa v1 (sketch TTGO_LoRaWAN_v3.ino)
 // Payload de 8 bytes en fPort 1:
 //   [0]    magic     = 0x99  (identificador "paquete de prueba")
