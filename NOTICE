@@ -1,0 +1,71 @@
+radiosonda_PIcaro
+=================
+
+This project is an UNOFFICIAL, EDUCATIONAL DERIVATIVE WORK (a fork) of:
+
+    LoRa Basics Modem (SWL2001)
+    Copyright (c) Semtech Corporation. All rights reserved.
+    Upstream: https://github.com/Lora-net/SWL2001
+    License:  The Clear BSD License (see LICENSE.txt and LICENSES.txt)
+
+radiosonda_PIcaro is NOT a product of Semtech Corporation and is NOT
+affiliated with, sponsored by, or endorsed by Semtech Corporation.
+
+--------------------------------------------------------------------------
+1. Original work and copyright
+--------------------------------------------------------------------------
+All source code under the following paths originates from the upstream
+Semtech SWL2001 project and remains under the copyright of Semtech
+Corporation, licensed under The Clear BSD License:
+
+    lbm_lib/
+    lbm_examples/
+    lbm_applications/
+    utilities/
+    (and every other file inherited from the upstream repository)
+
+The original Semtech copyright notices and the Clear BSD license text are
+retained unmodified in LICENSE.txt and LICENSES.txt, as required by the
+license. The original upstream README is preserved verbatim as
+README.SWL2001.md.
+
+--------------------------------------------------------------------------
+2. Modifications and additions by radiosonda_PIcaro
+--------------------------------------------------------------------------
+The following material was ADDED or MODIFIED for educational purposes by
+the radiosonda_PIcaro contributors. These additions are distributed under
+the same Clear BSD License and do not alter the copyright of the original
+Semtech code.
+
+Added:
+  - specs/exercises/         Six self-contained didactic exercises (00-06),
+                             with ChirpStack provisioning/consumption scripts.
+  - specs/bme280-gnss-tracker/  BMP280 + GNSS tracker specs, pinout, guides.
+  - specs/demos/            Flashing and API-registration guides.
+  - wiki/                   LoRa/LoRaWAN teaching material.
+  - BMP280 sensor driver and I2C HAL for STM32L4 (added to the geolocation
+    application and the smtc_hal_l4 layer).
+  - Arduino/LMIC TTGO ESP32 (SX1276) node sketches (third-party node).
+
+Modified (upstream files extended for the BMP280 exercise; original Semtech
+copyright headers preserved):
+  - lbm_applications/3_geolocation_on_lora_edge/main_geolocation/main_geolocation.c
+  - example_options.h / CMakeLists.txt / app_makefiles / HAL config
+    (see the git history for the exact diff).
+
+--------------------------------------------------------------------------
+3. Trademarks
+--------------------------------------------------------------------------
+LoRa(R) and LoRaWAN(R) are registered trademarks of Semtech Corporation
+and/or the LoRa Alliance(R). "Semtech" and "LoRa Basics Modem" are
+trademarks of Semtech Corporation. ChirpStack is a trademark of its
+respective owner. All other trademarks are the property of their
+respective owners. These names are used here nominatively, only to
+identify the technologies for educational purposes, and do not imply any
+sponsorship, affiliation, or endorsement.
+
+--------------------------------------------------------------------------
+4. Warranty disclaimer
+--------------------------------------------------------------------------
+This software is provided "AS IS", without warranty of any kind, as stated
+in The Clear BSD License. See LICENSE.txt for the full disclaimer.

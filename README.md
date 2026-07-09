@@ -1,8 +1,16 @@
 # radiosonda_PIcaro — Laboratorios didácticos de LoRaWAN con LR1110 y ChirpStack
 
+> ⚠️ **Fork educativo no oficial.** Este repositorio es un **derivado (fork)** de
+> [**LoRa Basics Modem (SWL2001)**](https://github.com/Lora-net/SWL2001) de **Semtech Corporation**,
+> con fines **exclusivamente didácticos**. **No es un producto de Semtech** y **no está afiliado a,
+> patrocinado por, ni respaldado por Semtech Corporation.** El código original conserva su copyright
+> y licencia **Clear BSD** originales (ver [`LICENSE.txt`](LICENSE.txt) y [`NOTICE`](NOTICE)).
+
 > **Hands-on LoRaWAN labs** with the Semtech **LR1110** & **LoRa Basics Modem (SWL2001)** and
 > **ChirpStack v4** — OTAA join, BMP280 sensor uplinks, GNSS/Wi-Fi geolocation, TTGO ESP32 nodes,
 > and REST/MQTT API provisioning for IoT dashboards.
+>
+> *Unofficial educational fork of Semtech's SWL2001 — not affiliated with or endorsed by Semtech.*
 
 **radiosonda_PIcaro** es un proyecto **educativo** para aprender **LoRa** y **LoRaWAN** de forma
 práctica: desde el primer *join* OTAA hasta enviar datos de un sensor **BMP280**, hacer
@@ -19,14 +27,23 @@ No necesitas experiencia previa en LoRaWAN para empezar.
 
 ## 🙏 Basado en el trabajo original de Semtech (atribución)
 
-Este repositorio **deriva de** **LoRa Basics Modem (SWL2001)** de **Semtech Corporation**:
+Este repositorio es un **fork / obra derivada** de **LoRa Basics Modem (SWL2001)** de **Semtech
+Corporation**:
 
-- Repo original: **https://github.com/Lora-net/SWL2001**
-- Copyright © **Semtech Corporation**. Licencia **Clear BSD** (ver [`LICENSE.txt`](LICENSE.txt) y [`LICENSES.txt`](LICENSES.txt)).
+- **Repo original (upstream):** **https://github.com/Lora-net/SWL2001**
+- **Copyright © Semtech Corporation. All rights reserved.** Licencia **Clear BSD** — se conserva
+  intacta en [`LICENSE.txt`](LICENSE.txt) y [`LICENSES.txt`](LICENSES.txt).
 - El README original de Semtech se conserva íntegro en **[`README.SWL2001.md`](README.SWL2001.md)**.
+- El detalle de la derivación y los cambios está en **[`NOTICE`](NOTICE)**.
 
-Todo el crédito de la pila LoRa Basics Modem (`lbm_lib/`) es de Semtech. Este proyecto **solo añade
-material didáctico y de integración** encima, bajo la misma licencia.
+Todo el crédito de la pila LoRa Basics Modem (`lbm_lib/`) es de **Semtech**. Este proyecto **solo
+añade material didáctico y de integración** encima, bajo la misma licencia Clear BSD.
+
+> **Descargo de responsabilidad y marcas.** Este es un proyecto independiente y **no oficial**;
+> **Semtech no lo respalda ni está afiliado a él**. *LoRa®* y *LoRaWAN®* son marcas registradas de
+> **Semtech Corporation** / **LoRa Alliance®**, y *ChirpStack* es una marca de sus respectivos
+> titulares. Aquí se usan **solo de forma nominativa** para identificar las tecnologías con fines
+> educativos, sin implicar patrocinio ni afiliación.
 
 ## ✨ Qué añade radiosonda_PIcaro sobre el original
 
@@ -71,8 +88,9 @@ Los **fundamentos de LoRa, LoRaWAN y cómo usar este proyecto** están en la **[
 ## 📄 Licencia
 
 Publicado bajo la **Clear BSD License** (la misma del proyecto original de Semtech). Consulta
-[`LICENSE.txt`](LICENSE.txt) y [`LICENSES.txt`](LICENSES.txt). Las adiciones didácticas de
-radiosonda_PIcaro se distribuyen bajo la misma licencia.
+[`LICENSE.txt`](LICENSE.txt), [`LICENSES.txt`](LICENSES.txt) y el archivo [`NOTICE`](NOTICE) (que
+documenta la derivación y los cambios). Las adiciones didácticas de radiosonda_PIcaro se distribuyen
+bajo la misma licencia Clear BSD, conservando el copyright de Semtech en el código original.
 
 ---
 
