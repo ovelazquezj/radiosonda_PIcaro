@@ -21,7 +21,8 @@ ejercicios.
 4. **[Compilar el TTGO en Arduino](How-To-Compilar-el-TTGO-en-Arduino)** — ejercicios 05–06 (ESP32).
 5. **[Provisionar en ChirpStack](How-To-Provisionar-en-ChirpStack)** — registrar y consumir por API.
 6. **[Dar de alta un LR1110 nuevo](How-To-Dar-de-alta-un-LR1110-nuevo)** — credenciales propias: código → build → ChirpStack.
-7. **[Montar un gateway de 1 canal](How-To-Montar-un-gateway-de-1-canal)** — tu propio gateway TTGO → ChirpStack (ejercicio 07).
+7. **[Dar de alta un TTGO nuevo](How-To-Dar-de-alta-un-TTGO-nuevo)** — igual para TTGO (¡ojo al orden de bytes invertido!).
+8. **[Montar un gateway de 1 canal](How-To-Montar-un-gateway-de-1-canal)** — tu propio gateway TTGO → ChirpStack (ejercicio 07).
 
 ## ¿Qué vas a lograr?
 - Unir un dispositivo a una red LoRaWAN (**join OTAA**) y ver sus tramas.

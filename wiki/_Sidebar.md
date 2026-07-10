@@ -15,6 +15,7 @@
 - [Compilar el TTGO en Arduino](How-To-Compilar-el-TTGO-en-Arduino)
 - [Provisionar en ChirpStack](How-To-Provisionar-en-ChirpStack)
 - [Dar de alta un LR1110 nuevo](How-To-Dar-de-alta-un-LR1110-nuevo)
+- [Dar de alta un TTGO nuevo](How-To-Dar-de-alta-un-TTGO-nuevo)
 - [Montar un gateway de 1 canal](How-To-Montar-un-gateway-de-1-canal)
 
 ---
