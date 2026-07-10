@@ -56,6 +56,7 @@ framework = arduino
 lib_deps =
   sandeepmistry/LoRa @ 0.8.0
 build_flags =
+  -D _PIN_OUT=4              ; 4 = TTGO (Heltec V2 = 5); sin esto cae al default 1 (ESP8266)
   -D _WIFIMANAGER=0
   -D _OLED=1
   -D _DUSB=1
@@ -71,8 +72,8 @@ pio run -e ttgo_usb -t upload      # compilar + flashear por USB
 pio device monitor -b 115200       # ver el Gateway EUI y los uplinks
 ```
 
-> El pin del radio (`_PIN_OUT 4` = ESP32/TTGO/Heltec) se fija en `configGway.h`
-> (ver [`configGway.example.h`](configGway.example.h)), no en el `board` de PlatformIO.
+> El pin del radio (`_PIN_OUT`: **`4` = TTGO**, `5` = Heltec V2) se fija en `configGway.h`
+> (ver [`configGway.example.h`](configGway.example.h)) o en `build_flags`, **no** en el `board` de PlatformIO.
 
 ## Arduino IDE (alternativa)
 
@@ -83,6 +84,11 @@ puerto COM correcto.
 
 ## Notas de reproducibilidad
 
+- **`_PIN_OUT` fija los pines del radio** (en `loraModem.h`), **no** el `board` de PlatformIO.
+  TTGO = **`4`** (`// For ESP32/TTGO based board`), Heltec WiFi LoRa 32 V2 = **`5`**. Comparten los
+  pines SPI (SS=18, SCK=5, MISO=19, MOSI=27, RST=14, DIO0=26) y solo difieren en DIO1/DIO2 (usados
+  para el CAD). El default de `configGway.h` es **`1` (ESP8266)** y el env activo del repo **no** lo
+  cambia → para TTGO usa `-D _PIN_OUT=4` (arriba) o edítalo en `configGway.h`.
 - El entorno activo del repo usa `-D _STRICT_1CH=2` (modo estricto reforzado). El ejemplo de
   [`configGway.example.h`](configGway.example.h) usa `_STRICT_1CH 1`; ambos sirven para 1 canal
   (el `2` es más restrictivo con las ventanas de downlink).

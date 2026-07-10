@@ -84,7 +84,7 @@ para nuestro caso (TTGO ESP32, EU868, canal 0, apuntando a ChirpStack) están re
 
 | Parámetro | Valor para este ejercicio | Significado |
 |-----------|---------------------------|-------------|
-| `_PIN_OUT` | **`4`** | Mapa de pines de **TTGO/Heltec ESP32** (SX1276 ya cableado) |
+| `_PIN_OUT` | **`4`** | Pines del radio para **TTGO** (Heltec V2 = `5`). **Default del repo = `1` (ESP8266) → cámbialo** |
 | `EU863_870` | `1` | Plan de frecuencias **EU868** (usa `US902_928` si tu región es US915) |
 | `_CHANNEL` | `0` | Canal que se escucha → **868.1 MHz** en EU |
 | `_SPREADING` | `SF9` | Factor de dispersión por defecto |
@@ -93,6 +93,13 @@ para nuestro caso (TTGO ESP32, EU868, canal 0, apuntando a ChirpStack) están re
 | `_TTNSERVER` | `"<IP_DE_CHIRPSTACK>"` | **Servidor primario → apúntalo a tu ChirpStack** (lo más simple) |
 | `_TTNPORT` | `1700` | Puerto **UDP** (Semtech UDP / Gateway Bridge) |
 | `_SERVER` | `1` | Activa la **interfaz web** de administración (`http://<IP>:80`) |
+
+> 🧩 **TTGO vs Heltec (y el `board` de PlatformIO).** El repo original compila para **Heltec**
+> (`board = heltec_wifi_lora_32`), pero **los pines del radio los decide `_PIN_OUT`** (GPIOs fijados
+> en `loraModem.h`), **no** el `board` de PlatformIO. El firmware soporta las dos: **`_PIN_OUT 4` =
+> TTGO**, **`_PIN_OUT 5` = Heltec V2**; solo difieren en DIO1/DIO2 (usados para el CAD), así que usa
+> el número correcto. El env activo del repo **no** fija `_PIN_OUT` → cae al default `1` (ESP8266);
+> ponlo a `4` (ver [`VERSIONS.md`](VERSIONS.md)).
 
 **`configNode.h` — WiFi, identidad y ubicación** (ver [`configNode.example.h`](configNode.example.h)):
 

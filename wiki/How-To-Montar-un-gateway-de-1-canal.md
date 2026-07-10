@@ -76,7 +76,7 @@ sobre tus ficheros reales.
 
 | Parámetro | Valor | Significado |
 |-----------|-------|-------------|
-| `_PIN_OUT` | **`4`** | Mapa de pines **ESP32/TTGO** (por defecto viene `1` = Hallard/ESP8266) |
+| `_PIN_OUT` | **`4`** | Pines del radio para **ESP32/TTGO** (Heltec V2 = `5`). **Default del repo = `1` (ESP8266) → hay que cambiarlo** |
 | `EU863_870` | `1` | Plan **EU868** (usa `US902_928` si tu región es US915) |
 | `_CHANNEL` | `0` | Canal único que se escucha → **868.1 MHz** en EU |
 | `_SPREADING` | `SF9` | Factor de dispersión (debe coincidir con el del nodo) |
@@ -85,6 +85,15 @@ sobre tus ficheros reales.
 | `_TTNSERVER` | `"<IP_DE_CHIRPSTACK>"` | **Servidor primario → apúntalo a tu ChirpStack** (lo más simple) |
 | `_TTNPORT` | `1700` | Puerto **UDP** (Semtech UDP / Gateway Bridge) |
 | `_SERVER` | `1` | Interfaz web de administración en `http://<IP>:80` |
+
+> 🧩 **TTGO vs Heltec — y por qué el `board` de PlatformIO no manda aquí.** El repo original compila
+> para **Heltec** (`board = heltec_wifi_lora_32`), pero **los pines del radio LoRa no los decide el
+> `board` de PlatformIO, sino `_PIN_OUT`** (van por número de GPIO en `loraModem.h`). El firmware
+> soporta las dos: **`_PIN_OUT 4` = TTGO**, **`_PIN_OUT 5` = Heltec V2**. Comparten los pines SPI
+> (SS=18, SCK=5, MISO=19, MOSI=27, RST=14, DIO0=26) y **solo difieren en DIO1/DIO2**, que este
+> firmware usa para el **CAD** → poner el número equivocado **puede romper la recepción**. Ojo: el
+> entorno activo del repo **no** fija `_PIN_OUT`, así que cae al default **`1` (ESP8266)**; para TTGO
+> añade `-D _PIN_OUT=4` a `build_flags` o ponlo en `configGway.h`.
 
 **`configNode.h` — WiFi, identidad y ubicación:**
 
@@ -117,6 +126,7 @@ framework = arduino
 lib_deps =
   sandeepmistry/LoRa @ 0.8.0
 build_flags =
+  -D _PIN_OUT=4              ; 4 = TTGO (Heltec V2 = 5); sin esto cae al default 1 (ESP8266)
   -D _WIFIMANAGER=0
   -D _OLED=1
   -D _DUSB=1

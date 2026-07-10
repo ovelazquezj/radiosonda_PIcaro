@@ -19,9 +19,12 @@
 /* ---------------------------------------------------------------------------
  * 1) PLACA / PINES DEL RADIO
  * ------------------------------------------------------------------------- */
-/* _PIN_OUT selecciona el mapa de pines SX1276<->MCU.
- *   1 = Hallard (ESP8266)   2 = ComResult (ESP8266)   4 = ESP32 / TTGO / Heltec  */
-#define _PIN_OUT      4          // TTGO ESP32: el SX1276 ya viene cableado internamente.
+/* _PIN_OUT selecciona el mapa de pines SX1276<->MCU (fijados en loraModem.h por GPIO).
+ *   1 = Hallard (ESP8266)   2 = ComResult (ESP8266)   4 = ESP32/TTGO   5 = ESP32/Heltec WiFi LoRa 32 V2
+ * OJO: el default en configGway.h es 1 (ESP8266); para TTGO ponlo a 4 (Heltec V2 = 5).
+ * TTGO y Heltec comparten los pines SPI pero difieren en DIO1/DIO2 (usados para el CAD),
+ * así que usa el numero correcto o la recepcion puede fallar. */
+#define _PIN_OUT      4          // TTGO ESP32 (SX1276 ya cableado). Heltec V2 = 5.
 
 /* Pantalla OLED integrada de la TTGO (opcional; SSD1306 por I2C). 0 = desactivada. */
 #define _OLED         1
