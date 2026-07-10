@@ -21,19 +21,32 @@ y (para los TTGO) el Arduino IDE con sus librerías.
 
 Necesitas **GNU Arm Embedded Toolchain 13.2.rel1** (`arm-none-eabi-gcc`) y **make** en el `PATH`.
 
-### Windows (recomendado con WSL2)
-Trabaja dentro de **WSL2 (Ubuntu)** para compilar y flashea desde Windows (ver
-[How-To Flashear](How-To-Flashear-y-ver-la-serie)):
+### Windows — compila DENTRO de WSL2 (Ubuntu)
+
+> 🔑 **En Windows el firmware LR1110 se compila dentro de WSL2, no en Git Bash ni PowerShell**
+> (que **no** traen `arm-none-eabi-gcc` ni `make`). Editas y flasheas desde Windows, pero **el `make`
+> corre en WSL**. Así está montado este proyecto en esta máquina.
+
+**1 · Instala el toolchain en Ubuntu (WSL).** Lo más simple es por `apt` (trae la 13.2):
 ```bash
 sudo apt update
-sudo apt install -y make git python3 python3-pip
-# Toolchain ARM 13.2: descarga el tar de arm.com y añádelo al PATH
-cd /opt
-sudo wget -q https://developer.arm.com/-/media/Files/downloads/gnu/13.2.rel1/binrel/arm-gnu-toolchain-13.2.rel1-x86_64-arm-none-eabi.tar.xz
-sudo tar xf arm-gnu-toolchain-13.2.rel1-x86_64-arm-none-eabi.tar.xz
-echo 'export PATH=$PATH:/opt/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin' >> ~/.bashrc
-source ~/.bashrc
+sudo apt install -y gcc-arm-none-eabi make git python3 python3-pip
 ```
+> Alternativa (versión oficial exacta de Arm, si tu `apt` no tuviera la 13.2): descarga el tarball
+> `arm-gnu-toolchain-13.2.rel1-x86_64-arm-none-eabi` de arm.com y añade su `bin/` al `PATH`.
+
+**2 · Accede al repo desde WSL** (está en el disco de Windows, visible en `/mnt/c/...`):
+```bash
+cd /mnt/c/dev/PiCARO/SWL2001        # ajústalo a donde lo tengas clonado
+```
+
+**3 · Compila** (detalle en [Compilar el firmware](How-To-Compilar-el-firmware)):
+```bash
+make -C lbm_applications/3_geolocation_on_lora_edge full_lr1110 \
+     MODEM_APP=EXAMPLE_GEOLOCATION REGION=US_915
+```
+El `.bin`/`.hex`/`.elf` queda en `build_lr1110_l4/` (visible también desde Windows en la carpeta del
+repo). Luego flashea desde Windows → [How-To Flashear](How-To-Flashear-y-ver-la-serie).
 
 ### Linux (Ubuntu/Debian)
 Igual que el bloque de WSL de arriba (WSL2 **es** Ubuntu).

@@ -5,6 +5,10 @@ guía asume que ya instalaste el toolchain ARM (ver
 [Requisitos e instalación](How-To-Requisitos-e-instalación)). Los ejercicios TTGO (**05–06**) **no**
 usan esto: ver [How-To Compilar el TTGO en Arduino](How-To-Compilar-el-TTGO-en-Arduino).
 
+> 🪟 **En Windows:** estos comandos `make` se ejecutan **dentro de WSL2 (Ubuntu)** — Git Bash y
+> PowerShell **no** traen el toolchain. El repo se ve desde WSL en `/mnt/c/...`. Montaje y toolchain
+> en [Requisitos e instalación](How-To-Requisitos-e-instalación).
+
 ## Paso 1 · Poner tus credenciales y región
 Antes de compilar, copia el **DevEUI / JoinEUI / AppKey** del `credentials.json` de tu ejercicio y la
 **región** en el `example_options.h` correspondiente:
