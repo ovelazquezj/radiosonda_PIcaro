@@ -8,6 +8,16 @@
 - [5 · Cómo usar el proyecto](Cómo-usar-el-proyecto)
 - [6 · Glosario y recursos](Glosario-y-recursos)
 
+**📟 Ejercicios (00–07)**
+- [00 · ChirpStack](Ejercicio-00-ChirpStack)
+- [01 · Periodical Uplink](Ejercicio-01-Periodical-Uplink)
+- [02 · BMP280 + GNSS](Ejercicio-02-BMP280-GNSS)
+- [03 · Hardware Modem](Ejercicio-03-Hardware-Modem)
+- [04 · Wi-Fi Region Detection](Ejercicio-04-Wi-Fi-Region-Detection)
+- [05 · TTGO LoRa32](Ejercicio-05-TTGO-LoRa32)
+- [06 · TTGO + BMP280](Ejercicio-06-TTGO-BMP280)
+- [07 · Gateway 1 canal](Ejercicio-07-Gateway-1-canal)
+
 **🔧 Guías prácticas (How-To)**
 - [Requisitos e instalación](How-To-Requisitos-e-instalación)
 - [Compilar el firmware LR1110](How-To-Compilar-el-firmware)
