@@ -1,5 +1,7 @@
-# artifacts/ — binarios compilados
+# artifacts/ — binarios compilados (incluidos)
 
-Esta carpeta va **vacía a propósito**: los binarios de firmware **no se versionan**.
+Esta carpeta **incluye los binarios ya compilados** (`.bin` para `st-flash`, `.hex` para arrastrar a
+la Nucleo, `.elf` para depurar) — listos para **flashear**, no necesitas compilar nada.
 
-Genera el binario siguiendo **../../COMMON_BUILD.md** y (si quieres) cópialo aquí para flashearlo.
+¿Quieres tu propia variante? Recompílalos con **../../COMMON_BUILD.md** (cambia periodo, payload,
+región, credenciales…) y sustituye estos.

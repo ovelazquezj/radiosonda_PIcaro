@@ -11,11 +11,17 @@ lbm_lib/build/
 *.map
 
 # ---------------------------------------------------------------------
-# Binarios de firmware — NO se versionan (el usuario los genera)
+# Binarios de firmware — por defecto NO se versionan (salidas de build)
 # ---------------------------------------------------------------------
 *.bin
 *.elf
 *.hex
+
+# Excepción: los binarios FLASHEABLES de cada ejercicio SÍ se versionan, para que
+# un clon venga listo para flashear (recompilables con specs/exercises/COMMON_BUILD.md).
+!specs/exercises/*/artifacts/*.bin
+!specs/exercises/*/artifacts/*.hex
+!specs/exercises/*/artifacts/*.elf
 
 # ---------------------------------------------------------------------
 # Sistema operativo / editores

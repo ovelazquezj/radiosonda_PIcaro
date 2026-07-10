@@ -1,7 +1,8 @@
 # COMMON — Compilar los binarios (ejercicios LR1110: 01–04)
 
-Los binarios **no** vienen en el repositorio: los **compilas tú** con el toolchain (así aprendes el
-flujo completo). Los ejercicios TTGO (**05–06**) no usan esto: se compilan en el **Arduino IDE**.
+Cada ejercicio LR1110 **ya trae su binario compilado** en `artifacts/` (listo para flashear). Esta
+guía es para **recompilarlos tú** — cambiar credenciales, región, periodo o payload — y así aprender
+el flujo completo. Los ejercicios TTGO (**05–06**) no usan esto: se compilan en el **Arduino IDE**.
 
 ## Requisitos
 - **GNU Arm Embedded Toolchain** 13.2.rel1 (`arm-none-eabi-gcc`) en el `PATH`.
