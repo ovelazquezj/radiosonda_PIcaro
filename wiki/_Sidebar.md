@@ -14,6 +14,7 @@
 - [Flashear y ver la serie](How-To-Flashear-y-ver-la-serie)
 - [Compilar el TTGO en Arduino](How-To-Compilar-el-TTGO-en-Arduino)
 - [Provisionar en ChirpStack](How-To-Provisionar-en-ChirpStack)
+- [Dar de alta un LR1110 nuevo](How-To-Dar-de-alta-un-LR1110-nuevo)
 - [Montar un gateway de 1 canal](How-To-Montar-un-gateway-de-1-canal)
 
 ---
