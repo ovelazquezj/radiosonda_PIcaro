@@ -52,13 +52,40 @@ Para que el `object` del MQTT venga con `temperature`, `pressure`… adjunta el 
 **device profile** (afecta a todos sus devices). Cada ejercicio trae su `payload_decoder.js` y un
 `scripts/upload_codec.sh`.
 
+## US915 · Alinear la sub-banda (device profile ↔ nodo)
+
+En **US915** hay 8 sub-bandas de 8 canales. El **nodo** se fija a una (con `LMIC_selectSubBand(N)` en
+el TTGO, o el plan de canales del LR1110) y el **device profile de ChirpStack** debe usar **la misma**,
+o el join no cuaja. Estos ejercicios usan la **sub-banda índice 1** (canales **8–15**).
+
+| Region config (ChirpStack) | Canales (`enabled_uplink_channels`) | Nodo (LMIC) |
+|---|---|---|
+| `us915_0` | `0–7, 64` | `LMIC_selectSubBand(0)` |
+| **`us915_1`** | **`8–15, 65`** | **`LMIC_selectSubBand(1)`** ← estos ejercicios |
+
+**Cómo cambiarlo** (el `chirpstack.toml` del ejercicio 00 ya trae **las dos** en `enabled_regions`, así
+que **no hay que editar ningún `.toml`**):
+
+1. **Device profiles → (tu perfil US915) → editar.**
+2. Campo **"Region configuration ID"** → ponlo en **`us915_1`** (no `us915_0`). Guardar.
+3. **Re-join** el nodo (RESET / borra la sesión del device) para que tome el nuevo plan de canales.
+
+> Si en algún momento **sí** editas `chirpstack.toml`, reinicia el contenedor:
+> `cd specs/exercises/00_chirpstack-docker && docker compose restart chirpstack`.
+>
+> **Numeración:** uso el índice **0-based** (igual que el sufijo `us915_N` de ChirpStack y que
+> `LMIC_selectSubBand(N)`); en notación FCC "1-based" eso es la **sub-banda 2**. En **EU868 no aplica**
+> (son 3 canales fijos: 868.1/868.3/868.5).
+
+---
+
 ## Errores típicos (y su causa)
 | Síntoma en logs | Causa | Arreglo |
 |-----------------|-------|---------|
 | `Unknown device` | el DevEUI no está registrado (o mal escrito) | registra el DevEUI correcto (MSB) |
 | no responde / `invalid MIC` | AppKey mal o en campo equivocado | en 1.0.x va en **`nwkKey`** |
 | `DevNonce has already been used` | nonce repetido tras reflashear | borra y recrea el device |
-| join no llega al server | sub-banda equivocada (TTGO) | `LMIC_selectSubBand(1)` para US915 |
+| join no llega al server (US915) | **sub-banda del nodo ≠ device profile** | nodo `LMIC_selectSubBand(1)` **y** device profile en `us915_1` (ver arriba) |
 
 > El REST **no** guarda histórico de payloads: los datos llegan por **MQTT** (o una integración como
 > InfluxDB). Referencia completa en `specs/exercises/COMMON_CHIRPSTACK_API.md` del repo.

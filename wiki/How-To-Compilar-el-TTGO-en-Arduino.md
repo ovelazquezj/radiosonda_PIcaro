@@ -19,7 +19,9 @@ Y en el sketch, para **US915** se selecciona la sub-banda del gateway:
 LMIC_selectSubBand(1);     // sub-banda 2 (canales 8-15), la que usa el gateway del lab
 ```
 > `selectSubBand(1)` = sub-banda **2**. Si pones `(0)` (canales 0-7) el gateway no te oye y el join
-> falla. Este es un fallo clásico.
+> falla. Este es un fallo clásico. **Y en ChirpStack** el device profile debe usar la región
+> `us915_1` (la misma sub-banda) → ver
+> [Provisionar en ChirpStack § US915 sub-banda](How-To-Provisionar-en-ChirpStack).
 
 ## Paso 3 · ⚠️ Orden de bytes de los EUIs (nota didáctica clave)
 En **Arduino/LMIC** el **DevEUI** y el **JoinEUI/AppEUI** se escriben **al revés (LSB, little-endian)**
