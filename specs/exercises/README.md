@@ -17,6 +17,9 @@ NN_nombre/
 ```
 Para crear un ejercicio nuevo, copia [`_PLANTILLA/`](_PLANTILLA/) y rellena.
 
+> No todos traen **todo**: p. ej. **02/05/06 reutilizan el `consume.py` del 01**, y el **04** (Wi-Fi)
+> no provisiona ni consume (no hace join — su salida es solo por UART).
+
 ## Documentos comunes (compartidos por todos)
 
 - [`COMMON_BUILD.md`](COMMON_BUILD.md) — cómo **recompilar** los binarios LR1110 (01–04) si quieres

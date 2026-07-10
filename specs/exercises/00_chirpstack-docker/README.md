@@ -3,6 +3,13 @@
 This repository contains a skeleton to setup the [ChirpStack](https://www.chirpstack.io)
 open-source LoRaWAN Network Server (v4) using [Docker Compose](https://docs.docker.com/compose/).
 
+> **📟 radiosonda_PIcaro (ejercicio 00):** este es el README **original** de `chirpstack-docker`
+> (genérico, en inglés). Para usarlo con los ejercicios del proyecto —tenant/app, credenciales,
+> sub-banda `us915_1`, provisión por API— sigue [`../COMMON_CHIRPSTACK_API.md`](../COMMON_CHIRPSTACK_API.md)
+> y la wiki (*Ejercicio 00 · ChirpStack*). **Arranque rápido:** `docker compose up -d` → web
+> `http://localhost:8080` (**admin/admin**), API REST `http://localhost:8090`. Este `chirpstack.toml`
+> ya trae habilitadas `eu868`, `us915_0` y `us915_1`.
+
 **Note:** Please use this `docker-compose.yml` file as a starting point for testing
 but keep in mind that for production usage it might need modifications. 
 

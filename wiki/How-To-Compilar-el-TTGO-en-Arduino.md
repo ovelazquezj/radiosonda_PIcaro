@@ -23,6 +23,10 @@ LMIC_selectSubBand(1);     // sub-banda 2 (canales 8-15), la que usa el gateway 
 > `us915_1` (la misma sub-banda) → ver
 > [Provisionar en ChirpStack § US915 sub-banda](How-To-Provisionar-en-ChirpStack).
 
+> 🇪🇺 **EU868:** estos ejercicios (05/06) vienen para **US915**. Para **EU868** pon
+> `#define CFG_eu868 1` y **elimina** la línea `LMIC_selectSubBand(...)`: EU868 **no** tiene
+> sub-bandas (3 canales fijos 868.1/868.3/868.5). En ChirpStack usa un device profile **EU868**.
+
 ## Paso 3 · ⚠️ Orden de bytes de los EUIs (nota didáctica clave)
 En **Arduino/LMIC** el **DevEUI** y el **JoinEUI/AppEUI** se escriben **al revés (LSB, little-endian)**
 respecto a como se ven en **ChirpStack (MSB, big-endian)**. El **AppKey** va en **MSB** (igual en

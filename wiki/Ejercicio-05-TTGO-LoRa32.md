@@ -17,6 +17,10 @@ join que fallaba y en cómo se provisiona y consume por API.
 
 **Región:** US915, **sub-banda 2** (canales 8-15) → en el sketch `LMIC_selectSubBand(1)`; en ChirpStack el device profile usa la región `us915_1`.
 
+> 🇪🇺 **Viene configurado para US915.** Para **EU868**: en `arduino_lmic_project_config.h` pon
+> `#define CFG_eu868 1` y **quita** la línea `LMIC_selectSubBand(...)` — EU868 no tiene sub-bandas
+> (3 canales fijos 868.1/.3/.5). Detalle en [Compilar el TTGO en Arduino](How-To-Compilar-el-TTGO-en-Arduino).
+
 ## Ruta paso a paso
 
 1. **Prepara el entorno** → [Requisitos e instalación § Arduino IDE + librerías](How-To-Requisitos-e-instalación).

@@ -25,8 +25,9 @@ LMIC_selectSubBand(0);   // ❌ sub-banda 1 -> canales 0-7  (902.3-903.7 MHz)
 LMIC_selectSubBand(1);   // ✅ sub-banda 2 -> canales 8-15 (903.9-905.3 MHz)  <- la del gateway
 ```
 El gateway escucha **FSB2 (canales 8-15)**. Con `selectSubBand(0)` el TTGO transmitía en canales
-0-7 → el gateway **no lo oía** → cero frames. El sketch `TTGO_LoRa_Join_Only.ino` tenía este bug
-(el propio autor lo marcó *"AQUI esta el pain"*); el `TTGO_LoRaWAN_v3.ino` ya usa `selectSubBand(1)`.
+0-7 → el gateway **no lo oía** → cero frames. El sketch `TTGO_LoRa_Join_Only.ino` (histórico, **no
+incluido** en la carpeta) tenía este bug (el propio autor lo marcó *"AQUI esta el pain"*); el
+`TTGO_LoRaWAN_v3.ino` incluido ya usa `selectSubBand(1)`.
 
 ### Bug B — credenciales del sketch ≠ credenciales registradas
 Los arrays del sketch producían DevEUI `02389205358e71db`, pero en ChirpStack se había registrado

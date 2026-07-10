@@ -31,6 +31,11 @@ a la vez**. Este montaje usa **un solo SX1276** → solo escucha **una frecuenci
 - ❌ **No es para producción**: aguanta bien 2–3 nodos; con más, colisiones y pérdidas.
 - ⛔ **Bloqueado en TTN público**; **funciona perfectamente contra tu ChirpStack privado**, que es nuestro caso.
 
+> 🎯 **Elige UNA banda extremo a extremo.** El ejemplo va en **EU868** (canal 0 / 868.1 MHz), pero los
+> nodos **TTGO 05/06 son US915**. Dos rutas coherentes: **(a)** gateway EU868 + un nodo **LR1110 en
+> EU868** (compila el [ej. 02](Ejercicio-02-BMP280-GNSS) en `EU_868`); **(b)** gateway en **US915**
+> (`US902_928`, un canal de la FSB2, 8–15) + los **TTGO 05/06**. Nodo y gateway deben coincidir en banda.
+
 ## 📖 El cuerpo del ejercicio: la How-To completa
 
 Todos los pasos —descargar y **fijar el commit** del firmware, configurar `configGway.h`/`configNode.h`,
