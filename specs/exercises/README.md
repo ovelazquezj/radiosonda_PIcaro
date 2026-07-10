@@ -19,6 +19,8 @@ Para crear un ejercicio nuevo, copia [`_PLANTILLA/`](_PLANTILLA/) y rellena.
 
 ## Documentos comunes (compartidos por todos)
 
+- [`COMMON_BUILD.md`](COMMON_BUILD.md) — cómo **recompilar** los binarios LR1110 (01–04) si quieres
+  tu propia variante (los binarios ya vienen en `artifacts/`, listos para flashear).
 - [`COMMON_FLASH.md`](COMMON_FLASH.md) — cómo flashear un `.bin`/`.hex` en la **Nucleo-L476RG**
   (aplica a los ejercicios **01–04, que usan el LR1110**; los ejercicios TTGO **05–06** se compilan
   y flashean desde el **Arduino IDE**, no con este método).

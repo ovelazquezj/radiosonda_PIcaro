@@ -194,7 +194,9 @@ SF9**).
   LMIC_setDrTxpow(DR_SF9, 14);                            // SF9 fijo
   LMIC_setAdrMode(0);                                     // sin ADR
   ```
-  (En US915, en vez de esto se usa `LMIC_selectSubBand(...)`; ver
+  (⚠️ En **US915** ojo: `LMIC_selectSubBand(1)` habilita **8** canales (8–15), **no uno**, así que un
+  gateway de 1 canal seguiría perdiendo ~7/8. Para single-channel real, además del subband deja
+  **solo un canal** deshabilitando los otros 7. Ver
   [Compilar el TTGO en Arduino](How-To-Compilar-el-TTGO-en-Arduino).)
 - **Nodo LR1110 (ejercicio 02, Nucleo):** configura el stack para transmitir en esa **misma
   frecuencia y SF única**, sin salto de canal. Verifica en la traza UART la frecuencia real de cada

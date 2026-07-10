@@ -9,10 +9,10 @@ IDs de tu stack, provisión por REST, consumo por **MQTT**, y subida del **codec
 |---------|-------|
 | REST API | `http://localhost:8090` — header `Authorization: Bearer $TOKEN` |
 | Broker MQTT | `localhost:1883` (contenedor `chirpstack-docker-mosquitto-1`, sin auth en lab) |
-| Tenant `Hotizonte_I` | `f8a271ec-591f-4e4c-956a-47d5d9ce9f87` |
+| Tenant `Horizonte_1` | `f8a271ec-591f-4e4c-956a-47d5d9ce9f87` |
 | Application `Demos-LR1110` | `5bc22cfa-de6e-4c61-9567-3fc8cfe35ec7` |
 | Device profile **US915** | `a177f6fe-a123-4684-8f9d-10084ac86af7` |
-| Device profile **EU868** | *(créalo tú — ver `02`/`REGISTRO_API`)* |
+| Device profile **EU868** | *(créalo tú — ver [`REGISTRO_API`](../demos/REGISTRO_API_CHIRPSTACK.md))* |
 
 Exporta una vez por sesión (usa tu propio API key de la web → Tenant → API keys):
 ```bash

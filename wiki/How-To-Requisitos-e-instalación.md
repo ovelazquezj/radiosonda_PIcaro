@@ -10,6 +10,7 @@ y (para los TTGO) el Arduino IDE con sus librerías.
 |-----------|---------------------|
 | 01–04 (Nucleo + LR1110) | **Arm GCC + make** (compilas un `.bin`) |
 | 05–06 (TTGO ESP32) | **Arduino IDE + librerías** (compilas un sketch) |
+| 07 (gateway TTGO) | **PlatformIO** o Arduino IDE (firmware de terceros ESP-1ch-Gateway) |
 | Todos (join a la red) | **Docker + ChirpStack** y un **gateway** de tu banda |
 
 > Si solo vas a probar el **TTGO**, sáltate el toolchain ARM. Si solo vas a probar la **Nucleo**,
@@ -119,11 +120,25 @@ Para grabar el `.bin`/`.hex` en la Nucleo y ver la traza:
 
 ---
 
+## 5 · PlatformIO (para el gateway del ejercicio 07)
+
+El firmware del gateway (**ESP-1ch-Gateway**, ejercicio 07) se compila con **PlatformIO** (o Arduino
+IDE). Instálalo de una de estas formas:
+- **VS Code:** extensión *PlatformIO IDE* (busca "PlatformIO" en *Extensions*).
+- **CLI:** `pip install platformio` (necesita Python 3) → habilita el comando `pio`.
+
+El entorno concreto para la **TTGO por USB** y los pasos están en
+[How-To Montar un gateway de 1 canal](How-To-Montar-un-gateway-de-1-canal) (y en `VERSIONS.md` del
+ejercicio 07). **No** necesitas el toolchain ARM para el 07.
+
+---
+
 ## Checklist final
 - [ ] `arm-none-eabi-gcc --version` → 13.2.x (solo si usarás 01–04)
 - [ ] `make --version` OK
 - [ ] `docker compose version` OK y ChirpStack respondiendo en `:8080`
 - [ ] Herramienta de flasheo + terminal serie a 115200 listas
 - [ ] Arduino IDE con ESP32 + LMIC + U8g2 (+ BMP280 para el 06)
+- [ ] PlatformIO (o Arduino IDE) instalado — solo si harás el ejercicio 07 (gateway)
 
 > Siguiente: **[How-To Compilar el firmware](How-To-Compilar-el-firmware)** →

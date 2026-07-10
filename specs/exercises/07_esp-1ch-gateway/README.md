@@ -178,8 +178,8 @@ escucha **uno**, hay que **fijar cada nodo** a esa misma frecuencia/SF (ej.: **8
 - **Web del gateway** (`http://<IP>:80`): estadísticas, último paquete, y ajuste en caliente de
   SF/canal/nivel de debug.
 - **ChirpStack → Gateways:** el gateway en **online** con *last seen* reciente.
-- **ChirpStack → tu aplicación → device → LoRaWAN frames:** los uplinks del nodo (fPort 10 del
-  BMP280, etc.) llegando **a través de tu gateway**.
+- **ChirpStack → tu aplicación → device → LoRaWAN frames:** los uplinks del nodo (p. ej. el BMP280
+  del ej. 02 en fPort 10, o el del ej. 06 en fPort 2) llegando **a través de tu gateway**.
 
 ---
 

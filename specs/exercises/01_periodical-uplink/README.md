@@ -14,7 +14,7 @@ conectividad y el primer contacto con ChirpStack.
 | ¿Join/ChirpStack? | ✅ Sí |
 | Binario US915 | `artifacts/periodical-uplink_lr1110_us915.bin` (y su `.hex`/`.elf`) |
 | Binario EU868 | `artifacts/periodical-uplink_lr1110_eu868.bin` (y su `.hex`/`.elf`) |
-| Dato para dashboard | payload keep-alive (fPort 2) vía MQTT |
+| Dato para dashboard | payload keep-alive (fPort **101** periódico / **102** botón B1) vía MQTT |
 
 Credenciales en [`credentials.json`](credentials.json). JoinEUI común `aabbccddeeff0000`.
 
