@@ -31,3 +31,6 @@ Thumbs.db
 *.swp
 *~
 .vscode/
+
+# Ficheros de notas/secretos que NO deben versionarse
+**/ignorar.txt
