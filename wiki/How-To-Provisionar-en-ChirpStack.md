@@ -30,6 +30,51 @@ curl -s -X POST "$API/api/devices/<DEVEUI>/keys" -H "Authorization: Bearer $TOKE
 > el sketch TTGO el DevEUI/JoinEUI van **invertidos** (ver
 > [How-To TTGO](How-To-Compilar-el-TTGO-en-Arduino)).
 
+## Windows 11 · registrar por PowerShell (sin WSL)
+
+En **Windows 11**, en vez de `curl`/bash usa **`Invoke-RestMethod`** (evita el infierno de comillas del
+JSON). Funciona en **Windows PowerShell 5.1** (el de por defecto) y en PowerShell 7.
+
+```powershell
+$TOKEN  = "PEGA_TU_API_KEY"                     # web (http://localhost:8080) -> Tenant -> API keys
+$API    = "http://localhost:8090"
+$TENANT = "<tenant-id>"                          # p.ej. f8a271ec-591f-4e4c-956a-47d5d9ce9f87
+$APP    = "<application-id>"
+$H = @{ Authorization = "Bearer $TOKEN" }
+$JOINEUI = "aabbccddeeff0000"
+
+# crea (o reutiliza) un device profile por nombre; devuelve su id
+function Get-DP($name,$region) {
+  $list = Invoke-RestMethod "$API/api/device-profiles?limit=100&tenantId=$TENANT" -Headers $H
+  $dp = $list.result | Where-Object { $_.name -eq $name } | Select-Object -First 1
+  if ($dp) { return $dp.id }
+  $b = @{ deviceProfile = @{ name=$name; tenantId=$TENANT; region=$region;
+        macVersion="LORAWAN_1_0_4"; regParamsRevision="RP002_1_0_3";
+        adrAlgorithmId="default"; supportsOtaa=$true; uplinkInterval=3600 } } | ConvertTo-Json -Depth 6
+  return (Invoke-RestMethod -Method Post "$API/api/device-profiles" -Headers $H -ContentType "application/json" -Body $b).id
+}
+
+# registra un device + su AppKey (idempotente; el AppKey va en nwkKey para 1.0.x)
+function Register-Device($deveui,$appkey,$dp,$name) {
+  $d = @{ device = @{ devEui=$deveui; name=$name; applicationId=$APP; deviceProfileId=$dp; joinEui=$JOINEUI } } | ConvertTo-Json -Depth 6
+  try { Invoke-RestMethod -Method Post "$API/api/devices" -Headers $H -ContentType "application/json" -Body $d | Out-Null; "device $deveui creado" }
+  catch { "device $deveui ya existia (ok)" }
+  $k = @{ deviceKeys = @{ devEui=$deveui; nwkKey=$appkey } } | ConvertTo-Json -Depth 6
+  try { Invoke-RestMethod -Method Post "$API/api/devices/$deveui/keys" -Headers $H -ContentType "application/json" -Body $k | Out-Null } catch {}
+  try { Invoke-RestMethod -Method Put  "$API/api/devices/$deveui/keys" -Headers $H -ContentType "application/json" -Body $k | Out-Null } catch {}
+}
+
+# Ejemplo — ejercicio 01, US915 (el DevEUI/AppKey salen del credentials.json de cada ejercicio):
+$dp = Get-DP "Horizonte_1-LR1110" "US915"
+Register-Device "aabbccdd10915001" "10151015101510151015101510151015" $dp "periodical-uplink-us915"
+```
+
+> - Cambia **DevEUI / AppKey / región** por los de tu ejercicio y banda (están en su `credentials.json`).
+> - **US915:** deja el device profile en la sub-banda de estos ejercicios → **Region configuration ID
+>   `us915_1`** (ver la sección de sub-banda más abajo).
+> - Necesitas **Docker Desktop** con ChirpStack levantado para que `localhost:8090` responda.
+> - Esto **registra** el device; el **join** ocurre al **flashear** el `.bin` y **resetear** la placa (B2).
+
 ## Paso 2 · Verificar el join
 Con el nodo encendido, mira el estado o los logs:
 ```bash
