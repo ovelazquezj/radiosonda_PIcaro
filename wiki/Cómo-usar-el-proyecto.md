@@ -22,6 +22,7 @@ consumo.
 | 5 | [**05 · TTGO LoRa**](Ejercicio-05-TTGO-LoRa32) | Integrar un **nodo de terceros** (ESP32/LMIC) |
 | 6 | [**06 · TTGO + BMP280**](Ejercicio-06-TTGO-BMP280) | Un **sensor real** en el TTGO enviando cada minuto |
 | 7 | [**07 · Gateway de 1 canal**](Ejercicio-07-Gateway-1-canal) | Montar **tu propio gateway** (TTGO) para recibir a los nodos |
+| 8 | [**08 · Radiosonda PICARO**](Ejercicio-08-Radiosonda-PICARO) | **LilyGo T-Beam** (GPS + batería) por RadioLib → telemetría a ChirpStack |
 
 > El **07** es distinto: no es un nodo, es **infraestructura** — montas el gateway que reciben los
 > demás. Guía paso a paso: **[Montar un gateway de 1 canal](How-To-Montar-un-gateway-de-1-canal)**.

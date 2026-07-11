@@ -73,4 +73,4 @@ compilar para **TTGO por USB**, leer el **Gateway EUI real**, dar de alta el gat
 - [`configNode.example.h`](https://github.com/ovelazquezj/radiosonda_PIcaro/blob/master/specs/exercises/07_esp-1ch-gateway/configNode.example.h) — WiFi (`wpa[]`), identidad y ubicación del gateway.
 - [`register_gateway.sh`](https://github.com/ovelazquezj/radiosonda_PIcaro/blob/master/specs/exercises/07_esp-1ch-gateway/register_gateway.sh) — alta del gateway en ChirpStack v4 por API REST (idempotente).
 
-> ◀ [Ejercicio 06 — TTGO + BMP280](Ejercicio-06-TTGO-BMP280) · *(último ejercicio)* → [Glosario y recursos](Glosario-y-recursos)
+> ◀ [Ejercicio 06 — TTGO + BMP280](Ejercicio-06-TTGO-BMP280) · [Ejercicio 08 — Radiosonda PICARO ▶](Ejercicio-08-Radiosonda-PICARO)

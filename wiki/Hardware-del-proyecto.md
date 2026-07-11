@@ -40,6 +40,7 @@ producción**. Guía paso a paso: **[Montar un gateway de 1 canal](How-To-Montar
 | 05 TTGO LoRa | TTGO ESP32 | SX1276 | OLED |
 | 06 TTGO + BMP280 | TTGO ESP32 | SX1276 | BMP280 (I²C) + OLED |
 | 07 Gateway 1 canal | TTGO ESP32 | SX1276 | **gateway** (firmware de terceros) → ChirpStack |
+| 08 Radiosonda PICARO | LilyGo T-Beam (ESP32) | SX1276 | GPS + batería (RadioLib) → ChirpStack |
 
 > Los detalles de **cableado del sensor** (pines) están en el README de los ejercicios 02 y 06 y en
 > el diagrama `specs/bmp280-gnss-tracker/pinout_diagram.html`.
