@@ -5,6 +5,8 @@ y van de lo simple a lo avanzado. Cada uno es **autocontenido**: README, credenc
 consumo.
 
 ## Requisitos
+- **Clona el repo** en `C:\dev\radiosonda_PIcaro` (todas las rutas de las guías salen de ahí) →
+  ver [Requisitos e instalación · Paso 0](How-To-Requisitos-e-instalación).
 - **Toolchain ARM** (`arm-none-eabi-gcc` 13.2) + `make` — para los nodos LR1110.
 - **Arduino IDE** (+ MCCI LMIC, U8g2, Adafruit BMP280) — para los TTGO.
 - **ChirpStack** en Docker + un **gateway** de tu banda con cobertura (o **monta el tuyo** → ejercicio 07).

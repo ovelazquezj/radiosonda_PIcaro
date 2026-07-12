@@ -4,6 +4,36 @@ Esta guía instala **todo lo necesario** para compilar, flashear y probar los ej
 sola vez. Al final tendrás: toolchain ARM, `make`, Docker/ChirpStack, herramientas de flasheo/serie
 y (para los TTGO) el Arduino IDE con sus librerías.
 
+---
+
+## 0 · Clona el repositorio (hazlo primero)
+
+Todo el proyecto vive en **una sola carpeta**. La convención de estas guías es clonarlo en
+**`C:\dev\radiosonda_PIcaro`**. A partir de ahí, **todas las rutas de la documentación son relativas
+a esa raíz** (p. ej. `specs/exercises/…`, `lbm_examples/…`); nunca tendrás que adivinar dónde está un
+archivo.
+
+### Windows (PowerShell)
+```powershell
+mkdir C:\dev            # crea la carpeta raíz (si ya existe, ignora el aviso)
+cd C:\dev
+git clone https://github.com/ovelazquezj/radiosonda_PIcaro
+# → el repo queda en  C:\dev\radiosonda_PIcaro
+```
+
+### Linux / macOS
+```bash
+mkdir -p ~/dev && cd ~/dev
+git clone https://github.com/ovelazquezj/radiosonda_PIcaro
+# → el repo queda en  ~/dev/radiosonda_PIcaro
+```
+
+> 🪟 **Windows + WSL:** clonas y editas desde Windows en `C:\dev\radiosonda_PIcaro`, y **esa misma
+> carpeta** se ve desde WSL2 en `/mnt/c/dev/radiosonda_PIcaro` (ahí corre el `make`). Es el mismo
+> sitio visto desde los dos lados. Clona en el disco de Windows (`C:\dev`), **no** dentro de `\\wsl$`.
+
+---
+
 ## ¿Qué necesito según el ejercicio?
 
 | Ejercicio | Toolchain necesario |
@@ -36,9 +66,10 @@ sudo apt install -y gcc-arm-none-eabi make git python3 python3-pip
 > Alternativa (versión oficial exacta de Arm, si tu `apt` no tuviera la 13.2): descarga el tarball
 > `arm-gnu-toolchain-13.2.rel1-x86_64-arm-none-eabi` de arm.com y añade su `bin/` al `PATH`.
 
-**2 · Accede al repo desde WSL** (está en el disco de Windows, visible en `/mnt/c/...`):
+**2 · Accede al repo desde WSL** (la carpeta que clonaste en el Paso 0; está en el disco de Windows,
+visible desde WSL en `/mnt/c/...`):
 ```bash
-cd /mnt/c/dev/PiCARO/SWL2001        # ajústalo a donde lo tengas clonado
+cd /mnt/c/dev/radiosonda_PIcaro     # el repo que clonaste en el Paso 0
 ```
 
 **3 · Compila** (detalle en [Compilar el firmware](How-To-Compilar-el-firmware)):

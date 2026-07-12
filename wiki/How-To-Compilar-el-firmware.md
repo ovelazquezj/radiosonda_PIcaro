@@ -9,21 +9,53 @@ usan esto: ver [How-To Compilar el TTGO en Arduino](How-To-Compilar-el-TTGO-en-A
 > PowerShell **no** traen el toolchain. El repo se ve desde WSL en `/mnt/c/...`. Montaje y toolchain
 > en [Requisitos e instalación](How-To-Requisitos-e-instalación).
 
-## Paso 1 · Poner tus credenciales y región
-Antes de compilar, copia el **DevEUI / JoinEUI / AppKey** del `credentials.json` de tu ejercicio y la
-**región** en el `example_options.h` correspondiente:
+## Paso 1 · Cambiar tu DevEUI / JoinEUI / AppKey y región
+Las credenciales van **escritas en el firmware**, en el `example_options.h` de tu ejercicio (rutas
+**relativas a la raíz del repo**, `C:\dev\radiosonda_PIcaro`):
 
 | Ejercicio | Archivo a editar |
 |-----------|------------------|
 | 01, 03 | `lbm_examples/main_examples/example_options.h` |
 | 02, 04 | `lbm_applications/3_geolocation_on_lora_edge/main_geolocation/example_options.h` |
 
-Ajusta también la región `MODEM_EXAMPLE_REGION`:
+Ábrelo y edita estos **tres** `#define` con los valores del `credentials.json` de tu ejercicio:
+
+- `USER_LORAWAN_DEVICE_EUI` → tu **DevEUI** (8 bytes)
+- `USER_LORAWAN_JOIN_EUI` → tu **JoinEUI** (8 bytes)
+- `USER_LORAWAN_APP_KEY` → tu **AppKey** (16 bytes)
+
+Cada byte es un `0xNN` separado por comas, en **orden MSB** (el mismo que muestra ChirpStack, leído de
+izquierda a derecha). Las longitudes son fijas (8 / 8 / 16); no añadas ni quites elementos:
+
+```c
+#define USER_LORAWAN_DEVICE_EUI                        \
+    {                                                  \
+        0xAA, 0xBB, 0xCC, 0xDD, 0x10, 0x86, 0x80, 0x01 \
+    }
+#define USER_LORAWAN_JOIN_EUI                          \
+    {                                                  \
+        0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF, 0x00, 0x00 \
+    }
+#define USER_LORAWAN_APP_KEY                                                                           \
+    {                                                                                                  \
+        0x10, 0x68, 0x10, 0x68, 0x10, 0x68, 0x10, 0x68, 0x10, 0x68, 0x10, 0x68, 0x10, 0x68, 0x10, 0x68 \
+    }
+```
+
+**Convertir un valor de ChirpStack:** parte el hex de dos en dos dígitos, prefija cada par con `0x` y
+sepáralos por comas. DevEUI `70B3D57ED0060AF3` → `0x70, 0xB3, 0xD5, 0x7E, 0xD0, 0x06, 0x0A, 0xF3`.
+
+Ajusta también la región `MODEM_EXAMPLE_REGION` (y usa la misma banda en el `REGION=` del Paso 2):
 - **US915** → `SMTC_MODEM_REGION_US_915`
 - **EU868** → `SMTC_MODEM_REGION_EU_868`
 
-> ⚠️ El **DevEUI/JoinEUI/AppKey** deben **coincidir** con lo que registres en ChirpStack (en MSB).
-> Es la causa nº1 de fallos de join. Ver [How-To Provisionar](How-To-Provisionar-en-ChirpStack).
+> ⚠️ En el mismo archivo aparece `USER_LORAWAN_GEN_APP_KEY`: **no lo confundas con el AppKey** (es
+> para otro modo). Para el join OTAA normal el que importa es `USER_LORAWAN_APP_KEY`; deja
+> `GEN_APP_KEY` como está.
+>
+> ⚠️ El **DevEUI/JoinEUI/AppKey** deben **coincidir exactamente** con lo que registres en ChirpStack
+> (mismos bytes, orden MSB). Es la causa nº1 de fallos de join. Ver
+> [How-To Provisionar](How-To-Provisionar-en-ChirpStack).
 
 ## Paso 2 · Compilar (un comando por ejercicio)
 
