@@ -40,6 +40,8 @@ Para crear un ejercicio nuevo, copia [`_PLANTILLA/`](_PLANTILLA/) y rellena.
 > - **Ejercicio 07 → gateway (infraestructura), NO un nodo.** Una TTGO ESP32 (SX1276) hace de
 >   **gateway *single-channel*** con firmware de terceros (ESP-1ch-Gateway) para que ChirpStack
 >   reciba los uplinks de los demás nodos.
+> - **Ejercicio 08 → LilyGo T-Beam** (radio **SX1276** + **GPS**), firmware **Arduino/RadioLib**:
+>   una **radiosonda** que envía posición GPS y batería a ChirpStack.
 
 | # | Ejercicio | Radio · Placa | Qué demuestra | ChirpStack | Dato para dashboard |
 |---|-----------|---------------|---------------|:----------:|---------------------|
@@ -51,6 +53,7 @@ Para crear un ejercicio nuevo, copia [`_PLANTILLA/`](_PLANTILLA/) y rellena.
 | [05](05_ttgo-lora32/) | TTGO ESP32 LoRa | **SX1276** · TTGO ESP32 | Nodo de terceros (LMIC) | ✅ | `counter`/`timestamp` por MQTT |
 | [06](06_ttgo-bmp280/) | TTGO ESP32 + BMP280 | **SX1276** · TTGO ESP32 | Sensor I²C, uplink cada 60 s | ✅ | `temperature`/`pressure` por MQTT |
 | [07](07_esp-1ch-gateway/) | Gateway 1 canal | **SX1276** · TTGO ESP32 | Gateway *single-channel* → ChirpStack (recibe a los nodos) | ✅ (infra) | — (habilita el resto) |
+| [08](08_radiosonda_picaro/) | Radiosonda PICARO | **SX1276** · LilyGo T-Beam | Nodo GPS + batería (RadioLib) → telemetría | ✅ | Lat/lon/alt + batería por MQTT |
 
 ## Arquitectura de datos (para dashboards)
 
@@ -74,3 +77,9 @@ ChirpStack separa **provisión** de **datos**:
 
 > Regla de aplicabilidad: los ejercicios que **hacen join** (01, 02, 03) usan provisión + consumo.
 > El 04 (Wi-Fi) **no se une a la red**: su dato se observa por **UART**, no por ChirpStack.
+
+---
+
+> 📄 **Licencia del material educativo:** este README y los ejercicios (documentación) están bajo
+> **CC BY 4.0** © **Omar Velazquez** — ver [`LICENSE-CC-BY-4.0.md`](../../LICENSE-CC-BY-4.0.md). El
+> **código** permanece bajo **The Clear BSD License** (© Semtech).

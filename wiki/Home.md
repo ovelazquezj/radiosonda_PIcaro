@@ -51,6 +51,11 @@ Este proyecto es un **fork / obra derivada no oficial** de **LoRa Basics Modem (
 Corporation; licencia **Clear BSD** (conservada intacta). Este material es una capa **educativa**
 encima de ese trabajo.
 
+> 📄 **Licencia del material educativo:** el contenido didáctico de esta Wiki y del repositorio
+> (documentación) está licenciado bajo **[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)**
+> © **Omar Velazquez**. El **código** permanece bajo **Clear BSD** (© Semtech). Detalle en
+> [`LICENSE-CC-BY-4.0.md`](https://github.com/ovelazquezj/radiosonda_PIcaro/blob/master/LICENSE-CC-BY-4.0.md).
+
 > **No es un producto de Semtech** y **no está afiliado a, patrocinado por ni respaldado por
 > Semtech.** *LoRa®* y *LoRaWAN®* son marcas de Semtech / LoRa Alliance®, usadas aquí solo de forma
 > nominativa con fines educativos. Detalles en el archivo

@@ -31,3 +31,5 @@
 
 ---
 [Repo](https://github.com/ovelazquezj/radiosonda_PIcaro) · [Semtech SWL2001](https://github.com/Lora-net/SWL2001)
+
+_Docs © Omar Velazquez · [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)_
