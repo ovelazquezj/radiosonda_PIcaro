@@ -4,7 +4,6 @@
 set -euo pipefail
 : "${TOKEN:?Exporta TOKEN con tu API key de ChirpStack}"
 API="${API:-http://localhost:8090}"
-TENANT="${TENANT:-f8a271ec-591f-4e4c-956a-47d5d9ce9f87}"
 AUTH=(-H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json")
 
 DEVEUI=02389205358e71db          # DevEUI del sketch en MSB (array LMIC reversado)
@@ -15,6 +14,16 @@ APP_NAME="TTGO-LoRa32"; DP_NAME="TTGO-US915"
 jid(){ python3 -c "import sys,json;print(json.load(sys.stdin).get('id',''))" 2>/dev/null; }
 byname(){ curl -s "$1" "${AUTH[@]}" | python3 -c \
   "import sys,json;print(next((r['id'] for r in json.load(sys.stdin).get('result',[]) if r['name']==sys.argv[1]),''))" "$2" 2>/dev/null; }
+
+# --- Tenant: usa $TENANT si lo exportaste; si no, toma el primero de tu ChirpStack ---
+# (así funciona en una instalación desde cero del ejercicio 00, sin IDs cableados).
+TENANT="${TENANT:-}"
+if [ -z "$TENANT" ]; then
+  TENANT=$(curl -s "$API/api/tenants?limit=1" "${AUTH[@]}" \
+    | python3 -c "import sys,json;print(next((t['id'] for t in json.load(sys.stdin).get('result',[])),''))" 2>/dev/null)
+fi
+[ -n "$TENANT" ] || { echo "ERROR: no encuentro ningún tenant. ¿Levantaste ChirpStack (ej.00) y el TOKEN es válido?" >&2; exit 1; }
+echo "== tenant: $TENANT =="
 
 echo "== Application $APP_NAME =="
 APP=$(byname "$API/api/applications?limit=100&tenantId=$TENANT" "$APP_NAME")

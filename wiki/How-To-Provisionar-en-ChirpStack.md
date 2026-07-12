@@ -87,7 +87,7 @@ ChirpStack publica cada uplink en `application/<APP_ID>/device/<DEVEUI>/event/up
 payload crudo (`data`, base64) y, **si hay codec**, el objeto decodificado (`object`):
 ```bash
 # Dentro del contenedor mosquitto (siempre disponible):
-docker exec chirpstack-docker-mosquitto-1 \
+docker exec 00_chirpstack-docker-mosquitto-1 \
   mosquitto_sub -h localhost -t "application/$APP/device/+/event/up" -v
 ```
 En Python se usa `paho-mqtt` (ver el `consume.py` de cada ejercicio).

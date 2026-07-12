@@ -27,7 +27,7 @@ Es el **prerequisito** de todos los ejercicios que se conectan a la red (01, 02,
 - **Docker:** `docker compose ps` muestra los contenedores `chirpstack-docker-*` en estado *running* (chirpstack, postgres, redis, mosquitto, gateway-bridge).
 - **Web (`:8080`):** login `admin/admin`; el *tenant* y las *applications* del laboratorio aparecen ya creados.
 - **REST API (`:8090`):** la UI Swagger responde; es el endpoint que usan los `provision.sh` de cada ejercicio (header `Authorization: Bearer <API key>`).
-- **MQTT (`:1883`):** el contenedor `chirpstack-docker-mosquitto-1` es donde se publican los uplinks (`application/<APP>/device/<DEVEUI>/event/up`) — la fuente de datos para los dashboards.
+- **MQTT (`:1883`):** el contenedor `00_chirpstack-docker-mosquitto-1` es donde se publican los uplinks (`application/<APP>/device/<DEVEUI>/event/up`) — la fuente de datos para los dashboards.
 
 ## Credenciales y detalles
 

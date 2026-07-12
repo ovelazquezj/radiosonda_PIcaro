@@ -163,7 +163,7 @@ U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, U8X8_PIN_NONE);
     0x62, 0xDF, 0xC9, 0x83, 0xE5, 0x15, 0x99, 0x6A
 };*/
 
-// DevEUI:  0238920535e871db (convertido a LSB)
+// DevEUI:  02389205358e71db (convertido a LSB)
 static const u1_t PROGMEM DEVEUI[8] = { 0xDB, 0x71, 0x8E, 0x35, 0x05, 0x92, 0x38, 0x02 };
 
 // JoinEUI/AppEUI: 505246f87143fd8a (convertido a LSB)

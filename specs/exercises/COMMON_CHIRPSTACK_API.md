@@ -8,7 +8,7 @@ IDs de tu stack, provisión por REST, consumo por **MQTT**, y subida del **codec
 | Recurso | Valor |
 |---------|-------|
 | REST API | `http://localhost:8090` — header `Authorization: Bearer $TOKEN` |
-| Broker MQTT | `localhost:1883` (contenedor `chirpstack-docker-mosquitto-1`, sin auth en lab) |
+| Broker MQTT | `localhost:1883` (contenedor `00_chirpstack-docker-mosquitto-1`, sin auth en lab) |
 | Tenant `Horizonte_1` | `f8a271ec-591f-4e4c-956a-47d5d9ce9f87` |
 | Application `Demos-LR1110` | `5bc22cfa-de6e-4c61-9567-3fc8cfe35ec7` |
 | Device profile **US915** | `a177f6fe-a123-4684-8f9d-10084ac86af7` |
@@ -60,7 +60,7 @@ campos ya decodificados). Suscríbete a todos los uplinks de la app:
 
 ```bash
 # CLI (dentro del contenedor mosquitto, que siempre está disponible):
-docker exec chirpstack-docker-mosquitto-1 \
+docker exec 00_chirpstack-docker-mosquitto-1 \
   mosquitto_sub -h localhost -t "application/$APP/device/+/event/up" -v
 
 # o desde el host si tienes mosquitto-clients:  mosquitto_sub -h localhost -p 1883 -t "application/$APP/#" -v

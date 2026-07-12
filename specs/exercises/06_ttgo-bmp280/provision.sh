@@ -4,8 +4,16 @@
 set -euo pipefail
 : "${TOKEN:?Exporta TOKEN con tu API key de ChirpStack}"
 API="${API:-http://localhost:8090}"
-TENANT="${TENANT:-f8a271ec-591f-4e4c-956a-47d5d9ce9f87}"
 AUTH=(-H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json")
+
+# --- Tenant: usa $TENANT si lo exportaste; si no, toma el primero de tu ChirpStack (ej.00) ---
+TENANT="${TENANT:-}"
+if [ -z "$TENANT" ]; then
+  TENANT=$(curl -s "$API/api/tenants?limit=1" "${AUTH[@]}" \
+    | python3 -c "import sys,json;d=json.load(sys.stdin);print(next((t['id'] for t in d.get('result',[])),''))" 2>/dev/null || true)
+fi
+[ -n "$TENANT" ] || { echo "ERROR: no encuentro ningún tenant. ¿Levantaste ChirpStack (ej.00) y el TOKEN es válido?"; exit 1; }
+echo "== tenant: $TENANT =="
 
 # Credenciales en MSB (las que ve ChirpStack). En el sketch LMIC van en LSB (DevEUI/AppEUI).
 DEVEUI=aabbccdd60915001

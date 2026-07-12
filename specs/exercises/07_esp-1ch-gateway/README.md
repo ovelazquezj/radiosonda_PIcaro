@@ -1,217 +1,185 @@
-# Ejercicio 07 — Gateway LoRaWAN de 1 canal (TTGO ESP32 + ESP-1ch-Gateway)
+# Ejercicio 07 — Tu gateway LoRaWAN de 1 canal (TTGO ESP32 + ESP-1ch-Gateway)
 
-**Qué demuestra:** montar tu **propio gateway LoRaWAN** con una **TTGO ESP32 (SX1276)** y el
-firmware de terceros **ESP-1ch-Gateway** para que **ChirpStack reciba los uplinks** de los nodos
-del proyecto (el LR1110 del ejercicio [02](../02_bmp280-gnss-tracker/) y los TTGO de los
-ejercicios [05](../05_ttgo-lora32/) y [06](../06_ttgo-bmp280/)). Es el eslabón que faltaba: hasta
-ahora dependías de un gateway ajeno; aquí **el gateway también es tuyo**.
-
-| | |
-|---|---|
-| Hardware | **TTGO ESP32 LoRa** (SX1276) — la misma placa de los ej. 05/06 |
-| Firmware | **ESP-1ch-Gateway** — commit `3b02352` (v6.2.8 interno, sin release formal) — *terceros* |
-| Tipo | Gateway **single-channel** (un solo canal) — solo demos/educación |
-| Protocolo hacia el NS | **Semtech UDP Packet Forwarder** → puerto **1700/UDP** |
-| Network Server | **ChirpStack v4** (Gateway Bridge, backend Semtech UDP) |
-| Región / canal | EU868 · canal 0 (**868.1 MHz**) · **SF9** · BW125 |
-| Admin | Interfaz web integrada en `http://<IP_gateway>:80` |
+> **En una frase:** montas tu **propio gateway** con una **TTGO ESP32 (SX1276)** y ves tu gateway
+> **online** en ChirpStack recibiendo los uplinks de tu nodo **a través de él**. Hasta ahora
+> dependías de un gateway ajeno; aquí el gateway también es **tuyo**.
+> **Plataforma:** TTGO ESP32 LoRa (SX1276) + firmware de terceros **ESP-1ch-Gateway**. **Ejemplo:**
+> **EU868**, canal 0 (**868.1 MHz**), **SF9**, `_STRICT_1CH`. Reenvía a ChirpStack por **Semtech UDP
+> (1700/UDP)**.
 
 > ℹ️ **Atribución.** ESP-1ch-Gateway es un proyecto **de terceros** de **Maarten Westenberg
 > (things4u)**, bajo licencia **MIT** — **no** forma parte de Semtech ni de radiosonda_PIcaro. Este
 > ejercicio **solo aporta la guía de integración con ChirpStack** y el script de alta por API
-> (aportación propia de radiosonda_PIcaro, Clear BSD). Descarga el firmware desde su repositorio
-> oficial; aquí no se redistribuye su código.
+> (aportación propia, Clear BSD). Descarga el firmware desde su repositorio oficial; aquí no se
+> redistribuye su código.
 
----
+## 🎯 Qué vas a conseguir
+Tu gateway registrado y **online** en ChirpStack, y los uplinks de tu nodo (p. ej. el TTGO+BMP280 del
+[ej.06](../06_ttgo-bmp280/)) llegando **a través de tu gateway**. En el arranque verás por serie la
+**línea del Gateway EUI**, y una línea `Up`/`rxpk` cada vez que capta un uplink:
 
-## ⚠️ Antes de empezar: qué es (y qué NO es) un gateway de 1 canal
+```
+Gateway EUI: AABBCCFFFE001122        <-- el tuyo será distinto (deriva de la MAC de tu ESP)
+WiFi connected, IP 192.168.1.60
+...
+Up 868.1 SF9BW125 ... rxpk           <-- una línea así por cada uplink captado
+```
+*(El formato exacto depende de la versión del firmware; tómalo como orientación.)*
 
-Un gateway LoRaWAN "de verdad" lleva un concentrador (SX1301/SX1302) que escucha **8 canales y
-todos los factores de dispersión (SF) a la vez**. Este montaje usa **un único SX1276**, así que
-solo puede escuchar **una frecuencia**:
+## ⚠️ Qué es (y qué NO es) un gateway de 1 canal
+Un gateway "de verdad" lleva un concentrador (SX1301/SX1302) que escucha **8 canales y todos los SF a
+la vez**. Este montaje usa **un único SX1276**, así que solo oye **una frecuencia**. Ten presente:
 
 - ✅ **Sirve para aprender** el flujo completo nodo → gateway → ChirpStack con hardware barato.
-- ❌ **No es LoRaWAN-compliant**: escucha **1 de 8 canales** → si los nodos saltan de canal (channel
-  hopping / ADR), **pierde ~7/8 de los uplinks**.
-- ❌ **No es para producción**. Aguanta bien **2–3 nodos**; con más hay colisiones y pérdidas.
-- ⛔ **Bloqueado en TTN público** (The Things Network prohíbe gateways de 1 canal). **Pero funciona
-  perfectamente contra tu ChirpStack privado**, que es justo nuestro caso.
-- 🕰️ Firmware **sin mantenimiento desde 2021** (v6.2.8): puede que tengas que **fijar versiones
-  antiguas** de librerías (ArduinoJson 6.x, etc.) para que compile.
-- 🧠 En **ESP8266** la RAM (~80 KB) es crítica y el gateway se reinicia bajo carga → **usa ESP32**
-  (la TTGO ya lo es).
+- ❌ **No es LoRaWAN-compliant** ni para producción: escucha **1 de 8 canales** → si el nodo salta de
+  canal (hopping/ADR) **pierde ~7/8 de los uplinks**. Aguanta **2–3 nodos**; con más, colisiones.
+- ⛔ **Bloqueado en TTN público**, pero **funciona perfectamente contra tu ChirpStack privado**
+  (nuestro caso).
+- 🕰️ Firmware **sin mantenimiento desde 2021** (v6.2.8) → puede exigir **fijar librerías antiguas**
+  para compilar (ver [`VERSIONS.md`](VERSIONS.md)). Usa **ESP32** (la TTGO ya lo es), no ESP8266.
 
-> **Regla de oro del ejercicio:** para que este gateway oiga a un nodo, **el nodo y el gateway
-> deben coincidir en región, frecuencia y (idealmente) SF**. Todo lo demás que "no funcione"
-> suele reducirse a esto.
+> **Regla de oro:** para que este gateway oiga a un nodo, **nodo y gateway deben coincidir en región,
+> frecuencia y SF**. Casi todo lo que "no funciona" se reduce a esto.
 
----
+## 📡 Aviso de banda (este curso usa dos bandas)
+El gateway de ejemplo está en **EU868**, canal 0. Como es de **1 canal, solo recibe UNA frecuencia**,
+así que **solo sirve a nodos de su misma banda fijados a ese canal/SF**:
 
-## 1. Requisitos y descarga del firmware
+| Quieres servir a… | Qué hacer |
+|---|---|
+| Un nodo **EU868** | Úsalo tal cual (868.1 MHz, SF9) y **fija el nodo a ese canal/SF**. |
+| Un nodo **US915** (ej.05/06) | Compila el firmware con `#define US902_928 1` y un `_CHANNEL` de la **sub-banda 2 (FSB2, ~903.9–905.3 MHz)**, y **fija el nodo a ese mismo canal/SF**. |
+| La **radiosonda US915 del [ej.08](../08_radiosonda_picaro/)** (multicanal) | ⛔ **No funciona** con este gateway de 1 canal (salta por toda la banda) salvo que la fijes a 1 canal. Para ella usa un **gateway multicanal US915**. |
 
-- **Placa:** TTGO ESP32 LoRa (SX1276). En placas TTGO/Heltec el radio **ya viene cableado
-  internamente** al ESP32: no tienes que soldar nada.
-- **Entorno:** **Arduino IDE** con soporte ESP32, o **PlatformIO** (recomendado; el repo trae
-  `platformio.ini`).
-- **Firmware (terceros):** clona el repositorio oficial
-  **https://github.com/things4u/ESP-1ch-Gateway** y **fija el commit probado** (el repo **no publica
-  releases ni tags**, así que se ancla por SHA — ver [`VERSIONS.md`](VERSIONS.md)). El sketch
-  principal es `src/ESP-sc-gway.ino`.
-- **Dependencias:** casi todas van **vendorizadas** en `lib/` del propio repo (ArduinoJson,
-  WiFiManager, TinyGPS++, Streaming, Time, OLED SSD1306, aes, gBase64…), así que al fijar el commit
-  quedan congeladas; la única que PlatformIO descarga aparte es `sandeepmistry/LoRa 0.8.0`. Ver
-  [`VERSIONS.md`](VERSIONS.md).
-- **Red:** el gateway y el host de ChirpStack deben verse por IP (misma LAN o rutado), con el
-  **puerto 1700/UDP** abierto en el host de ChirpStack.
+## 🧰 Antes de empezar
+Marca esta lista **antes** de seguir:
 
+- [ ] **ChirpStack corriendo** → [Ejercicio 00](../00_chirpstack-docker/) · [Wiki: ChirpStack en 5 min](https://github.com/ovelazquezj/radiosonda_PIcaro/wiki/ChirpStack-en-5-minutos)
+- [ ] **Tu `TOKEN`** (API key de ChirpStack) y los IDs del stack → [`../COMMON_CHIRPSTACK_API.md`](../COMMON_CHIRPSTACK_API.md).
+- [ ] **Hardware:** TTGO ESP32 LoRa (SX1276) — la misma placa de los ej.05/06 — y su cable USB. El radio ya viene cableado internamente: no sueldas nada. ⚠️ **No la enciendas sin antena.**
+- [ ] **Entorno de compilación:** **PlatformIO** (recomendado; el repo trae `platformio.ini`) o **Arduino IDE** con el core **ESP32** → [Wiki: Requisitos e instalación](https://github.com/ovelazquezj/radiosonda_PIcaro/wiki/How-To-Requisitos-e-instalación).
+- [ ] **Red:** gateway y host de ChirpStack en la **misma LAN** (o rutados), con el **puerto 1700/UDP abierto** en el host de ChirpStack.
+
+> ℹ️ Los `./*.sh` corren en **bash** (Linux/macOS o **WSL** en Windows). Los valores de ejemplo de
+> esta guía son **EU868, canal 0 (868.1 MHz), SF9**; para US915 lee el [aviso de banda](#-aviso-de-banda-este-curso-usa-dos-bandas).
+
+## 🪜 Paso a paso
+
+### 1. Descarga y fija el firmware (terceros)
+El repositorio **no publica releases ni tags**, así que se ancla por **SHA de commit**:
 ```bash
 git clone https://github.com/things4u/ESP-1ch-Gateway.git
 cd ESP-1ch-Gateway
 git checkout 3b023527bd23cf33657dc7ffdf5bedaf1b85cdcc   # v6.2.8 (2021-10-18), sin release formal
-# Compila con PlatformIO (recomendado; env de TTGO por USB en VERSIONS.md) o abre
-# src/ESP-sc-gway.ino en Arduino IDE.
 ```
+**Salida esperada:** `HEAD is now at 3b02352 ... Version 6.2.8: TTN3`. El sketch principal es
+`src/ESP-sc-gway.ino`. Las dependencias van **vendorizadas** en `lib/`; solo `sandeepmistry/LoRa
+0.8.0` se resuelve aparte (ver [`VERSIONS.md`](VERSIONS.md)).
 
----
+### 2. Configura `configGway.h` y `configNode.h`
+Toda la configuración vive en esas dos cabeceras de `src/`. Copia/adapta los `#define` de
+[`configGway.example.h`](configGway.example.h) (radio/región/canal) y de
+[`configNode.example.h`](configNode.example.h) (WiFi/identidad/ubicación). Los imprescindibles:
 
-## 2. Configuración (`configGway.h` y `configNode.h`)
+| Parámetro | Fichero | Valor (ejemplo) | Significado |
+|-----------|---------|-----------------|-------------|
+| `EU863_870` | `configGway.h` | `1` | Plan **EU868** (para US915: `US902_928 1`) |
+| `_CHANNEL` | `configGway.h` | `0` | Canal único → **868.1 MHz** en EU |
+| `_SPREADING` | `configGway.h` | `SF9` | SF por defecto (debe coincidir con el nodo) |
+| `_STRICT_1CH` | `configGway.h` | `1` | Downlinks (ACK/Join Accept) en el **mismo canal/SF** del uplink — **clave** en 1 canal |
+| `_TTNSERVER` | `configGway.h` | `"<IP_DE_CHIRPSTACK>"` | **Servidor → apúntalo a tu ChirpStack** (ruta simple) |
+| `_TTNPORT` | `configGway.h` | `1700` | Puerto **UDP** (Semtech UDP / Gateway Bridge) |
+| `_SERVER` | `configGway.h` | `1` | Interfaz web de admin en `http://<IP>:80` |
+| `wpa[]` | `configNode.h` | `{ "SSID", "clave" }` | Tu **WiFi** (en el repo viene **vacío** → el gateway no conecta) |
+| `_LAT`/`_LON`/`_ALT` | `configNode.h` | tu ubicación | ChirpStack la muestra en el mapa |
 
-Toda la configuración vive en dos cabeceras dentro de `src/`. Los `#define` clave y sus valores
-para nuestro caso (TTGO ESP32, EU868, canal 0, apuntando a ChirpStack) están recogidos en
-[`configGway.example.h`](configGway.example.h) — cópialos/adáptalos sobre tu `configGway.h`.
+> 🔧 **Pines del radio (`_PIN_OUT`), env de PlatformIO y TTGO-vs-Heltec:** el detalle está en
+> [`VERSIONS.md`](VERSIONS.md). En resumen: para **TTGO** pon **`_PIN_OUT 4`** (el default del repo es
+> `1`, de ESP8266); Heltec V2 = `5`.
 
-**`configGway.h` — parámetros imprescindibles:**
+> **Ruta hacia ChirpStack (elige UNA):** **(a) simple** — pon `_TTNSERVER`/`_TTNPORT` en
+> `configGway.h` con la IP de tu ChirpStack y **1700/UDP** (lo recomendado aquí); **(b) secundario** —
+> conserva `_TTNSERVER` y **descomenta `_THINGSERVER`/`_THINGPORT` en `configNode.h`** para enviar a
+> ChirpStack *además* del primario. No mezcles las dos sin querer.
 
-| Parámetro | Valor para este ejercicio | Significado |
-|-----------|---------------------------|-------------|
-| `_PIN_OUT` | **`4`** | Pines del radio para **TTGO** (Heltec V2 = `5`). **Default del repo = `1` (ESP8266) → cámbialo** |
-| `EU863_870` | `1` | Plan de frecuencias **EU868** (usa `US902_928` si tu región es US915) |
-| `_CHANNEL` | `0` | Canal que se escucha → **868.1 MHz** en EU |
-| `_SPREADING` | `SF9` | Factor de dispersión por defecto |
-| `_CAD` | `1` | Escucha **todos los SF** en esa frecuencia (Channel Activity Detection) |
-| `_STRICT_1CH` | `1` | Devuelve los **downlinks en el mismo canal/SF** del uplink (clave para ACK/join) |
-| `_TTNSERVER` | `"<IP_DE_CHIRPSTACK>"` | **Servidor primario → apúntalo a tu ChirpStack** (lo más simple) |
-| `_TTNPORT` | `1700` | Puerto **UDP** (Semtech UDP / Gateway Bridge) |
-| `_SERVER` | `1` | Activa la **interfaz web** de administración (`http://<IP>:80`) |
-
-> 🧩 **TTGO vs Heltec (y el `board` de PlatformIO).** El repo original compila para **Heltec**
-> (`board = heltec_wifi_lora_32`), pero **los pines del radio los decide `_PIN_OUT`** (GPIOs fijados
-> en `loraModem.h`), **no** el `board` de PlatformIO. El firmware soporta las dos: **`_PIN_OUT 4` =
-> TTGO**, **`_PIN_OUT 5` = Heltec V2**; solo difieren en DIO1/DIO2 (usados para el CAD), así que usa
-> el número correcto. El env activo del repo **no** fija `_PIN_OUT` → cae al default `1` (ESP8266);
-> ponlo a `4` (ver [`VERSIONS.md`](VERSIONS.md)).
-
-**`configNode.h` — WiFi, identidad y ubicación** (ver [`configNode.example.h`](configNode.example.h)):
-
-- **WiFi:** rellena el array `wpa[]` con tu SSID/clave, p.ej. `wpas wpa[] = { { "MI_SSID", "MI_CLAVE" } };`
-  (en el repo viene **vacío**). Alternativa: portal por AP con `_WIFIMANAGER=1`.
-- **Identidad:** `_DESCRIPTION` (nombre), `_EMAIL`, `_PLATFORM` (pon `"ESP32"` para la TTGO).
-- **Ubicación:** `_LAT` / `_LON` / `_ALT` (ChirpStack la muestra en el mapa).
-
-> **Dos rutas para enviar a ChirpStack** (elige una): **(a)** *simple* — pon `_TTNSERVER` (en
-> `configGway.h`) con la IP de tu ChirpStack; **(b)** *como secundario* — deja `_TTNSERVER` como
-> esté y **descomenta `_THINGSERVER`/`_THINGPORT` en `configNode.h`**. En ambos casos, **1700/UDP**.
-
----
-
-## 3. Flashear y leer el **Gateway EUI real**
-
-1. Compila y flashea `src/ESP-sc-gway.ino`. **Ojo:** el `platformio.ini` del repo trae **un único
-   entorno activo** (`[env:Gateway_38]`) para **Heltec por OTA**; para **TTGO por USB** usa el
-   entorno adaptado de [`VERSIONS.md`](VERSIONS.md) (`board = ttgo-lora32-v1`,
-   `upload_protocol = esptool`, `upload_port = COMx`). Con Arduino IDE: placa *TTGO LoRa32*, puerto COM correcto.
-2. Abre el **monitor serie a 115200**. En el arranque el firmware **genera el Gateway EUI (8 bytes)
-   a partir de la MAC del ESP** y lo imprime (también aparece en la web `http://<IP>:80`).
-
+### 3. Compila, flashea y lee el **Gateway EUI real**
+Compila `src/ESP-sc-gway.ino` y flashea por USB. El `platformio.ini` del repo trae un único entorno
+(Heltec por OTA); para **TTGO por USB** usa el entorno adaptado de [`VERSIONS.md`](VERSIONS.md)
+(`board = ttgo-lora32-v1`, `upload_protocol = esptool`, `-D _PIN_OUT=4`). Abre el **monitor serie a
+115200**.
+**Salida esperada** (algo así): WiFi conectado y la **línea del Gateway EUI** (lo genera el firmware
+a partir de la MAC del ESP; también aparece en `http://<IP>:80`):
+```
+WiFi connected, IP 192.168.1.60
+Gateway EUI: AABBCCFFFE001122     <-- el tuyo será distinto; anótalo
+```
 > 🔑 **NO inventes el EUI.** Léelo del arranque serie o de la web y **regístralo tal cual** en
-> ChirpStack. Si registras un EUI distinto del que emite el gateway, ChirpStack lo verá **offline**
-> aunque el gateway esté enviando.
+> ChirpStack. Si registras un EUI distinto del que emite, ChirpStack lo verá **offline** aunque esté
+> enviando.
 
----
-
-## 4. Dar de alta el gateway en ChirpStack v4
-
-ChirpStack recibe por el **ChirpStack Gateway Bridge** con el **backend Semtech UDP (1700/UDP)**,
-que es exactamente lo que emite este firmware. Solo tienes que **registrar el gateway** (una vez):
-
-**Opción A — por la UI:** `Gateways → Add gateway`, pega el **Gateway EUI** (paso 3), ponle nombre
-y guárdalo. Debe pasar a **online** en segundos si hay tráfico/keep-alive.
-
-**Opción B — por API REST (reproducible):**
+### 4. Registra el gateway en ChirpStack
+ChirpStack recibe por el **Gateway Bridge** con el backend **Semtech UDP (1700/UDP)**, justo lo que
+emite este firmware. Solo hay que **registrar el gateway** (una vez):
 ```bash
-export TOKEN="tu_api_key"           # Tenant -> API keys en la web de ChirpStack
-./register_gateway.sh AABBCCDDEEFF0011     # <-- el EUI real que imprime el gateway
+# desde specs/exercises/07_esp-1ch-gateway/
+export TOKEN="tu_api_key"                  # web ChirpStack -> Tenant -> API keys
+./register_gateway.sh AABBCCFFFE001122     # <-- el EUI real del paso 3
 ```
-Ver setup del token e IDs del stack en [`../COMMON_CHIRPSTACK_API.md`](../COMMON_CHIRPSTACK_API.md).
+**Salida esperada:**
+```
+== Gateway aabbccfffe001122 en tenant f8a271ec-... ==
+  creando gateway 'esp-1ch-gateway'...
+  creado.
+== LISTO ==
+   Gateway aabbccfffe001122 registrado en ChirpStack.
+```
+*(Alternativa por UI: `Gateways → Add gateway`, pega el EUI y guarda.)* En **Gateways** debe pasar a
+**online** en segundos si hay tráfico/keep-alive.
 
----
+### 5. Comprueba que llegan los uplinks
+Enciende un nodo que **coincida en banda, canal y SF** con el gateway (ver el [aviso de banda](#-aviso-de-banda-este-curso-usa-dos-bandas)
+y la [nota sobre fijar el nodo](#-fijar-un-nodo-multicanal-a-1-canal)).
+**Salida esperada:**
+- **Serie del gateway:** una línea `Up`/`rxpk` por cada uplink captado.
+- **ChirpStack → Gateways:** tu gateway **online**, *last seen* reciente.
+- **ChirpStack → tu app → device → LoRaWAN frames:** los uplinks del nodo (p. ej. el BMP280 del
+  ej.06 en fPort 2) llegando **por tu gateway**.
 
-## 5. Fijar los nodos a **1 canal + 1 SF** (paso crítico)
+### 📌 Fijar un nodo multicanal a 1 canal
+Un nodo LoRaWAN normal reparte sus envíos entre 8 canales; como este gateway solo oye uno, hay que
+**fijar el nodo a esa misma frecuencia/SF** y **desactivar el ADR/hopping**:
+- **Nodos LMIC** (ej.05/06): `LMIC_disableChannel(i)` para todos menos el canal elegido,
+  `LMIC_setDrTxpow(DR_SF9, 14)` y `LMIC_setAdrMode(0)`.
+- **Nodo LR1110** (ej.02): configura un **canal/SF único** en el stack.
 
-Un nodo LoRaWAN normal reparte sus envíos entre 8 canales y varios SF. Como el gateway solo
-escucha **uno**, hay que **fijar cada nodo** a esa misma frecuencia/SF (ej.: **868.1 MHz, SF9**):
+Con `_STRICT_1CH=1` el gateway devuelve los downlinks (ACK/Join Accept) en ese mismo canal.
+💡 Si el join OTAA falla, prueba primero **ABP** (el nodo ya está activado y validas antes el camino de datos).
 
-- **Nodos TTGO (Arduino/LMIC — ej. 05/06):** deshabilita todos los canales salvo el 0 y fija el
-  data rate (para que no haya ADR/hopping):
-  ```c
-  for (int i = 1; i < 9; i++) LMIC_disableChannel(i);   // deja solo el canal 0 (868.1 MHz)
-  LMIC_setDrTxpow(DR_SF9, 14);                            // SF9 fijo
-  LMIC_setAdrMode(0);                                     // sin ADR
-  ```
-- **Nodo LR1110 (ej. 02, Nucleo-L476RG):** configura el stack para transmitir en esa **misma
-  frecuencia y SF única** (sin salto de canal). En EU868 el canal por defecto 868.1/SF ya suele
-  coincidir; verifica en la traza UART la frecuencia real de cada uplink.
-- **`_STRICT_1CH = 1`** hace que el gateway **devuelva los downlinks en el mismo canal/SF del
-  uplink** (en vez de las ventanas RX1/RX2 estándar). Es lo que permite que lleguen **ACKs,
-  downlinks y el Join Accept** a un nodo que solo escucha un canal.
+## ✅ Cómo saber que funcionó
+- [ ] La serie del gateway imprime la **línea del Gateway EUI** y **WiFi conectado**.
+- [ ] En **ChirpStack → Gateways** tu gateway está **online** con *last seen* reciente.
+- [ ] Cuando transmite el nodo, la serie del gateway muestra una línea **`Up`/`rxpk`**.
+- [ ] En **LoRaWAN frames** del device ves sus uplinks llegando **a través de tu gateway**.
 
-> 💡 **Empieza con ABP**, no con OTAA. En un gateway de 1 canal el join OTAA (ida + Join Accept en
-> ventana RX) es la parte más frágil. Con **ABP** el nodo ya está "activado" y validas antes el
-> camino de datos. Cuando el enlace ABP funcione, prueba OTAA con `_STRICT_1CH=1`.
-
----
-
-## 6. Qué observar
-
-- **Monitor serie del gateway:** arranque, WiFi conectado, **Gateway EUI**, y líneas de
-  `Up`/`rxpk` cada vez que capta un uplink.
-- **Web del gateway** (`http://<IP>:80`): estadísticas, último paquete, y ajuste en caliente de
-  SF/canal/nivel de debug.
-- **ChirpStack → Gateways:** el gateway en **online** con *last seen* reciente.
-- **ChirpStack → tu aplicación → device → LoRaWAN frames:** los uplinks del nodo (p. ej. el BMP280
-  del ej. 02 en fPort 10, o el del ej. 06 en fPort 2) llegando **a través de tu gateway**.
-
----
-
-## 7. Solución de problemas
-
+## 🛠️ Si algo falla
 | Síntoma | Causa probable | Arreglo |
-|---------|----------------|---------|
-| El gateway ve `rxpk` pero **ChirpStack no lo registra** | EUI mal registrado, o 1700/UDP bloqueado | Registra el **EUI real** (paso 3); abre **1700/UDP** en el host de ChirpStack |
-| **Gateway offline** en ChirpStack | `_THINGSERVER`/`_THINGPORT` mal, firewall, o sin tráfico | Revisa IP/puerto, ping al host, firewall del 1700/UDP |
-| **No llega nada de un nodo** | El nodo hace **hopping/ADR** o usa **otro SF/canal** | Fija el nodo a canal 0 + SF9 (paso 5); desactiva ADR |
-| Solo llegan **algunos** uplinks | Es lo esperado en 1 canal si el nodo salta de canal | Fija el nodo; asume la limitación del single-channel |
-| **No hace join (OTAA)** | Join Accept no llega a la ventana RX | Usa `_STRICT_1CH=1`; prueba primero **ABP** |
-| El firmware **no compila** | Librerías más nuevas que 2021 | Fija versiones antiguas (ArduinoJson 6.x, WiFiManager) |
+|---|---|---|
+| **Gateway offline** en ChirpStack | EUI mal registrado, 1700/UDP bloqueado, o firmware apuntando a otra IP | Registra el **EUI real** (paso 3); abre **1700/UDP** en el host; en la ruta simple, `_TTNSERVER` = IP de ChirpStack, `_TTNPORT 1700` |
+| El gateway ve `rxpk` pero **ChirpStack no lo registra** | EUI distinto del que emite, o puerto cerrado | Mismo arreglo: EUI real + 1700/UDP abierto |
+| **No llega nada de un nodo** | El nodo hace **hopping/ADR** o usa **otro SF/canal/banda** | Fija el nodo a ese canal + SF y desactiva ADR ([nota](#-fijar-un-nodo-multicanal-a-1-canal)); comprueba la banda ([aviso](#-aviso-de-banda-este-curso-usa-dos-bandas)) |
+| Solo llegan **algunos** uplinks | Esperado en 1 canal si el nodo salta de canal | Fija el nodo; asume la limitación del single-channel |
+| **No hace join (OTAA)** | El Join Accept no cae en la ventana RX | Usa `_STRICT_1CH=1`; prueba primero **ABP** |
+| El firmware **no compila** | Librerías más nuevas que 2021, o `_PIN_OUT` al default 1 | Fija versiones antiguas y pon `_PIN_OUT 4` (TTGO) — ver [`VERSIONS.md`](VERSIONS.md) |
+
+## ➡️ Navegación
+- ⬅️ Vienes de los nodos: [Ejercicio 05](../05_ttgo-lora32/) · [Ejercicio 06 · TTGO+BMP280](../06_ttgo-bmp280/)
+- ➡️ Siguiente: [Ejercicio 08 · Radiosonda PICARO](../08_radiosonda_picaro/)
+- 🏠 [Índice de ejercicios](../README.md) · 📚 [Wiki](https://github.com/ovelazquezj/radiosonda_PIcaro/wiki)
+
+## 📎 Referencia
+- **Archivos:** [`configGway.example.h`](configGway.example.h) (radio/región/canal/`_STRICT_1CH`) · [`configNode.example.h`](configNode.example.h) (WiFi/identidad/ubicación) · [`register_gateway.sh`](register_gateway.sh) (alta por API, idempotente) · [`VERSIONS.md`](VERSIONS.md) (commit exacto + `_PIN_OUT`/PlatformIO/librerías).
+- **Guía común:** [ChirpStack API](../COMMON_CHIRPSTACK_API.md).
+- **Terceros:** [ESP-1ch-Gateway (things4u)](https://github.com/things4u/ESP-1ch-Gateway) · [ChirpStack — conectar gateway](https://www.chirpstack.io/docs/guides/connect-gateway.html) · [ChirpStack — Semtech UDP (1700)](https://www.chirpstack.io/docs/chirpstack-gateway-bridge/backends/semtech-udp.html)
 
 ---
-
-## 8. Enlaces útiles
-
-- Repositorio (terceros): **https://github.com/things4u/ESP-1ch-Gateway**
-- Guía de configuración (things4u): https://things4u.github.io/Projects/SingleChannelGateway/UserGuide/3_Configuration.html
-- ChirpStack — conectar un gateway: https://www.chirpstack.io/docs/guides/connect-gateway.html
-- ChirpStack — backend Semtech UDP (puerto 1700): https://www.chirpstack.io/docs/chirpstack-gateway-bridge/backends/semtech-udp.html
-- Issue de integración con ChirpStack: https://github.com/things4u/ESP-1ch-Gateway/issues/98
-
----
-
-## Archivos
-
-```
-README.md                  este documento (guía del ejercicio)
-configGway.example.h       #define clave para configGway.h (TTGO, EU868, canal 0, SF9, _STRICT_1CH)
-configNode.example.h       WiFi (wpa[]), identidad y ubicacion del gateway (para configNode.h)
-register_gateway.sh        alta del gateway en ChirpStack v4 por API REST (idempotente)
-VERSIONS.md                commit exacto del firmware + versiones de librerias que compilan
-```
+> 📄 Material educativo bajo **CC BY 4.0** © **Omar Velazquez** — ver [`LICENSE-CC-BY-4.0.md`](../../../LICENSE-CC-BY-4.0.md).
