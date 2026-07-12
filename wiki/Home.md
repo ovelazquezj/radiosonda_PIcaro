@@ -13,6 +13,19 @@ ejercicios.
 5. **[Cómo usar el proyecto](Cómo-usar-el-proyecto)** — la ruta de ejercicios 00 → 08.
 6. **[Glosario y recursos](Glosario-y-recursos)** — términos y enlaces oficiales.
 
+## 📟 Los ejercicios (00 → 08)
+La ruta práctica, de lo simple a lo avanzado; cada uno es **autocontenido** (README, credenciales,
+provisión y consumo). Recorrido guiado en **[Cómo usar el proyecto](Cómo-usar-el-proyecto)**.
+- **[00 · ChirpStack](Ejercicio-00-ChirpStack)** — levantar el Network Server en Docker.
+- **[01 · Periodical Uplink](Ejercicio-01-Periodical-Uplink)** — tu primer **join OTAA** y ver uplinks.
+- **[02 · BMP280 + GNSS](Ejercicio-02-BMP280-GNSS)** — datos de **sensor** + geolocalización, con codec.
+- **[03 · Hardware Modem](Ejercicio-03-Hardware-Modem)** — módem LoRaWAN controlado por un **host**.
+- **[04 · Wi-Fi Region Detection](Ejercicio-04-Wi-Fi-Region-Detection)** — la capacidad **Wi-Fi** del LR1110 (solo UART).
+- **[05 · TTGO LoRa32](Ejercicio-05-TTGO-LoRa32)** — integrar un **nodo de terceros** (ESP32/LMIC).
+- **[06 · TTGO + BMP280](Ejercicio-06-TTGO-BMP280)** — un **sensor real** en el TTGO enviando cada minuto.
+- **[07 · Gateway de 1 canal](Ejercicio-07-Gateway-1-canal)** — **monta tu propio gateway** (TTGO) para recibir a los nodos.
+- **[08 · Radiosonda PICARO](Ejercicio-08-Radiosonda-PICARO)** — **LilyGo T-Beam** (GPS + batería) por RadioLib → ChirpStack.
+
 ## 🔧 Guías prácticas (How-To)
 ¿Manos a la obra? Estas guías te llevan paso a paso:
 1. **[Requisitos e instalación](How-To-Requisitos-e-instalación)** — instala toolchain, Docker, Arduino y herramientas.
