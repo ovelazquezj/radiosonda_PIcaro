@@ -5,7 +5,7 @@ Este archivo cubre **el material educativo y de documentación original** de **r
 
 ## Obra y atribución
 
-**El material educativo de radiosonda_PIcaro** © 2026 por **Omar Velazquez
+**El material educativo de radiosonda_PIcaro** © 2025–2026 por **Omar Velazquez
 \<ovelazquezj@gmail.com\>** está licenciado bajo **Creative Commons Attribution 4.0 International
 (CC BY 4.0)**.
 
