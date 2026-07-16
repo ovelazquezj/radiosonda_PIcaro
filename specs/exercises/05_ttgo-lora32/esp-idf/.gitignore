@@ -1,0 +1,8 @@
+# Artefactos de build de ESP-IDF
+build/
+sdkconfig
+sdkconfig.old
+
+# Component manager
+managed_components/
+dependencies.lock

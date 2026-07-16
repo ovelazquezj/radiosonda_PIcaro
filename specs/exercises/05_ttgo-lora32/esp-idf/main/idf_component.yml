@@ -1,0 +1,17 @@
+# Dependencias gestionadas por el ESP-IDF Component Manager.
+# Se descargan automaticamente en el primer `idf.py build` (a managed_components/).
+dependencies:
+  idf:
+    version: ">=5.0"
+
+  # Stack LoRaWAN + driver del radio SX1276.
+  # https://components.espressif.com/components/jgromes/radiolib
+  jgromes/radiolib:
+    version: ">=6.6.0"
+
+  # Driver del OLED SSD1306 (fuentes incluidas). Se referencia por git porque el
+  # repo es un proyecto de ejemplo; usamos solo su subcarpeta components/ssd1306.
+  # Si no quieres OLED, pon USE_OLED=0 en config.h y borra esta dependencia.
+  ssd1306:
+    git: https://github.com/nopnop2002/esp-idf-ssd1306.git
+    path: components/ssd1306

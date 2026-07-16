@@ -46,6 +46,10 @@ sketch usa este mapa de pines (definido en `sketches/TTGO_LoRaWAN_v3.ino`), corr
 
 OLED SSD1306 por I2C: **SDA=21, SCL=22** (dirección `0x3C`). **⚠️ Nunca enciendas la radio sin antena.**
 
+> 🧪 **¿Prefieres ESP-IDF nativo?** Hay una versión equivalente de este nodo en
+> [`esp-idf/`](esp-idf/) — mismo hardware y mismo device en ChirpStack, pero con **ESP-IDF v5** y
+> **RadioLib** (en vez de Arduino/LMIC). Se compila con `idf.py build flash monitor`.
+
 ## 🪜 Paso a paso
 
 ### 1. Instala core + librerías y configura la región de LMIC

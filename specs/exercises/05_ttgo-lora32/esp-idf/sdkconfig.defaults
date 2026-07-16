@@ -1,0 +1,16 @@
+# radiosonda_PIcaro — valores por defecto de sdkconfig para el TTGO ESP32 LoRa v1.
+# Se aplican en el primer `idf.py build`; puedes ajustarlos con `idf.py menuconfig`.
+
+# RadioLib necesita temporizacion sub-ms para acertar las ventanas RX1/RX2 de
+# LoRaWAN. Un tick de 1 kHz (1 ms) hace que vTaskDelay respete esos tiempos.
+CONFIG_FREERTOS_HZ=1000
+
+# El stack por defecto de app_main se queda corto con RadioLib + LoRaWAN.
+CONFIG_ESP_MAIN_TASK_STACK_SIZE=8192
+
+# Consola serie a 115200 baudios (igual que el sketch Arduino).
+CONFIG_ESP_CONSOLE_UART_BAUDRATE=115200
+
+# Componente OLED SSD1306 (nopnop2002): interfaz I2C y panel 128x64.
+CONFIG_I2C_INTERFACE=y
+CONFIG_SSD1306_128x64=y
