@@ -1,0 +1,35 @@
+# ============================================================================
+#  sdkconfig.defaults  -  valores por defecto del proyecto (ESP32-S3)
+# ----------------------------------------------------------------------------
+#  Estos valores se aplican al generar el sdkconfig la primera vez. Puedes
+#  cambiarlos con `idf.py menuconfig`. Doc: menuconfig / project configuration:
+#  https://docs.espressif.com/projects/esp-idf/en/v5.5.2/esp32s3/api-reference/kconfig.html
+# ============================================================================
+
+# --- Target y flash (el ESP32-S3FN8 del T-Beam Supreme trae 8 MB de flash) ---
+CONFIG_IDF_TARGET="esp32s3"
+CONFIG_ESPTOOLPY_FLASHSIZE_8MB=y
+CONFIG_ESPTOOLPY_FLASHMODE_DIO=y
+CONFIG_ESPTOOLPY_FLASHFREQ_80M=y
+
+# --- Tabla de particiones personalizada (ver partitions.csv) ---
+CONFIG_PARTITION_TABLE_CUSTOM=y
+CONFIG_PARTITION_TABLE_CUSTOM_FILENAME="partitions.csv"
+
+# --- Consola serie a 115200 (igual que el resto del curso) ---
+CONFIG_ESP_CONSOLE_UART_DEFAULT=y
+CONFIG_ESP_CONSOLE_UART_BAUDRATE=115200
+
+# --- Tarea principal con pila holgada (RadioLib + drivers) ---
+CONFIG_ESP_MAIN_TASK_STACK_SIZE=8192
+
+# --- FreeRTOS a 1 kHz para timing fino del planificador LoRaWAN ---
+CONFIG_FREERTOS_HZ=1000
+
+# --- FATFS con nombres largos (para el log CSV en la microSD, Fase 5) ---
+CONFIG_FATFS_LFN_HEAP=y
+CONFIG_FATFS_MAX_LFN=255
+
+# NOTA (Fase 0): la PSRAM (8 MB octal en el N8R8) se deja DESACTIVADA aqui a
+# proposito para minimizar riesgos del primer arranque. Se puede activar luego
+# con menuconfig -> Component config -> ESP PSRAM.

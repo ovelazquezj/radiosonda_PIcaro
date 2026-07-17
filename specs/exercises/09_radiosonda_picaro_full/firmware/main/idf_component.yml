@@ -1,0 +1,15 @@
+# ============================================================================
+#  idf_component.yml  -  dependencias gestionadas por el IDF Component Manager
+# ----------------------------------------------------------------------------
+#  RadioLib es el stack de radio/LoRaWAN. Es un componente OFICIAL del registro
+#  de Espressif, asi que el `idf.py build` lo descarga solo (no hay que portar
+#  nada). Trae su propio HAL para ESP-IDF (clase EspHal), que usamos para el
+#  SX1262 del T-Beam Supreme.
+#    Registro:  https://components.espressif.com/components/jgromes/radiolib
+#    Doc mgr:   https://docs.espressif.com/projects/idf-component-manager/en/latest/
+# ============================================================================
+dependencies:
+  idf:
+    version: ">=5.0"
+  jgromes/radiolib:
+    version: "^7.7.1"

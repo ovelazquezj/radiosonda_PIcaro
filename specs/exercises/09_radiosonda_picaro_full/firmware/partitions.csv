@@ -1,0 +1,13 @@
+# ============================================================================
+#  partitions.csv  -  tabla de particiones (flash 8 MB)
+# ----------------------------------------------------------------------------
+#  - nvs:      guarda los "nonces"/sesion LoRaWAN de RadioLib (para no repetir
+#              DevNonce entre reinicios) y config. Ver Fase 3.
+#  - factory:  la aplicacion (RadioLib + drivers). 3 MB sobra.
+#  Doc: https://docs.espressif.com/projects/esp-idf/en/v5.5.2/esp32s3/api-guides/partition-tables.html
+#  NOTA: la microSD (Fase 5) es almacenamiento EXTERNO (FAT), no una particion.
+# ============================================================================
+# Name,   Type, SubType,  Offset,   Size,   Flags
+nvs,      data, nvs,      0x9000,   0x6000,
+phy_init, data, phy,      0xf000,   0x1000,
+factory,  app,  factory,  0x10000,  0x300000,

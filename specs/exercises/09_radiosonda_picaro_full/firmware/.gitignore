@@ -1,0 +1,7 @@
+# Artefactos generados por ESP-IDF (no se versionan).
+build/
+managed_components/
+sdkconfig
+sdkconfig.old
+dependencies.lock
+.cache/
