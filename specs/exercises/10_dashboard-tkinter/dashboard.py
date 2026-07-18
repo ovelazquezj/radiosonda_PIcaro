@@ -106,15 +106,41 @@ class Dashboard:
 
         self._build_topbar()
         self._build_linkstrip()
-        body = tk.Frame(root, bg=T.BG); body.pack(fill="both", expand=True, padx=8, pady=(0, 8))
-        self._build_panels(body)     # 3 columnas: Power | Environment | GNSS
-        self._build_middle(body)     # Trend | Position Track (50/50, area principal)
-        self._build_log(body)
+
+        # Zona de contenido con SCROLL vertical (la barra superior y LINK quedan
+        # fijos arriba). Asi el EVENT LOG del fondo nunca se trunca: se scrollea.
+        wrap = tk.Frame(root, bg=T.BG); wrap.pack(fill="both", expand=True)
+        self._scan = tk.Canvas(wrap, bg=T.BG, highlightthickness=0)
+        vs = ttk.Scrollbar(wrap, orient="vertical", command=self._scan.yview)
+        self._scan.configure(yscrollcommand=vs.set)
+        vs.pack(side="right", fill="y")
+        self._scan.pack(side="left", fill="both", expand=True)
+        body = tk.Frame(self._scan, bg=T.BG)
+        self._body_id = self._scan.create_window((0, 0), window=body, anchor="nw")
+        body.bind("<Configure>", lambda e: self._scan.configure(scrollregion=self._scan.bbox("all")))
+        self._scan.bind("<Configure>", lambda e: self._scan.itemconfig(self._body_id, width=e.width))
+        self._scan.bind_all("<MouseWheel>", self._on_wheel)
+
+        inner = tk.Frame(body, bg=T.BG); inner.pack(fill="both", expand=True, padx=8, pady=(6, 8))
+        self._build_panels(inner)    # 3 columnas: Power | Environment | GNSS
+        self._build_middle(inner)    # Trend | Position Track (50/50)
+        self._build_log(inner)
 
         self._start_ingest()
         self.root.after(150, self._poll)
         self.root.after(1000, self._tick)
         self.root.protocol("WM_DELETE_WINDOW", self._on_close)
+
+    def _on_wheel(self, e):
+        """Rueda del raton: scrollea el contenido, salvo si el cursor esta sobre
+        el mapa (ahi la rueda debe hacer zoom del mapa)."""
+        try:
+            w = self.root.winfo_containing(e.x_root, e.y_root)
+            if self.map is not None and w is not None and str(w).startswith(str(self.map)):
+                return
+        except Exception:
+            pass
+        self._scan.yview_scroll(int(-e.delta / 120), "units")
 
     # ---------------- UI ----------------
     def _panel(self, parent, title):
@@ -183,7 +209,11 @@ class Dashboard:
         self.g_sat.pack(anchor="w", padx=10, pady=(0, 8))
 
     def _build_middle(self, parent):
-        mid = tk.Frame(parent, bg=T.BG); mid.pack(fill="both", expand=True, pady=(8, 0))
+        # Altura fija: dentro del area scrollable no hay "expand" vertical, asi
+        # que fijamos el alto de Trend|Map para que ocupen su mitad cada uno.
+        wrap = tk.Frame(parent, bg=T.BG, height=400); wrap.pack(fill="x", pady=(8, 0))
+        wrap.pack_propagate(False)
+        mid = tk.Frame(wrap, bg=T.BG); mid.pack(fill="both", expand=True)
         mid.columnconfigure(0, weight=1, uniform="m")
         mid.columnconfigure(1, weight=1, uniform="m")
         mid.rowconfigure(0, weight=1)
@@ -228,14 +258,18 @@ class Dashboard:
 
     def _build_log(self, parent):
         outer, lg = self._panel(parent, "EVENT LOG"); outer.pack(fill="x", pady=(8, 0))
+        holder = tk.Frame(lg, bg=T.PANEL); holder.pack(fill="both", expand=True, padx=8, pady=8)
         cols = ("utc", "fcnt", "temp", "press", "batt", "rssi", "snr", "gps")
         heads = ("UTC", "fCnt", "T°C", "hPa", "Bat%", "RSSI", "SNR", "GPS")
         widths = (150, 60, 70, 80, 60, 70, 60, 90)
-        self.tree = ttk.Treeview(lg, columns=cols, show="headings", height=6)
+        self.tree = ttk.Treeview(holder, columns=cols, show="headings", height=8)
+        sb = ttk.Scrollbar(holder, orient="vertical", command=self.tree.yview)
+        self.tree.configure(yscrollcommand=sb.set)
+        sb.pack(side="right", fill="y")
+        self.tree.pack(side="left", fill="both", expand=True)
         for c, h, w in zip(cols, heads, widths):
             self.tree.heading(c, text=h)
             self.tree.column(c, width=w, anchor="center")
-        self.tree.pack(fill="x", padx=8, pady=8)
 
     # ---------------- Ingesta ----------------
     def _on_record(self, rec):      # llamado desde el hilo de ingesta
