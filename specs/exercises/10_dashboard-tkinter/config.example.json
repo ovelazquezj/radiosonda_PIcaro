@@ -1,0 +1,11 @@
+{
+  "mode": "sim",
+  "mqtt": { "host": "localhost", "port": 1883 },
+  "app_id": "f0881005-2b70-4c42-a128-b89c731e167e",
+  "dev_eui": "",
+  "db_path": "picaro_telemetry.db",
+  "default_window": "1 h",
+  "sim_period_s": 2.0,
+  "replay_period_s": 0.5,
+  "map_start": { "lat": 21.9337, "lon": -102.2983, "zoom": 13 }
+}

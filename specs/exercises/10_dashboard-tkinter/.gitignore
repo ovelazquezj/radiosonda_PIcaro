@@ -1,0 +1,5 @@
+# Python / local
+__pycache__/
+*.pyc
+config.json      # copia local del alumno (con sus IDs); se versiona config.example.json
+*.db             # bases de datos SQLite de telemetria (se generan al correr)

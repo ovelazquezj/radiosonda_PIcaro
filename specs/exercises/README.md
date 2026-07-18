@@ -45,6 +45,9 @@ Para crear un ejercicio nuevo, copia [`_PLANTILLA/`](_PLANTILLA/) y rellena.
 > - **Ejercicio 09 → LilyGo T-Beam Supreme** (ESP32-S3 + **SX1262** + L76K + BME280), firmware
 >   **ESP-IDF/RadioLib**: la radiosonda **"full"** que demuestra todas las capacidades de la placa,
 >   envía telemetría a ChirpStack y **guarda el detalle en microSD**. **Tú lo compilas con `idf.py`.**
+> - **Ejercicio 10 → dashboard (software, sin hardware).** Consola de escritorio **Python + tkinter**
+>   estilo control de misión que **consume** la telemetría del ej.09 desde ChirpStack (MQTT), la guarda
+>   en **SQLite** y la muestra con paneles, gráficas y **mapa** con el track. Trae **modo simulador**.
 
 | # | Ejercicio | Radio · Placa | Qué demuestra | ChirpStack | Dato para dashboard |
 |---|-----------|---------------|---------------|:----------:|---------------------|
@@ -58,6 +61,7 @@ Para crear un ejercicio nuevo, copia [`_PLANTILLA/`](_PLANTILLA/) y rellena.
 | [07](07_esp-1ch-gateway/) | Gateway 1 canal | **SX1276** · TTGO ESP32 | Gateway *single-channel* → ChirpStack (recibe a los nodos) | ✅ (infra) | — (habilita el resto) |
 | [08](08_radiosonda_picaro/) | Radiosonda PICARO | **SX1276** · LilyGo T-Beam | Nodo GPS + batería (RadioLib) → telemetría | ✅ | Lat/lon/alt + batería por MQTT |
 | [09](09_radiosonda_picaro_full/) | Radiosonda PICARO **Full** | **SX1262** · T-Beam Supreme (ESP32-S3, **ESP-IDF**) | Todas las capacidades (GPS+BME280+PMU+IMU+SD) → telemetría + log SD | ✅ | Temp/presión/GPS/batería por MQTT + CSV en microSD |
+| [10](10_dashboard-tkinter/) | Dashboard Mission Control | — · **Python + tkinter** (PC) | Consume el ej.09: paneles, gráficas, mapa con track, SQLite | ✅ (consumidor MQTT) | Visualización + base de datos local |
 
 ## Arquitectura de datos (para dashboards)
 
