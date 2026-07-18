@@ -4,6 +4,7 @@ dashboard.py  -  PICARO Mission Control (dashboard tkinter estilo NASA).
 Consume la telemetria del Ejercicio 09 (que llega a ChirpStack), la guarda en
 SQLite local y la muestra con paneles, graficas de tendencia, un mapa real con
 el track de posiciones (filtro de tiempo + decimado) y un log de eventos.
+Ademas exporta a CSV (todos los campos) los datos de la ventana de tiempo.
 
 Fuentes de datos (config o --mode):
   mqtt    en vivo desde ChirpStack por MQTT   (necesita gateway + placa emitiendo)
@@ -16,16 +17,17 @@ Uso:
   py -3 dashboard.py --mode mqtt
 """
 import argparse
+import csv
 import json
 import os
 import queue
 import time
 import tkinter as tk
 from datetime import datetime, timezone
-from tkinter import ttk
+from tkinter import ttk, filedialog, messagebox
 
 import theme as T
-from storage import TelemetryStore, decimate
+from storage import TelemetryStore, decimate, FIELDS
 from mqtt_ingest import MqttIngest
 from replay import SimIngest, ReplayIngest
 
@@ -97,16 +99,16 @@ class Dashboard:
 
         root.title("PICARO · Mission Control")
         root.configure(bg=T.BG)
-        root.geometry("1300x820")
-        root.minsize(1060, 720)
+        root.geometry("1180x800")
+        root.minsize(1040, 700)
         T.apply_ttk(root)
         T.apply_matplotlib()
 
         self._build_topbar()
+        self._build_linkstrip()
         body = tk.Frame(root, bg=T.BG); body.pack(fill="both", expand=True, padx=8, pady=(0, 8))
-        self._build_panels(body)
-        self._build_gnss(body)
-        self._build_middle(body)
+        self._build_panels(body)     # 3 columnas: Power | Environment | GNSS
+        self._build_middle(body)     # Trend | Position Track (50/50, area principal)
         self._build_log(body)
 
         self._start_ingest()
@@ -127,7 +129,6 @@ class Dashboard:
         bar.pack(fill="x", side="top")
         tk.Label(bar, text="◇ PICARO", bg=T.PANEL2, fg=T.CYAN, font=(T.SANS, 16, "bold")).pack(side="left", padx=(14, 6), pady=10)
         tk.Label(bar, text="MISSION CONTROL", bg=T.PANEL2, fg=T.TEXT, font=(T.SANS, 12)).pack(side="left", pady=10)
-
         self.mode_lbl = tk.Label(bar, text="", bg=T.PANEL2, fg=T.VIOLET, font=(T.MONO, 10, "bold"))
         self.mode_lbl.pack(side="left", padx=16)
 
@@ -139,51 +140,57 @@ class Dashboard:
         self.clock_lbl = tk.Label(bar, text="UTC --:--:--", bg=T.PANEL2, fg=T.GREEN, font=T.F_CLOCK)
         self.clock_lbl.pack(side="right", padx=6)
 
+    def _build_linkstrip(self):
+        """Franja fina con las metricas de enlace (antes panel 'Link')."""
+        strip = tk.Frame(self.root, bg=T.BG)
+        strip.pack(fill="x", padx=10, pady=(6, 0))
+        tk.Label(strip, text="LINK", bg=T.BG, fg=T.CYAN, font=T.F_SECTION).pack(side="left", padx=(2, 12))
+        self.link_lbl = tk.Label(strip, text="RSSI --   SNR --   fCnt --   DR --   gw --",
+                                 bg=T.BG, fg=T.TEXT, font=(T.MONO, 11, "bold"))
+        self.link_lbl.pack(side="left")
+
     def _build_panels(self, parent):
         row = tk.Frame(parent, bg=T.BG); row.pack(fill="x", pady=(8, 0))
-        row.columnconfigure((0, 1, 2), weight=1, uniform="p")
+        # Tk 8.6 no acepta columnconfigure con tupla -> configurar 1 por 1.
+        for _c in (0, 1, 2):
+            row.columnconfigure(_c, weight=1, uniform="p")
 
-        # POWER
+        # --- POWER ---
         outer, p = self._panel(row, "POWER"); outer.grid(row=0, column=0, sticky="nsew", padx=(0, 6))
         grid = tk.Frame(p, bg=T.PANEL); grid.pack(fill="x", padx=10, pady=(0, 8))
         self.t_batt_v = Tile(grid, "BATERIA", "V", T.GREEN); self.t_batt_v.frame.grid(row=0, column=0, sticky="w", padx=(0, 18))
         self.t_batt_p = Tile(grid, "CARGA", "%", T.GREEN); self.t_batt_p.frame.grid(row=0, column=1, sticky="w")
-        pw = tk.Frame(p, bg=T.PANEL); pw.pack(fill="x", padx=10, pady=(0, 8))
+        pw = tk.Frame(p, bg=T.PANEL); pw.pack(fill="x", padx=10, pady=(0, 12))
         self.led_usb = StatusLED(pw, "USB"); self.led_usb.frame.pack(side="left", padx=(0, 14))
         self.led_chg = StatusLED(pw, "CARGANDO"); self.led_chg.frame.pack(side="left")
 
-        # ENVIRONMENT
+        # --- ENVIRONMENT ---
         outer, e = self._panel(row, "ENVIRONMENT"); outer.grid(row=0, column=1, sticky="nsew", padx=6)
-        grid = tk.Frame(e, bg=T.PANEL); grid.pack(fill="x", padx=10, pady=(0, 16))
+        grid = tk.Frame(e, bg=T.PANEL); grid.pack(fill="x", padx=10, pady=(0, 20))
         self.t_temp = Tile(grid, "TEMPERATURA", "°C", T.AMBER); self.t_temp.frame.grid(row=0, column=0, sticky="w", padx=(0, 18))
         self.t_press = Tile(grid, "PRESION", "hPa", T.CYAN); self.t_press.frame.grid(row=0, column=1, sticky="w")
 
-        # LINK
-        outer, l = self._panel(row, "UPLINK / LINK"); outer.grid(row=0, column=2, sticky="nsew", padx=(6, 0))
-        grid = tk.Frame(l, bg=T.PANEL); grid.pack(fill="x", padx=10, pady=(0, 4))
-        self.t_rssi = Tile(grid, "RSSI", "dBm", T.CYAN); self.t_rssi.frame.grid(row=0, column=0, sticky="w", padx=(0, 18))
-        self.t_snr = Tile(grid, "SNR", "dB", T.CYAN); self.t_snr.frame.grid(row=0, column=1, sticky="w")
-        self.lk_lbl = tk.Label(l, text="fCnt --   DR --   gw --", bg=T.PANEL, fg=T.MUTED, font=T.F_MONO)
-        self.lk_lbl.pack(anchor="w", padx=10, pady=(0, 8))
-
-    def _build_gnss(self, parent):
-        outer, g = self._panel(parent, "GNSS"); outer.pack(fill="x", pady=8)
-        rowf = tk.Frame(g, bg=T.PANEL); rowf.pack(fill="x", padx=10, pady=(0, 10))
-        self.led_gps_act = StatusLED(rowf, "ACTIVO"); self.led_gps_act.frame.pack(side="left", padx=(0, 16))
-        self.led_gps_fix = StatusLED(rowf, "FIX"); self.led_gps_fix.frame.pack(side="left", padx=(0, 24))
-        self.gnss_lbl = tk.Label(rowf, text="LAT --   LON --   ALT --   SAT --",
-                                 bg=T.PANEL, fg=T.TEXT, font=(T.MONO, 12, "bold"))
-        self.gnss_lbl.pack(side="left")
+        # --- GNSS ---
+        outer, g = self._panel(row, "GNSS"); outer.grid(row=0, column=2, sticky="nsew", padx=(6, 0))
+        leds = tk.Frame(g, bg=T.PANEL); leds.pack(fill="x", padx=10, pady=(0, 4))
+        self.led_gps_act = StatusLED(leds, "ACTIVO"); self.led_gps_act.frame.pack(side="left", padx=(0, 16))
+        self.led_gps_fix = StatusLED(leds, "FIX"); self.led_gps_fix.frame.pack(side="left")
+        self.g_lat = tk.Label(g, text="LAT   --", bg=T.PANEL, fg=T.TEXT, font=(T.MONO, 12, "bold"))
+        self.g_lat.pack(anchor="w", padx=10)
+        self.g_lon = tk.Label(g, text="LON   --", bg=T.PANEL, fg=T.TEXT, font=(T.MONO, 12, "bold"))
+        self.g_lon.pack(anchor="w", padx=10)
+        self.g_sat = tk.Label(g, text="ALT -- m   SAT --", bg=T.PANEL, fg=T.MUTED, font=(T.MONO, 11))
+        self.g_sat.pack(anchor="w", padx=10, pady=(0, 8))
 
     def _build_middle(self, parent):
-        mid = tk.Frame(parent, bg=T.BG); mid.pack(fill="both", expand=True)
+        mid = tk.Frame(parent, bg=T.BG); mid.pack(fill="both", expand=True, pady=(8, 0))
         mid.columnconfigure(0, weight=1, uniform="m")
         mid.columnconfigure(1, weight=1, uniform="m")
         mid.rowconfigure(0, weight=1)
 
-        # Graficas
+        # --- TREND (mitad izquierda) ---
         outer, pl = self._panel(mid, "TREND"); outer.grid(row=0, column=0, sticky="nsew", padx=(0, 6))
-        self._fig = Figure(figsize=(4.6, 3.4), dpi=100)
+        self._fig = Figure(figsize=(4.6, 3.6), dpi=100)
         axes = self._fig.subplots(3, 1, sharex=True)
         self._plot_axes = [
             (axes[0], "battery_v", T.GREEN, "Bat V"),
@@ -193,7 +200,7 @@ class Dashboard:
         self._canvas = FigureCanvasTkAgg(self._fig, master=pl)
         self._canvas.get_tk_widget().pack(fill="both", expand=True, padx=8, pady=8)
 
-        # Mapa + filtro
+        # --- POSITION TRACK (mitad derecha) ---
         outer, mp = self._panel(mid, "POSITION TRACK"); outer.grid(row=0, column=1, sticky="nsew", padx=(6, 0))
         ctl = tk.Frame(mp, bg=T.PANEL); ctl.pack(fill="x", padx=10, pady=(0, 4))
         tk.Label(ctl, text="Ventana:", bg=T.PANEL, fg=T.MUTED, font=T.F_LABEL).pack(side="left")
@@ -202,6 +209,9 @@ class Dashboard:
                           values=[w[0] for w in WINDOWS])
         cb.pack(side="left", padx=6)
         cb.bind("<<ComboboxSelected>>", lambda e: self._refresh_view(force_map=True))
+        tk.Button(ctl, text="⬇ CSV", command=self._export_csv, font=T.F_LABEL,
+                  bg=T.PANEL2, fg=T.CYAN, activebackground=T.BORDER, activeforeground=T.TEXT,
+                  relief="flat", bd=0, padx=10, pady=2, cursor="hand2").pack(side="left", padx=8)
         self.trk_lbl = tk.Label(ctl, text="0 puntos", bg=T.PANEL, fg=T.MUTED, font=T.F_LABEL)
         self.trk_lbl.pack(side="right")
 
@@ -217,15 +227,15 @@ class Dashboard:
                      bg=T.PANEL, fg=T.AMBER, font=T.F_MONO).pack(expand=True)
 
     def _build_log(self, parent):
-        outer, lg = self._panel(parent, "EVENT LOG"); outer.pack(fill="both", expand=False, pady=(8, 0))
+        outer, lg = self._panel(parent, "EVENT LOG"); outer.pack(fill="x", pady=(8, 0))
         cols = ("utc", "fcnt", "temp", "press", "batt", "rssi", "snr", "gps")
         heads = ("UTC", "fCnt", "T°C", "hPa", "Bat%", "RSSI", "SNR", "GPS")
         widths = (150, 60, 70, 80, 60, 70, 60, 90)
-        self.tree = ttk.Treeview(lg, columns=cols, show="headings", height=7)
+        self.tree = ttk.Treeview(lg, columns=cols, show="headings", height=6)
         for c, h, w in zip(cols, heads, widths):
             self.tree.heading(c, text=h)
             self.tree.column(c, width=w, anchor="center")
-        self.tree.pack(fill="both", expand=True, padx=8, pady=8)
+        self.tree.pack(fill="x", padx=8, pady=8)
 
     # ---------------- Ingesta ----------------
     def _on_record(self, rec):      # llamado desde el hilo de ingesta
@@ -269,7 +279,7 @@ class Dashboard:
             self._append_log(rec)
             n += 1
         if n:
-            self._map_refresh_due = 0   # hay datos nuevos -> refrescar vista pronto
+            self._map_refresh_due = 0
         self.root.after(150, self._poll)
 
     def _tick(self):
@@ -289,7 +299,6 @@ class Dashboard:
         else:
             self.conn.set(T.RED if self._last else T.MUTED, (msg or "sin datos")[:26])
 
-        # refresco de graficas/mapa cada ~3 s
         if time.time() >= self._map_refresh_due:
             self._refresh_view()
             self._map_refresh_due = time.time() + 3
@@ -298,27 +307,35 @@ class Dashboard:
     # ---------------- Actualizacion ----------------
     def _update_panels(self, r):
         self.dev_lbl.config(text=f"DEV {(r.get('dev_eui') or '--')}")
+        # LINK (franja)
+        rssi = r.get("rssi"); snr = r.get("snr")
+        self.link_lbl.config(text="RSSI {}   SNR {}   fCnt {}   DR {}   gw {}".format(
+            f"{rssi} dBm" if rssi is not None else "--",
+            f"{snr:.1f} dB" if snr is not None else "--",
+            r.get("f_cnt", "--"), r.get("dr", "--"), (r.get("gateway_id") or "--")[:12]))
+        # POWER
         self.t_batt_v.set(_fmt(r.get("battery_v"), "{:.2f}"))
         bp = r.get("battery_pct")
         self.t_batt_p.set("--" if bp is None else str(bp),
                           T.GREEN if (bp or 0) >= 40 else T.AMBER if (bp or 0) >= 15 else T.RED)
         self.led_usb.set(T.CYAN if r.get("usb_powered") else T.MUTED)
         self.led_chg.set(T.GREEN if r.get("charging") else T.MUTED)
+        # ENVIRONMENT
         self.t_temp.set(_fmt(r.get("temperature_c"), "{:.1f}"))
         self.t_press.set(_fmt(r.get("pressure_hpa"), "{:.1f}"))
-        self.t_rssi.set(_fmt(r.get("rssi"), "{:d}") if r.get("rssi") is not None else "--")
-        self.t_snr.set(_fmt(r.get("snr"), "{:.1f}"))
-        self.lk_lbl.config(text=f"fCnt {r.get('f_cnt','--')}   DR {r.get('dr','--')}   "
-                                f"gw {(r.get('gateway_id') or '--')[:10]}")
+        # GNSS
         self.led_gps_act.set(T.GREEN if r.get("gps_active") else T.RED,
                              "ACTIVO" if r.get("gps_active") else "APAGADO")
         self.led_gps_fix.set(T.GREEN if r.get("gps_fix") else T.AMBER,
                              "FIX" if r.get("gps_fix") else "SIN FIX")
-        if r.get("gps_fix"):
-            self.gnss_lbl.config(text=f"LAT {r.get('latitude'):.6f}   LON {r.get('longitude'):.6f}   "
-                                      f"ALT {_fmt(r.get('altitude_m'),'{:.0f}')} m   SAT {r.get('satellites','--')}")
+        if r.get("gps_fix") and r.get("latitude") is not None:
+            self.g_lat.config(text=f"LAT  {r['latitude']:.6f}")
+            self.g_lon.config(text=f"LON {r['longitude']:.6f}")
+            self.g_sat.config(text=f"ALT {_fmt(r.get('altitude_m'),'{:.0f}')} m   SAT {r.get('satellites','--')}")
         else:
-            self.gnss_lbl.config(text=f"-- sin fix --    SAT {r.get('satellites','--')}")
+            self.g_lat.config(text="LAT   -- (sin fix)")
+            self.g_lon.config(text="LON   --")
+            self.g_sat.config(text=f"ALT -- m   SAT {r.get('satellites','--')}")
 
     def _append_log(self, r):
         vals = (r.get("iso", "")[-8:], r.get("f_cnt", ""),
@@ -377,6 +394,35 @@ class Dashboard:
         self.map.set_marker(latlon[0][0], latlon[0][1], text="inicio", marker_color_circle=T.MUTED)
         self.map.set_marker(latlon[-1][0], latlon[-1][1], text="ahora", marker_color_circle=T.GREEN)
         self.map.set_position(latlon[-1][0], latlon[-1][1])
+
+    # ---------------- Export CSV ----------------
+    def _export_csv(self):
+        """Exporta a CSV TODOS los campos de los registros dentro de la ventana
+        de tiempo seleccionada en Position Track."""
+        secs = self._window_seconds()
+        since = 0 if secs is None else (time.time() - secs)
+        rows = self.store.records_since(since)
+        if not rows:
+            messagebox.showinfo("Exportar CSV", "No hay datos en la ventana seleccionada.")
+            return
+        win = self.win_var.get().replace(" ", "")
+        default = f"picaro_telemetry_{win}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
+        path = filedialog.asksaveasfilename(
+            defaultextension=".csv", initialfile=default,
+            filetypes=[("CSV", "*.csv"), ("Todos", "*.*")],
+            title="Guardar telemetria filtrada (todos los campos)")
+        if not path:
+            return
+        try:
+            with open(path, "w", newline="", encoding="utf-8") as f:
+                w = csv.DictWriter(f, fieldnames=FIELDS, extrasaction="ignore")
+                w.writeheader()
+                for r in rows:
+                    w.writerow({k: r.get(k) for k in FIELDS})
+            messagebox.showinfo("Exportar CSV",
+                                f"Guardadas {len(rows)} filas (ventana {self.win_var.get()}).\n{path}")
+        except Exception as e:
+            messagebox.showerror("Exportar CSV", str(e))
 
     def _on_close(self):
         try:

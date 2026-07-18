@@ -3,8 +3,11 @@
 > **En una frase:** un **dashboard de escritorio** (Python + **tkinter**) estilo **control de misión de
 > la NASA** que **consume la telemetría del [Ejercicio 09](../09_radiosonda_picaro_full/)** desde
 > ChirpStack, la **guarda en SQLite** local y la muestra en paneles, gráficas de tendencia, un **mapa
-> real con el track de posiciones** (filtro de tiempo) y un log de eventos.
+> real con el track de posiciones** (filtro de tiempo) y un log de eventos, con **exportación a CSV**.
 > **Plataforma:** Python 3.x en Windows/Linux/macOS. **Sin hardware:** trae **modo simulador**.
+
+**Distribución:** arriba tres columnas **Power · Environment · GNSS**; en medio **Trend** y **Position
+Track** a mitad de pantalla cada una; abajo el **log**. Junto al filtro de tiempo hay un botón **⬇ CSV**.
 
 ## 🎯 Qué vas a conseguir
 
@@ -63,6 +66,11 @@ temporal, con marcadores de **inicio** y **posición actual**. El selector **Ven
 > **Ventana recomendada: 1 h** (~120 puntos a 30 s/uplink) — claro y fluido. Para evitar saturar, el
 > track se **decima automáticamente** a **~500 puntos** máx. (p. ej. 24 h → 1 punto cada ~3 min),
 > conservando siempre la posición actual. Así el mapa responde con cualquier ventana.
+
+### ⬇ Exportar a CSV
+El botón **⬇ CSV** (junto al selector de ventana) exporta a un archivo `.csv` **todos los registros de
+la ventana de tiempo seleccionada** con **todos los campos capturados** (las 23 columnas de la tabla
+`telemetry`, incluido `raw_json`). Útil para análisis en Excel/pandas.
 
 ## 🗃️ Base de datos (SQLite)
 Cada uplink se guarda en la tabla `telemetry` (una "caja negra" del lado consumidor): `ts, iso,

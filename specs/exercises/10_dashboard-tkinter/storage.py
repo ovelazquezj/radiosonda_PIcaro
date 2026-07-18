@@ -98,6 +98,12 @@ class TelemetryStore:
             "SELECT * FROM telemetry ORDER BY ts ASC").fetchall()
         return [dict(r) for r in rows]
 
+    def records_since(self, since_ts):
+        """Todos los registros (todas las columnas) desde since_ts, para exportar."""
+        rows = self._conn.execute(
+            "SELECT * FROM telemetry WHERE ts>=? ORDER BY ts ASC", (since_ts,)).fetchall()
+        return [dict(r) for r in rows]
+
     def close(self):
         try:
             self._conn.close()
