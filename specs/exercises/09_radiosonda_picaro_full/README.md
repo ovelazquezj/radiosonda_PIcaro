@@ -197,9 +197,11 @@ curl -s "$API/api/devices/70b3d57ed0090901/activation" -H "Authorization: Bearer
 docker exec 00_chirpstack-docker-mosquitto-1 mosquitto_sub -h localhost \
   -t "application/$APP/device/+/event/up" -C 1
 ```
-> **Opción estricta:** pon `#define PICARO_FORCE_FRESH_JOIN 1` en `config_lorawan.h` para **ignorar la
-> sesión guardada** y exigir un **JOIN OTAA real en cada arranque**. Así `JOIN NUEVO OK` solo aparece
-> si de verdad hubo JoinAccept (necesitas el gateway en rango al arrancar).
+> **Por defecto `PICARO_FORCE_FRESH_JOIN 1`** (en `config_lorawan.h`): se **ignora la sesión guardada**
+> y se exige un **JOIN OTAA real en cada arranque** — así `JOIN NUEVO OK` solo aparece si de verdad hubo
+> JoinAccept (necesitas el gateway en rango al arrancar) y se evita arrastrar un datarate degradado por
+> ADR. Ponlo en `0` si prefieres **reanudar** la sesión guardada entre reinicios (sin re-join).
+> El datarate de uplink inicial se fija con `PICARO_UPLINK_DR` (DR3 por defecto, para que quepan los 19 bytes).
 
 ## 🛠️ Si algo falla
 | Síntoma | Causa / Arreglo |
@@ -208,6 +210,7 @@ docker exec 00_chirpstack-docker-mosquitto-1 mosquitto_sub -h localhost \
 | No aparece el puerto | Cable de solo carga → usa uno de datos. Prueba otro puerto USB. |
 | `Radio begin=-2/-707` | Problema de TCXO/energía. Revisa que el AXP2101 arrancó (`pmu:` en la traza) y la antena. |
 | `NO LLEGO EL JOIN-ACCEPT` / reintenta | (1) DevEUI/JoinEUI/AppKey no coinciden. (2) Perfil no es 1.0.x. (3) Gateway no cubre SB2 o es de 1 canal. (4) Antena. |
+| `Uplink fallo (codigo -4)` = **PACKET_TOO_LONG** | El **ADR bajó el datarate** (tras muchos uplinks sin downlink lejos del gateway) a **DR0/SF10**, donde solo caben ~11 bytes y el payload de 19 no cabe. Arreglo: acércate al gateway y **reinicia** (hace join nuevo a `PICARO_UPLINK_DR`=DR3), o **quita campos** del payload en `sensores_config.h`. |
 | `DevNonce already used` | Pon `#define PICARO_RESET_NONCES 1` en `config_lorawan.h`, flashea una vez, regrésalo a 0 y reflashea. |
 | GPS siempre sin fix | Necesita cielo abierto y varios minutos en frío. Junto a una ventana. |
 | `sdcard: no pude montar` | Tarjeta mal insertada o BLDO1 sin energía. El firmware la formatea a FAT si viene virgen. |

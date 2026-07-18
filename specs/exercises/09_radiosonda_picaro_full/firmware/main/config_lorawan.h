@@ -49,6 +49,12 @@
  *   - LoRaWAN 1.0.x -> solo se usa AppKey.
  * ------------------------------------------------------------------------- */
 #define PICARO_SUBBAND            2       /* US915 FSB2 (canales 8-15) */
+
+/* Datarate de uplink inicial (US915): DR3 = SF7/BW125, admite hasta 242 bytes.
+ * IMPORTANTE: en DR0 (SF10) solo caben ~11 bytes y el payload de 19 bytes NO
+ * cabe (error PACKET_TOO_LONG / -4). Cerca del gateway, DR3 va perfecto; con
+ * ADR activo la red lo ajustara. Sube el SF (baja el DR) solo si te alejas. */
+#define PICARO_UPLINK_DR          3
 #define PICARO_UPLINK_FPORT       10      /* puerto de aplicacion del uplink  */
 #define PICARO_UPLINK_INTERVAL_S  30      /* cada cuantos segundos se transmite */
 
@@ -60,4 +66,4 @@
  * arranque. Asi "JOIN OK" solo aparece si de verdad hubo JoinAccept (necesita
  * gateway en rango). Con 0 (por defecto) se reusa la sesion de NVS si existe,
  * pero el firmware NO la marca como enlace confirmado hasta recibir un ACK. */
-#define PICARO_FORCE_FRESH_JOIN   0
+#define PICARO_FORCE_FRESH_JOIN   1

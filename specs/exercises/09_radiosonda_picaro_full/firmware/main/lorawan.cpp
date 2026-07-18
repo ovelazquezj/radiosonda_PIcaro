@@ -87,6 +87,7 @@ lorawan_join_t lorawan_join(void)
         ESP_LOGE(TAG, "beginOTAA fallo (%d)", st);
         return LORAWAN_JOIN_FAIL;
     }
+    node->setADR(true);   /* ADR activo: la red gestiona el datarate */
 
     /* Restaurar nonces (y sesion) si existen, para continuar DevNonce/sesion. */
     bool have_saved_session = false;
@@ -113,12 +114,14 @@ lorawan_join_t lorawan_join(void)
 
         if (st == RADIOLIB_LORAWAN_NEW_SESSION) {
             s_joined = true;
+            node->setDatarate(PICARO_UPLINK_DR);   /* DR que admite el payload de 19 B */
             nvs_save_blob(KEY_SESSION, node->getBufferSession(), RADIOLIB_LORAWAN_SESSION_BUF_SIZE);
-            ESP_LOGI(TAG, "JOIN NUEVO por aire (JoinAccept recibido). Enlace REAL.");
+            ESP_LOGI(TAG, "JOIN NUEVO por aire (JoinAccept recibido). Enlace REAL. DR=%d", PICARO_UPLINK_DR);
             return LORAWAN_JOIN_NEW;
         }
         if (st == RADIOLIB_LORAWAN_SESSION_RESTORED) {
             s_joined = true;
+            node->setDatarate(PICARO_UPLINK_DR);
             ESP_LOGW(TAG, "Sesion RESTAURADA de NVS. OJO: NO confirma que haya gateway "
                           "en rango; el enlace se validara con un uplink confirmado.");
             return LORAWAN_JOIN_RESTORED;
