@@ -1,5 +1,10 @@
-# Python / local
+# Python / local (los comentarios van en su PROPIA linea; un # tras el patron
+# se toma como parte del patron y no ignora nada).
 __pycache__/
 *.pyc
-config.json      # copia local del alumno (con sus IDs); se versiona config.example.json
-*.db             # bases de datos SQLite de telemetria (se generan al correr)
+
+# copia local del alumno (con sus IDs); se versiona config.example.json
+config.json
+
+# bases de datos SQLite de telemetria (se generan al correr)
+*.db

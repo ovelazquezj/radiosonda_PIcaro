@@ -203,6 +203,11 @@ docker exec 00_chirpstack-docker-mosquitto-1 mosquitto_sub -h localhost \
 > ADR. Ponlo en `0` si prefieres **reanudar** la sesión guardada entre reinicios (sin re-join).
 > El datarate de uplink inicial se fija con `PICARO_UPLINK_DR` (DR3 por defecto, para que quepan los 19 bytes).
 
+> **¿Y si pierde el enlace?** Sí, **se reintenta solo**. El bucle principal cuenta los uplinks sin ACK
+> y, tras `PICARO_REJOIN_AFTER` fallos consecutivos (5 por defecto), lanza un **re-join OTAA automático**
+> — sin tener que reiniciar la placa. Cuando el gateway vuelve a estar en rango, recupera el enlace y el
+> OLED vuelve a `ENLACE OK`. Baja `PICARO_REJOIN_AFTER` para reintentar antes, o súbelo para insistir menos.
+
 ## 🛠️ Si algo falla
 | Síntoma | Causa / Arreglo |
 |---|---|
