@@ -107,7 +107,7 @@ lorawan_join_t lorawan_join(void)
 
     /* Intento de union OTAA con reintentos. Con sesion restaurada,
      * activateOTAA() devuelve SESSION_RESTORED sin tocar el aire. */
-    for (int attempt = 1; attempt <= 8; attempt++) {
+    for (int attempt = 1; attempt <= 3; attempt++) {
         ESP_LOGI(TAG, "activateOTAA intento #%d ...", attempt);
         st = node->activateOTAA();
         nvs_save_blob(KEY_NONCES, node->getBufferNonces(), RADIOLIB_LORAWAN_NONCES_BUF_SIZE);
@@ -128,8 +128,8 @@ lorawan_join_t lorawan_join(void)
         }
         /* Si teniamos sesion guardada y aun asi no restauro, no reintentes en
          * bucle: probablemente no hay red. Un join nuevo requiere gateway. */
-        ESP_LOGW(TAG, "  activateOTAA sin exito (codigo %d). Reintento en 15 s...", st);
-        vTaskDelay(pdMS_TO_TICKS(15000));
+        ESP_LOGW(TAG, "  activateOTAA sin exito (codigo %d). Reintento en 10 s...", st);
+        vTaskDelay(pdMS_TO_TICKS(10000));
     }
 
     ESP_LOGE(TAG, "No se logro unir (sin gateway en rango?).");

@@ -1,6 +1,6 @@
 {
   "mode": "sim",
-  "mqtt": { "host": "localhost", "port": 1883 },
+  "mqtt": { "host": "auto", "port": 1883 },
   "app_id": "f0881005-2b70-4c42-a128-b89c731e167e",
   "dev_eui": "",
   "db_path": "picaro_telemetry.db",

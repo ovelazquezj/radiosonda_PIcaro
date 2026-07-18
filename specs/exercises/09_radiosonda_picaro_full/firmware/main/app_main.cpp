@@ -141,6 +141,7 @@ extern "C" void app_main(void)
 
     /* 5) Bucle de telemetria. */
     uint32_t n = 0, sent = 0;
+    int no_link = 0;                 /* ciclos seguidos sin ACK del gateway */
     while (true) {
         telemetry_t tel;
         telemetry_collect(&tel, (uint32_t)(esp_log_timestamp() / 1000));
@@ -170,8 +171,26 @@ extern "C" void app_main(void)
              * (del gateway, via ChirpStack) marca "ENLACE OK" -> nada de joins falsos. */
             bool confirm = (!link_ok) || (n % 5 == 0);
             int r = lorawan_send(payload, (uint8_t) len, PICARO_UPLINK_FPORT, confirm);
-            if (r > 0) { link_ok = true; sent++; }
-            else if (r == 0) { sent++; if (confirm) link_ok = false; }
+            if (r > 0) { link_ok = true; sent++; no_link = 0; }
+            else { if (r == 0) sent++; if (confirm) { link_ok = false; no_link++; } }
+
+            /* AUTO RE-JOIN: si el enlace lleva varios ciclos caido, re-unirse solo. */
+#if PICARO_REJOIN_AFTER
+            if (no_link >= PICARO_REJOIN_AFTER) {
+                ESP_LOGW(TAG, "Enlace caido %d ciclos -> intentando RE-JOIN...", no_link);
+#if USE_SH1106_OLED
+                oled_line(1, "RE-JOIN...");
+#endif
+                lorawan_join_t rj = lorawan_join();
+                joined  = (rj != LORAWAN_JOIN_FAIL);
+                link_ok = (rj == LORAWAN_JOIN_NEW);
+                no_link = 0;
+#if USE_SH1106_OLED
+                oled_line(1, (rj == LORAWAN_JOIN_NEW) ? "RE-JOIN OK" :
+                             (rj == LORAWAN_JOIN_RESTORED) ? "SESION REST." : "RE-JOIN FALLO");
+#endif
+            }
+#endif
         }
         ESP_LOGI(TAG, "  ENLACE: %s", link_ok ? "OK (ACK/downlink real recibido)"
                                               : "SIN ENLACE (sin ACK del gateway)");

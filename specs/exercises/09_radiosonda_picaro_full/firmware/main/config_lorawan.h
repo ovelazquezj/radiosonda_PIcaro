@@ -58,6 +58,11 @@
 #define PICARO_UPLINK_FPORT       10      /* puerto de aplicacion del uplink  */
 #define PICARO_UPLINK_INTERVAL_S  30      /* cada cuantos segundos se transmite */
 
+/* Auto re-join: si el enlace se pierde (no llega ACK del gateway) durante este
+ * numero de ciclos seguidos, el firmware intenta un JOIN nuevo por su cuenta.
+ * 0 = desactivado (solo se une al arrancar). */
+#define PICARO_REJOIN_AFTER       5
+
 /* Poner en 1 UNA vez si ChirpStack rechaza el join por "DevNonce ya usado":
  * borra los nonces guardados en NVS, arranca, y regresa a 0 y reflashea. */
 #define PICARO_RESET_NONCES       0

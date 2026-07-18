@@ -288,7 +288,7 @@ Todo en **`firmware/main/sensores_config.h`**:
 - **Guía común:** [ChirpStack API (REST · MQTT · codec)](../COMMON_CHIRPSTACK_API.md)
 
 ---
-> 🧩 **Código:** stack **RadioLib** (MIT) sobre **ESP-IDF**; drivers de sensores propios de este
-> ejercicio. Radio: SX1262 · Región: US915 SB2 · OTAA · LoRaWAN 1.0.x.
+> 💻 **Código de este ejercicio** (drivers propios) bajo **licencia MIT** — ver [`LICENSE`](LICENSE);
+> usa el stack **RadioLib** (MIT) sobre **ESP-IDF**. Radio: SX1262 · Región: US915 SB2 · OTAA · LoRaWAN 1.0.x.
 >
-> 📄 Material educativo (esta guía) bajo **CC BY 4.0** © **Omar Velazquez** — ver [`LICENSE-CC-BY-4.0.md`](../../../LICENSE-CC-BY-4.0.md).
+> 📄 Material educativo (esta guía) bajo **CC BY 4.0** © **Omar Velazquez**.

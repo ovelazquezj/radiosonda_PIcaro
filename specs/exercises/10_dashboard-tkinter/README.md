@@ -88,7 +88,7 @@ Paleta de alto contraste (fondo casi negro, texto casi blanco, acentos verde/cia
 |---|---|
 | `ModuleNotFoundError` | `py -3 -m pip install -r requirements.txt` |
 | Mapa en blanco/gris | `tkintermapview` descarga *tiles* por **internet** (luego los cachea). Revisa conexión. |
-| `mqtt`: no llegan datos | ¿ChirpStack arriba? ¿`app_id` correcto? ¿la placa **con enlace**? Prueba `--mode sim`. |
+| `mqtt`: conecta pero **no llegan datos** | Suele ser que **otro broker ocupa `127.0.0.1:1883`** y acapara `localhost`, mientras el de ChirpStack (por Docker) escucha en `0.0.0.0`. Usa `"host": "auto"` en `config.json` (por defecto): detecta tu **IP LAN** y llega al broker correcto. Verifica también `app_id` y que la placa tenga **enlace**. |
 | `object` vacío por MQTT | falta el **codec** en el device profile del ej.09 (súbelo, ver ej.09). |
 | Se ve pequeño | la ventana es redimensionable; agranda o maximiza. |
 
@@ -112,4 +112,5 @@ selftest.py      prueba headless de la capa de datos
 Guía común: [ChirpStack API (REST · MQTT · codec)](../COMMON_CHIRPSTACK_API.md).
 
 ---
-> 📄 Material educativo bajo **CC BY 4.0** © **Omar Velazquez** — ver [`LICENSE-CC-BY-4.0.md`](../../../LICENSE-CC-BY-4.0.md).
+> 💻 **Código** de este dashboard bajo **licencia MIT** — ver [`LICENSE`](LICENSE).
+> 📄 Material educativo (esta guía) bajo **CC BY 4.0** © **Omar Velazquez**.

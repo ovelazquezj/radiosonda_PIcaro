@@ -9,10 +9,27 @@ lo mete a SQLite y refresca los paneles (tkinter NO es thread-safe).
 Topic ChirpStack v4:  application/<APP_ID>/device/<DevEUI|+>/event/up
 """
 import json
+import socket
 import time
 from datetime import datetime, timezone
 
 import paho.mqtt.client as mqtt
+
+
+def resolve_host(host):
+    """host='auto' (o vacio) -> IP LAN del equipo. Util cuando OTRO broker ocupa
+    127.0.0.1:1883 y acapara 'localhost': la IP LAN llega al broker de ChirpStack
+    (mapeado por Docker en 0.0.0.0). Cualquier otro valor se usa tal cual."""
+    if host and host not in ("auto", "0.0.0.0"):
+        return host
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))
+        ip = s.getsockname()[0]
+        s.close()
+        return ip
+    except Exception:
+        return "127.0.0.1"
 
 
 def _b(v):
@@ -65,7 +82,7 @@ class MqttIngest:
     """Fuente de datos en vivo desde ChirpStack por MQTT."""
 
     def __init__(self, host, port, app_id, dev_eui, on_record, on_status):
-        self.host = host
+        self.host = resolve_host(host)
         self.port = int(port)
         self.on_record = on_record          # callback(rec)   (desde hilo MQTT)
         self.on_status = on_status          # callback(bool, str)
@@ -93,7 +110,9 @@ class MqttIngest:
 
     # --- callbacks paho 2.x ---
     def _on_connect(self, client, userdata, flags, reason_code, properties=None):
-        if int(reason_code) == 0:
+        # En paho-mqtt 2.x reason_code es un objeto ReasonCode (no int).
+        failed = reason_code.is_failure if hasattr(reason_code, "is_failure") else (reason_code != 0)
+        if not failed:
             client.subscribe(self.topic)
             self.on_status(True, f"MQTT OK · {self.topic}")
         else:
