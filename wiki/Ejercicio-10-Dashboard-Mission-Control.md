@@ -4,7 +4,7 @@ Una **consola de escritorio** (Python + **tkinter**) estilo **control de misión
 telemetría del [Ejercicio 09](Ejercicio-09-Radiosonda-PICARO-Full) desde ChirpStack, la **guarda en
 SQLite** y la muestra con paneles, gráficas de tendencia, un **mapa real con el track** y un log de
 eventos. El paso a paso y la configuración están en el
-[`README.md` del ejercicio](https://github.com/ovelazquezj/radiosonda_PIcaro/tree/main/specs/exercises/10_dashboard-tkinter).
+[`README.md` del ejercicio](https://github.com/ovelazquezj/radiosonda_PIcaro/tree/master/specs/exercises/10_dashboard-tkinter).
 
 ## 🔗 De dónde salen los datos
 ```
@@ -15,7 +15,7 @@ placa (ej.09) → gateway → ChirpStack ──MQTT :1883──► dashboard (tk
 Usa el **mismo `object`** que produce el codec `decoder.js` del ej.09 (`gps_active, gps_fix, latitude,
 longitude, altitude_m, satellites, battery_v, battery_pct, charging, usb_powered, temperature_c,
 pressure_hpa`). Los payloads llegan por **MQTT** (el REST de ChirpStack no guarda histórico de payloads;
-ver [ChirpStack: API/MQTT/codec](https://github.com/ovelazquezj/radiosonda_PIcaro/blob/main/specs/exercises/COMMON_CHIRPSTACK_API.md)).
+ver [ChirpStack: API/MQTT/codec](https://github.com/ovelazquezj/radiosonda_PIcaro/blob/master/specs/exercises/COMMON_CHIRPSTACK_API.md)).
 
 ## 🖥️ Tres modos (con o sin hardware)
 - **`sim`** — telemetría sintética con **GPS en movimiento**: prueba el dashboard **sin gateway ni placa**.
@@ -44,6 +44,6 @@ Tabla `telemetry` en SQLite (una fila por uplink): metadatos de enlace + todos l
 
 ---
 - 🏠 [Índice de la Wiki](Home) · ⬅️ [Ejercicio 09](Ejercicio-09-Radiosonda-PICARO-Full)
-- 📂 [Código del ejercicio 10](https://github.com/ovelazquezj/radiosonda_PIcaro/tree/main/specs/exercises/10_dashboard-tkinter)
+- 📂 [Código del ejercicio 10](https://github.com/ovelazquezj/radiosonda_PIcaro/tree/master/specs/exercises/10_dashboard-tkinter)
 
 _Docs © Omar Velazquez · [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)_

@@ -3,7 +3,7 @@
 El mismo dashboard del [Ejercicio 10](Ejercicio-10-Dashboard-Mission-Control), pero conectado a un
 ChirpStack **en Internet** en lugar del que corre en tu portátil: **MQTT cifrado con TLS**, usuario y
 contraseña propios, y una **ACL** que hace que cada equipo lea solo sus datos. El paso a paso está en
-el [`README.md` del ejercicio](https://github.com/ovelazquezj/radiosonda_PIcaro/tree/main/specs/exercises/11_dashboard-servidor-remoto).
+el [`README.md` del ejercicio](https://github.com/ovelazquezj/radiosonda_PIcaro/tree/master/specs/exercises/11_dashboard-servidor-remoto).
 
 > ⚠️ Los datos de servidor de la guía son **ficticios** (`example.org`, un dominio reservado por
 > [RFC 2606](https://www.rfc-editor.org/rfc/rfc2606) que nadie puede registrar). Tu instructor te da

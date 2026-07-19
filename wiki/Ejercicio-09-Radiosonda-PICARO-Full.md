@@ -4,7 +4,7 @@ El **ejercicio culminante**: una sola placa integrada (**LILYGO T-Beam Supreme**
 programada con **ESP-IDF** que hace **OTAA join** a ChirpStack, envía telemetría (GPS, temperatura,
 presión, batería) y **guarda todo en la microSD**. Esta página cubre los **fundamentos** y la
 **integración E2E con ChirpStack**; el paso a paso del código está en el
-[`README.md` del ejercicio](https://github.com/ovelazquezj/radiosonda_PIcaro/tree/main/specs/exercises/09_radiosonda_picaro_full).
+[`README.md` del ejercicio](https://github.com/ovelazquezj/radiosonda_PIcaro/tree/master/specs/exercises/09_radiosonda_picaro_full).
 
 ## 🧠 ¿Qué lo hace distinto?
 | | Ejercicios 05/06/08 (TTGO) | **Ejercicio 09 (T-Beam Supreme)** |
@@ -57,7 +57,7 @@ LoRaWAN 1.0.x usa: **DevEUI** (id del equipo), **JoinEUI** (id de app, aquí cer
 ### 2) Crear el Device Profile (con el codec)
 *Device profiles ▸ Add*: **Region** `US915`, **MAC version** `LoRaWAN 1.0.4`, **Reg. params**
 `RP002-1.0.3`, **OTAA** activado, **Class** `A`. En la pestaña **Codec** elige *JavaScript functions*
-y pega **todo** [`chirpstack/decoder.js`](https://github.com/ovelazquezj/radiosonda_PIcaro/blob/main/specs/exercises/09_radiosonda_picaro_full/chirpstack/decoder.js).
+y pega **todo** [`chirpstack/decoder.js`](https://github.com/ovelazquezj/radiosonda_PIcaro/blob/master/specs/exercises/09_radiosonda_picaro_full/chirpstack/decoder.js).
 El codec traduce los **19 bytes** del payload a campos legibles.
 
 ### 3) Crear el Device y su AppKey
@@ -72,7 +72,7 @@ Reinicia la placa. En el device:
 
 ### 5) Consumir los datos
 Los payloads llegan por **MQTT** en `application/<APP_ID>/device/<DevEUI>/event/up` (el REST no guarda
-histórico de payloads). Ver [COMMON: ChirpStack API](https://github.com/ovelazquezj/radiosonda_PIcaro/blob/main/specs/exercises/COMMON_CHIRPSTACK_API.md).
+histórico de payloads). Ver [COMMON: ChirpStack API](https://github.com/ovelazquezj/radiosonda_PIcaro/blob/master/specs/exercises/COMMON_CHIRPSTACK_API.md).
 Atajo por API en vez de la web: `export TOKEN=...; ./provision.sh`.
 
 ## 📦 El payload y la relación payload ↔ datarate
@@ -102,6 +102,6 @@ Registra **una fila por ciclo aunque NO haya join/enlace** (independiente de LoR
 
 ---
 - 🏠 [Índice de la Wiki](Home) · ⬅️ [Ejercicio 08](Ejercicio-08-Radiosonda-PICARO)
-- 📂 [Código del ejercicio 09](https://github.com/ovelazquezj/radiosonda_PIcaro/tree/main/specs/exercises/09_radiosonda_picaro_full)
+- 📂 [Código del ejercicio 09](https://github.com/ovelazquezj/radiosonda_PIcaro/tree/master/specs/exercises/09_radiosonda_picaro_full)
 
 _Docs © Omar Velazquez · [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)_
