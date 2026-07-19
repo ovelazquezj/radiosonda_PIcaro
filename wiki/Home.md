@@ -10,10 +10,10 @@ ejercicios.
 2. **[¿Qué es LoRaWAN?](Qué-es-LoRaWAN)** — el protocolo de red encima de LoRa.
 3. **[Hardware del proyecto](Hardware-del-proyecto)** — LR1110, TTGO ESP32, BMP280.
 4. **[ChirpStack en 5 minutos](ChirpStack-en-5-minutos)** — el servidor de red LoRaWAN.
-5. **[Cómo usar el proyecto](Cómo-usar-el-proyecto)** — la ruta de ejercicios 00 → 10.
+5. **[Cómo usar el proyecto](Cómo-usar-el-proyecto)** — la ruta de ejercicios 00 → 11.
 6. **[Glosario y recursos](Glosario-y-recursos)** — términos y enlaces oficiales.
 
-## 📟 Los ejercicios (00 → 10)
+## 📟 Los ejercicios (00 → 11)
 La ruta práctica, de lo simple a lo avanzado; cada uno es **autocontenido** (README, credenciales,
 provisión y consumo). Recorrido guiado en **[Cómo usar el proyecto](Cómo-usar-el-proyecto)**.
 - **[00 · ChirpStack](Ejercicio-00-ChirpStack)** — levantar el Network Server en Docker.
@@ -27,6 +27,7 @@ provisión y consumo). Recorrido guiado en **[Cómo usar el proyecto](Cómo-usar
 - **[08 · Radiosonda PICARO](Ejercicio-08-Radiosonda-PICARO)** — **LilyGo T-Beam** (GPS + batería) por RadioLib → ChirpStack.
 - **[09 · Radiosonda PICARO Full](Ejercicio-09-Radiosonda-PICARO-Full)** — **LilyGo T-Beam Supreme** (ESP32-S3 + SX1262) con **ESP-IDF + RadioLib**: todos los sensores, "caja negra" en microSD y OTAA → ChirpStack.
 - **[10 · Dashboard Mission Control](Ejercicio-10-Dashboard-Mission-Control)** — **dashboard** de escritorio (Python + tkinter) que consume la telemetría del ej.09 por MQTT: SQLite, gráficas, mapa real y CSV.
+- **[11 · Dashboard contra servidor remoto](Ejercicio-11-Dashboard-Servidor-Remoto)** — el mismo dashboard contra un ChirpStack **en Internet**: **MQTT sobre TLS**, credenciales por equipo y ACL. Sin hardware.
 
 ## 🔧 Guías prácticas (How-To)
 ¿Manos a la obra? Estas guías te llevan paso a paso:

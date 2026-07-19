@@ -1,0 +1,6 @@
+# Dashboard PICARO Mission Control (Python 3.x + tkinter)
+# tkinter y sqlite3 vienen con Python (stdlib). Instala lo demas con:
+#   py -3 -m pip install -r requirements.txt
+paho-mqtt>=2.0        # ingesta MQTT desde ChirpStack
+matplotlib>=3.7       # graficas de tendencia embebidas
+tkintermapview>=1.29  # mapa real (OSM) con el track de posiciones

@@ -1,0 +1,17 @@
+{
+  "mode": "mqtt",
+  "mqtt": {
+    "host": "mqtt.example.org",
+    "port": 8883,
+    "tls": true,
+    "username": "equipo01",
+    "password": "PON_AQUI_TU_CONTRASENA"
+  },
+  "app_id": "00000000-0000-0000-0000-000000000000",
+  "dev_eui": "",
+  "db_path": "picaro_telemetry.db",
+  "default_window": "1 h",
+  "sim_period_s": 2.0,
+  "replay_period_s": 0.5,
+  "map_start": { "lat": 21.9337, "lon": -102.2983, "zoom": 13 }
+}

@@ -48,6 +48,9 @@ Para crear un ejercicio nuevo, copia [`_PLANTILLA/`](_PLANTILLA/) y rellena.
 > - **Ejercicio 10 → dashboard (software, sin hardware).** Consola de escritorio **Python + tkinter**
 >   estilo control de misión que **consume** la telemetría del ej.09 desde ChirpStack (MQTT), la guarda
 >   en **SQLite** y la muestra con paneles, gráficas y **mapa** con el track. Trae **modo simulador**.
+> - **Ejercicio 11 → el mismo dashboard, contra un servidor remoto.** Conecta a un ChirpStack **en
+>   Internet** con **MQTT sobre TLS y autenticación**, y explica por qué un broker público no puede
+>   ser anónimo y en claro como el del laboratorio. Sin hardware.
 
 | # | Ejercicio | Radio · Placa | Qué demuestra | ChirpStack | Dato para dashboard |
 |---|-----------|---------------|---------------|:----------:|---------------------|
@@ -62,6 +65,7 @@ Para crear un ejercicio nuevo, copia [`_PLANTILLA/`](_PLANTILLA/) y rellena.
 | [08](08_radiosonda_picaro/) | Radiosonda PICARO | **SX1276** · LilyGo T-Beam | Nodo GPS + batería (RadioLib) → telemetría | ✅ | Lat/lon/alt + batería por MQTT |
 | [09](09_radiosonda_picaro_full/) | Radiosonda PICARO **Full** | **SX1262** · T-Beam Supreme (ESP32-S3, **ESP-IDF**) | Todas las capacidades (GPS+BME280+PMU+IMU+SD) → telemetría + log SD | ✅ | Temp/presión/GPS/batería por MQTT + CSV en microSD |
 | [10](10_dashboard-tkinter/) | Dashboard Mission Control | — · **Python + tkinter** (PC) | Consume el ej.09: paneles, gráficas, mapa con track, SQLite | ✅ (consumidor MQTT) | Visualización + base de datos local |
+| [11](11_dashboard-servidor-remoto/) | Dashboard · servidor remoto | — · **Python + tkinter** (PC) | El ej.10 contra un ChirpStack en Internet: **MQTT sobre TLS**, credenciales y ACL por equipo | ✅ (consumidor MQTT+TLS) | Igual que el ej.10, desde un servidor compartido |
 
 ## Arquitectura de datos (para dashboards)
 

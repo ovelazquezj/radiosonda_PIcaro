@@ -21,7 +21,7 @@ práctica: desde el primer *join* OTAA hasta enviar datos de un sensor **BMP280*
 **dashboard de escritorio estilo control de misión** (Python + tkinter).
 
 > 📚 **¿Empiezas de cero?** La **[Wiki del proyecto](https://github.com/ovelazquezj/radiosonda_PIcaro/wiki)**
-> explica LoRa y LoRaWAN desde los fundamentos y te guía por los **11 ejercicios (00 → 10)** paso a
+> explica LoRa y LoRaWAN desde los fundamentos y te guía por los **12 ejercicios (00 → 11)** paso a
 > paso — es el mejor punto de partida. Aquí abajo tienes el arranque rápido.
 
 ---
@@ -56,7 +56,7 @@ añade material didáctico y de integración** encima, bajo la misma licencia Cl
 
 - **Driver del sensor BMP280 + HAL I²C** para STM32L4 (no existían en el stack).
 - **Provisión y consumo de ChirpStack por API** (REST + MQTT) con scripts reproducibles.
-- **11 ejercicios guiados (00–10)** listos para clase, con credenciales, provisión y dashboards.
+- **12 ejercicios guiados (00–11)** listos para clase, con credenciales, provisión y dashboards.
 - **Integración de nodos de terceros:** **TTGO ESP32 (SX1276)** vía Arduino/LMIC, una **radiosonda GPS LilyGo T-Beam** vía RadioLib, y una **radiosonda ESP32-S3 + SX1262 (LilyGo T-Beam Supreme)** con **ESP-IDF + RadioLib** (drivers a nivel de registro para AXP2101, BME280, L76K GNSS, IMU… y "caja negra" en microSD).
 - **Dashboard de escritorio "control de misión"** (Python + tkinter): consume la telemetría por MQTT, la guarda en SQLite, y muestra paneles, gráficas, mapa real con track y exportación a CSV.
 - **Gateway LoRaWAN de 1 canal** (TTGO ESP32) para recibir a tus nodos sin infraestructura externa.
@@ -67,7 +67,7 @@ añade material didáctico y de integración** encima, bajo la misma licencia Cl
 
 | Carpeta | Contenido |
 |---------|-----------|
-| [`specs/exercises/`](specs/exercises/) | **Empieza aquí** — los 11 ejercicios didácticos (00 ChirpStack → 09 Radiosonda PICARO Full · 10 Dashboard Mission Control) |
+| [`specs/exercises/`](specs/exercises/) | **Empieza aquí** — los 12 ejercicios didácticos (00 ChirpStack → 09 Radiosonda PICARO Full · 10 Dashboard Mission Control · 11 Dashboard contra servidor remoto) |
 | [`specs/bmp280-gnss-tracker/`](specs/bmp280-gnss-tracker/) | Proyecto del tracker BMP280+GNSS: SRS, pinout, guía de flasheo/ChirpStack |
 | [`specs/demos/`](specs/demos/) | Binarios de demo y guía de flasheo/registro por API |
 | `lbm_lib/` | Pila **LoRa Basics Modem** de Semtech (upstream, sin modificar salvo lo indicado) |
@@ -102,7 +102,7 @@ añade material didáctico y de integración** encima, bajo la misma licencia Cl
 La **[Wiki del repositorio](https://github.com/ovelazquezj/radiosonda_PIcaro/wiki)** es la guía
 didáctica completa — **el mejor punto de partida si empiezas de cero**:
 
-- **[Inicio](https://github.com/ovelazquezj/radiosonda_PIcaro/wiki)** — portada con la ruta de los 11 ejercicios (00 → 10).
+- **[Inicio](https://github.com/ovelazquezj/radiosonda_PIcaro/wiki)** — portada con la ruta de los 12 ejercicios (00 → 11).
 - **[¿Qué es LoRa?](https://github.com/ovelazquezj/radiosonda_PIcaro/wiki/Qué-es-LoRa)** · **[¿Qué es LoRaWAN?](https://github.com/ovelazquezj/radiosonda_PIcaro/wiki/Qué-es-LoRaWAN)** — los fundamentos.
 - **[Cómo usar el proyecto](https://github.com/ovelazquezj/radiosonda_PIcaro/wiki/Cómo-usar-el-proyecto)** — la ruta de ejercicios paso a paso.
 - **[Requisitos e instalación](https://github.com/ovelazquezj/radiosonda_PIcaro/wiki/How-To-Requisitos-e-instalación)** · **[Compilar el firmware](https://github.com/ovelazquezj/radiosonda_PIcaro/wiki/How-To-Compilar-el-firmware)** — how-tos por tarea.
