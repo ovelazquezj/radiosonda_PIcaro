@@ -25,6 +25,7 @@ consumo.
 | 6 | [**06 · TTGO + BMP280**](Ejercicio-06-TTGO-BMP280) | Un **sensor real** en el TTGO enviando cada minuto |
 | 7 | [**07 · Gateway de 1 canal**](Ejercicio-07-Gateway-1-canal) | Montar **tu propio gateway** (TTGO) para recibir a los nodos |
 | 8 | [**08 · Radiosonda PICARO**](Ejercicio-08-Radiosonda-PICARO) | **LilyGo T-Beam** (GPS + batería) por RadioLib → telemetría a ChirpStack |
+| 12 | [**12 · Join OTAA con Heltec LoRa 32**](Ejercicio-12-Heltec-LoRa32-Join) | **Heltec WiFi LoRa 32 V3/V4**: credenciales **generadas en ChirpStack** y copiadas a la placa; join y uplinks en Monitor Serie y OLED |
 
 > El **07** es distinto: no es un nodo, es **infraestructura** — montas el gateway que reciben los
 > demás. Guía paso a paso: **[Montar un gateway de 1 canal](How-To-Montar-un-gateway-de-1-canal)**.

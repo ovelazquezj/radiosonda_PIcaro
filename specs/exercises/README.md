@@ -51,6 +51,10 @@ Para crear un ejercicio nuevo, copia [`_PLANTILLA/`](_PLANTILLA/) y rellena.
 > - **Ejercicio 11 → el mismo dashboard, contra un servidor remoto.** Conecta a un ChirpStack **en
 >   Internet** con **MQTT sobre TLS y autenticación**, y explica por qué un broker público no puede
 >   ser anónimo y en claro como el del laboratorio. Sin hardware.
+> - **Ejercicio 12 → Heltec WiFi LoRa 32 V3 / V4** (ESP32-S3 + **SX1262** + OLED), firmware
+>   **Arduino/RadioLib**: **join OTAA** contra el ChirpStack del curso con **credenciales generadas en
+>   ChirpStack** (DevEUI, JoinEUI y AppKey) y copiadas a la placa. Traza detallada en el Monitor Serie
+>   y estado en la OLED. **Sin `provision.sh`**: la alta se hace en la consola web.
 
 | # | Ejercicio | Radio · Placa | Qué demuestra | ChirpStack | Dato para dashboard |
 |---|-----------|---------------|---------------|:----------:|---------------------|
@@ -66,6 +70,7 @@ Para crear un ejercicio nuevo, copia [`_PLANTILLA/`](_PLANTILLA/) y rellena.
 | [09](09_radiosonda_picaro_full/) | Radiosonda PICARO **Full** | **SX1262** · T-Beam Supreme (ESP32-S3, **ESP-IDF**) | Todas las capacidades (GPS+BME280+PMU+IMU+SD) → telemetría + log SD | ✅ | Temp/presión/GPS/batería por MQTT + CSV en microSD |
 | [10](10_dashboard-tkinter/) | Dashboard Mission Control | — · **Python + tkinter** (PC) | Consume el ej.09: paneles, gráficas, mapa con track, SQLite | ✅ (consumidor MQTT) | Visualización + base de datos local |
 | [11](11_dashboard-servidor-remoto/) | Dashboard · servidor remoto | — · **Python + tkinter** (PC) | El ej.10 contra un ChirpStack en Internet: **MQTT sobre TLS**, credenciales y ACL por equipo | ✅ (consumidor MQTT+TLS) | Igual que el ej.10, desde un servidor compartido |
+| [12](12_heltec-lora32-v3-join/) | Join OTAA · Heltec LoRa 32 | **SX1262** · Heltec WiFi LoRa 32 V3/V4 (ESP32-S3) | Join OTAA con credenciales **generadas en ChirpStack**; traza verbose + OLED | ✅ (servidor del curso) | `counter`/`uptime_s`/`vbat_mv` por MQTT |
 
 ## Arquitectura de datos (para dashboards)
 

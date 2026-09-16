@@ -29,6 +29,12 @@ terceros **ESP-1ch-Gateway** (MIT, things4u). Es un gateway **single-channel** (
 canal): perfecto para **demos y aprender el flujo nodo → gateway → ChirpStack**, pero **no para
 producción**. Guía paso a paso: **[Montar un gateway de 1 canal](How-To-Montar-un-gateway-de-1-canal)**.
 
+## Heltec WiFi LoRa 32 V3 / V4 (ejercicio 12)
+Placa **ESP32-S3** + radio **SX1262** + **OLED** 0.96" integrada, con conector de batería. Se programa
+con **Arduino IDE** y **RadioLib**. La **V4** añade un **amplificador de RF** (hasta 28 dBm), USB nativo,
+16 MB de flash y conectores de panel solar y GNSS; el código del ejercicio contempla las dos versiones
+con una sola constante. Es el nodo del **ejercicio 12**, donde las credenciales las **genera ChirpStack**.
+
 ## ¿Qué usa cada ejercicio?
 
 | Ejercicio | Nodo | Radio | Extra |
@@ -41,6 +47,7 @@ producción**. Guía paso a paso: **[Montar un gateway de 1 canal](How-To-Montar
 | 06 TTGO + BMP280 | TTGO ESP32 | SX1276 | BMP280 (I²C) + OLED |
 | 07 Gateway 1 canal | TTGO ESP32 | SX1276 | **gateway** (firmware de terceros) → ChirpStack |
 | 08 Radiosonda PICARO | LilyGo T-Beam (ESP32) | SX1276 | GPS + batería (RadioLib) → ChirpStack |
+| 12 Join OTAA Heltec | Heltec WiFi LoRa 32 V3/V4 (ESP32-S3) | SX1262 | OLED + batería (RadioLib) → ChirpStack del curso |
 
 > Los detalles de **cableado del sensor** (pines) están en el README de los ejercicios 02 y 06 y en
 > el diagrama `specs/bmp280-gnss-tracker/pinout_diagram.html`.
