@@ -35,6 +35,12 @@ con **Arduino IDE** y **RadioLib**. La **V4** añade un **amplificador de RF** (
 16 MB de flash y conectores de panel solar y GNSS; el código del ejercicio contempla las dos versiones
 con una sola constante. Es el nodo del **ejercicio 12**, donde las credenciales las **genera ChirpStack**.
 
+## Heltec CubeCell HTCC-AB01 (ejercicio 13)
+Nodo LoRaWAN de **bajo consumo**: microcontrolador **ASR6501** (Cortex-M0+) con radio **SX1262**
+integrada, cargador de batería LiPo y entrada de panel solar. Se programa con **Arduino IDE** y el
+**CubeCell Development Framework** de Heltec, que trae su propia pila LoRaWAN. Sin pantalla; un LED
+RGB indica el estado. Es la base de la **estación meteorológica** del ejercicio 13.
+
 ## ¿Qué usa cada ejercicio?
 
 | Ejercicio | Nodo | Radio | Extra |
@@ -48,6 +54,7 @@ con una sola constante. Es el nodo del **ejercicio 12**, donde las credenciales 
 | 07 Gateway 1 canal | TTGO ESP32 | SX1276 | **gateway** (firmware de terceros) → ChirpStack |
 | 08 Radiosonda PICARO | LilyGo T-Beam (ESP32) | SX1276 | GPS + batería (RadioLib) → ChirpStack |
 | 12 Join OTAA Heltec | Heltec WiFi LoRa 32 V3/V4 (ESP32-S3) | SX1262 | OLED + batería (RadioLib) → ChirpStack del curso |
+| 13 Estación meteo | Heltec CubeCell HTCC-AB01 (ASR6501) | SX1262 | DHT11 + BMP280 + BH1750 + MH-RD (pila Heltec) → ChirpStack del curso |
 
 > Los detalles de **cableado del sensor** (pines) están en el README de los ejercicios 02 y 06 y en
 > el diagrama `specs/bmp280-gnss-tracker/pinout_diagram.html`.

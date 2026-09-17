@@ -21,7 +21,7 @@ práctica: desde el primer *join* OTAA hasta enviar datos de un sensor **BMP280*
 **dashboard de escritorio estilo control de misión** (Python + tkinter).
 
 > 📚 **¿Empiezas de cero?** La **[Wiki del proyecto](https://github.com/ovelazquezj/radiosonda_PIcaro/wiki)**
-> explica LoRa y LoRaWAN desde los fundamentos y te guía por los **13 ejercicios (00 → 12)** paso a
+> explica LoRa y LoRaWAN desde los fundamentos y te guía por los **14 ejercicios (00 → 13)** paso a
 > paso — es el mejor punto de partida. Aquí abajo tienes el arranque rápido.
 
 ---
@@ -56,8 +56,8 @@ añade material didáctico y de integración** encima, bajo la misma licencia Cl
 
 - **Driver del sensor BMP280 + HAL I²C** para STM32L4 (no existían en el stack).
 - **Provisión y consumo de ChirpStack por API** (REST + MQTT) con scripts reproducibles.
-- **13 ejercicios guiados (00–12)** listos para clase, con credenciales, provisión y dashboards.
-- **Integración de nodos de terceros:** **TTGO ESP32 (SX1276)** vía Arduino/LMIC, una **radiosonda GPS LilyGo T-Beam** vía RadioLib, y una **radiosonda ESP32-S3 + SX1262 (LilyGo T-Beam Supreme)** con **ESP-IDF + RadioLib** (drivers a nivel de registro para AXP2101, BME280, L76K GNSS, IMU… y "caja negra" en microSD), y una **Heltec WiFi LoRa 32 V3/V4** (ESP32-S3 + SX1262) con Arduino/RadioLib cuyas credenciales **genera ChirpStack**.
+- **14 ejercicios guiados (00–13)** listos para clase, con credenciales, provisión y dashboards.
+- **Integración de nodos de terceros:** **TTGO ESP32 (SX1276)** vía Arduino/LMIC, una **radiosonda GPS LilyGo T-Beam** vía RadioLib, y una **radiosonda ESP32-S3 + SX1262 (LilyGo T-Beam Supreme)** con **ESP-IDF + RadioLib** (drivers a nivel de registro para AXP2101, BME280, L76K GNSS, IMU… y "caja negra" en microSD), y una **Heltec WiFi LoRa 32 V3/V4** (ESP32-S3 + SX1262) con Arduino/RadioLib cuyas credenciales **genera ChirpStack**, y una **estación meteorológica** con **Heltec CubeCell HTCC-AB01** (pila LoRaWAN de Heltec, bajo consumo, sensores DHT11/BMP280/BH1750/lluvia).
 - **Dashboard de escritorio "control de misión"** (Python + tkinter): consume la telemetría por MQTT, la guarda en SQLite, y muestra paneles, gráficas, mapa real con track y exportación a CSV.
 - **Gateway LoRaWAN de 1 canal** (TTGO ESP32) para recibir a tus nodos sin infraestructura externa.
 - **Especificaciones SDD (SRS)**, diagrama de **pinout** y guías comunes de **build/flash/ChirpStack**.
@@ -67,7 +67,7 @@ añade material didáctico y de integración** encima, bajo la misma licencia Cl
 
 | Carpeta | Contenido |
 |---------|-----------|
-| [`specs/exercises/`](specs/exercises/) | **Empieza aquí** — los 13 ejercicios didácticos (00 ChirpStack → 09 Radiosonda PICARO Full · 10 Dashboard Mission Control · 11 Dashboard contra servidor remoto · 12 Join OTAA con Heltec LoRa 32) |
+| [`specs/exercises/`](specs/exercises/) | **Empieza aquí** — los 13 ejercicios didácticos (00 ChirpStack → 09 Radiosonda PICARO Full · 10 Dashboard Mission Control · 11 Dashboard contra servidor remoto · 12 Join OTAA con Heltec LoRa 32 · 13 Estación meteo con CubeCell) |
 | [`specs/bmp280-gnss-tracker/`](specs/bmp280-gnss-tracker/) | Proyecto del tracker BMP280+GNSS: SRS, pinout, guía de flasheo/ChirpStack |
 | [`specs/demos/`](specs/demos/) | Binarios de demo y guía de flasheo/registro por API |
 | `lbm_lib/` | Pila **LoRa Basics Modem** de Semtech (upstream, sin modificar salvo lo indicado) |
@@ -79,10 +79,11 @@ añade material didáctico y de integración** encima, bajo la misma licencia Cl
 - **Arduino IDE** con las librerías MCCI LMIC, U8g2 y Adafruit BMP280 — para los nodos TTGO (ej. 05–06).
 - **PlatformIO** (o Arduino IDE) — para el firmware del gateway de 1 canal (ej. 07).
 - **Arduino IDE + RadioLib** (+ U8g2) — para la radiosonda **LilyGo T-Beam** (ej. 08) y la **Heltec WiFi LoRa 32** (ej. 12).
+- **Arduino IDE + CubeCell Development Framework** (Heltec) — para la estación meteo **CubeCell** (ej. 13).
 - **ESP-IDF v5.x** (`idf.py`) — para la radiosonda **LilyGo T-Beam Supreme** ESP32-S3 (ej. 09).
 - **Python 3.x** (`tkinter`, `matplotlib`, `paho-mqtt`, `tkintermapview`) — para el dashboard (ej. 10).
 - **ChirpStack v4** (se incluye un `docker-compose` de referencia en el ejercicio 00).
-- **Hardware:** Nucleo-L476RG + shield **LR1110** (01–04); **TTGO ESP32 LoRa** + **BMP280** (05–06); **TTGO ESP32** como gateway (07); **LilyGo T-Beam** (08); **LilyGo T-Beam Supreme** ESP32-S3 + SX1262 + microSD (09); solo un **PC** (Windows/Linux/macOS) para el dashboard (10–11); **Heltec WiFi LoRa 32 V3 o V4** (12).
+- **Hardware:** Nucleo-L476RG + shield **LR1110** (01–04); **TTGO ESP32 LoRa** + **BMP280** (05–06); **TTGO ESP32** como gateway (07); **LilyGo T-Beam** (08); **LilyGo T-Beam Supreme** ESP32-S3 + SX1262 + microSD (09); solo un **PC** (Windows/Linux/macOS) para el dashboard (10–11); **Heltec WiFi LoRa 32 V3 o V4** (12); **Heltec CubeCell HTCC-AB01** + DHT11, BMP280, BH1750 y MH-RD (13).
 
 > Instalación completa del toolchain paso a paso en la Wiki → **[Requisitos e instalación](https://github.com/ovelazquezj/radiosonda_PIcaro/wiki/How-To-Requisitos-e-instalación)**.
 
@@ -102,7 +103,7 @@ añade material didáctico y de integración** encima, bajo la misma licencia Cl
 La **[Wiki del repositorio](https://github.com/ovelazquezj/radiosonda_PIcaro/wiki)** es la guía
 didáctica completa — **el mejor punto de partida si empiezas de cero**:
 
-- **[Inicio](https://github.com/ovelazquezj/radiosonda_PIcaro/wiki)** — portada con la ruta de los 13 ejercicios (00 → 12).
+- **[Inicio](https://github.com/ovelazquezj/radiosonda_PIcaro/wiki)** — portada con la ruta de los 14 ejercicios (00 → 13).
 - **[¿Qué es LoRa?](https://github.com/ovelazquezj/radiosonda_PIcaro/wiki/Qué-es-LoRa)** · **[¿Qué es LoRaWAN?](https://github.com/ovelazquezj/radiosonda_PIcaro/wiki/Qué-es-LoRaWAN)** — los fundamentos.
 - **[Cómo usar el proyecto](https://github.com/ovelazquezj/radiosonda_PIcaro/wiki/Cómo-usar-el-proyecto)** — la ruta de ejercicios paso a paso.
 - **[Requisitos e instalación](https://github.com/ovelazquezj/radiosonda_PIcaro/wiki/How-To-Requisitos-e-instalación)** · **[Compilar el firmware](https://github.com/ovelazquezj/radiosonda_PIcaro/wiki/How-To-Compilar-el-firmware)** — how-tos por tarea.

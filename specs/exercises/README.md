@@ -55,6 +55,10 @@ Para crear un ejercicio nuevo, copia [`_PLANTILLA/`](_PLANTILLA/) y rellena.
 >   **Arduino/RadioLib**: **join OTAA** contra el ChirpStack del curso con **credenciales generadas en
 >   ChirpStack** (DevEUI, JoinEUI y AppKey) y copiadas a la placa. Traza detallada en el Monitor Serie
 >   y estado en la OLED. **Sin `provision.sh`**: la alta se hace en la consola web.
+> - **Ejercicio 13 → Heltec CubeCell HTCC-AB01** (ASR6501 + **SX1262**, bajo consumo), firmware
+>   **Arduino + CubeCell Development Framework** (pila LoRaWAN de Heltec): join OTAA y **estación
+>   meteorológica** que se construye por etapas (DHT11, BMP280, BH1750, lluvia MH-RD). **Verificado en
+>   hardware.**
 
 | # | Ejercicio | Radio · Placa | Qué demuestra | ChirpStack | Dato para dashboard |
 |---|-----------|---------------|---------------|:----------:|---------------------|
@@ -71,6 +75,7 @@ Para crear un ejercicio nuevo, copia [`_PLANTILLA/`](_PLANTILLA/) y rellena.
 | [10](10_dashboard-tkinter/) | Dashboard Mission Control | — · **Python + tkinter** (PC) | Consume el ej.09: paneles, gráficas, mapa con track, SQLite | ✅ (consumidor MQTT) | Visualización + base de datos local |
 | [11](11_dashboard-servidor-remoto/) | Dashboard · servidor remoto | — · **Python + tkinter** (PC) | El ej.10 contra un ChirpStack en Internet: **MQTT sobre TLS**, credenciales y ACL por equipo | ✅ (consumidor MQTT+TLS) | Igual que el ej.10, desde un servidor compartido |
 | [12](12_heltec-lora32-v3-join/) | Join OTAA · Heltec LoRa 32 | **SX1262** · Heltec WiFi LoRa 32 V3/V4 (ESP32-S3) | Join OTAA con credenciales **generadas en ChirpStack**; traza verbose + OLED | ✅ (servidor del curso) | `counter`/`uptime_s`/`vbat_mv` por MQTT |
+| [13](13_cubecell-estacion-meteo/) | Estación meteo · CubeCell | **SX1262** · Heltec CubeCell HTCC-AB01 (ASR6501) | Join con la pila de Heltec, bajo consumo, sensores por etapas | ✅ (servidor del curso) | temp/hum/presión/lux/lluvia/batería por MQTT |
 
 ## Arquitectura de datos (para dashboards)
 

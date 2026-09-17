@@ -8,7 +8,7 @@
 - [5 · Cómo usar el proyecto](Cómo-usar-el-proyecto)
 - [6 · Glosario y recursos](Glosario-y-recursos)
 
-**📟 Ejercicios (00–12)**
+**📟 Ejercicios (00–13)**
 - [00 · ChirpStack](Ejercicio-00-ChirpStack)
 - [01 · Periodical Uplink](Ejercicio-01-Periodical-Uplink)
 - [02 · BMP280 + GNSS](Ejercicio-02-BMP280-GNSS)
@@ -22,6 +22,7 @@
 - [10 · Dashboard Mission Control (tkinter)](Ejercicio-10-Dashboard-Mission-Control)
 - [11 · Dashboard contra servidor remoto](Ejercicio-11-Dashboard-Servidor-Remoto)
 - [12 · Join OTAA con Heltec LoRa 32 V3/V4](Ejercicio-12-Heltec-LoRa32-Join)
+- [13 · Estación meteo con CubeCell](Ejercicio-13-CubeCell-Estacion-Meteo)
 
 **🔧 Guías prácticas (How-To)**
 - [Requisitos e instalación](How-To-Requisitos-e-instalación)
