@@ -45,6 +45,7 @@ Clase **A** · LoRaWAN **1.0.x** · ADR **ON** · uplink cada **60 s** en **fPor
 4. **Compilar, flashear (COM del CP2102) y Monitor Serie a 115200:** `joining...` → `TX on freq 904300000 Hz at DR 3` → `joined`, y cada minuto `UPLINK #n` con el payload en hex.
 5. **ChirpStack:** *LoRaWAN frames* con `JoinRequest`/`JoinAccept`, *Events* con el `object`; pegar `payload_decoder.js` en el **Codec** del device profile.
 6. **Sensores, uno a uno:** cablear a Vext/GND y sus pines, poner `SENSOR_xxx 1` en `config_sensores.h`, reflashear y ver la lectura en el Monitor Serie y en el `object`.
+7. **Energía:** batería LiPo 3.7 V al conector BAT (SH1.25-2) y celda solar de 6 V, bien a la entrada solar de la placa (5.5–7 V), bien a través de un **módulo de carga USB-C TP4056** (panel → IN, batería → B, OUT → BAT de la CubeCell). Detalle y advertencias de polaridad en el README, Etapa 5.
 
 ## Cableado (todos a Vext y GND)
 
@@ -54,6 +55,7 @@ Clase **A** · LoRaWAN **1.0.x** · ADR **ON** · uplink cada **60 s** en **fPor
 | BMP280 | SDA → **SDA**, SCL → **SCL** (0x76) | presión (hPa) y temperatura |
 | BH1750 | SDA → **SDA**, SCL → **SCL** (0x23) | luz (lux) |
 | MH-RD | AO → **ADC**, DO → **GPIO1** | lluvia (% y sí/no) |
+| Batería + solar | LiPo → **BAT**; panel 6 V → **SOLAR/VS** o vía TP4056 → **BAT** | energía autónoma (`vbat_mv`) |
 
 ## Estructura del payload (11 bytes, big-endian, fPort 2)
 

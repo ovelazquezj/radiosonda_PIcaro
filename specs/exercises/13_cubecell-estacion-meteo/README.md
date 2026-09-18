@@ -35,9 +35,10 @@ device muestra *last seen* reciente y el payload decodificado:
               "vbat_mv": 3800, "vbat_v": 3.8, "battery_pct": 55 } }
 ```
 
-**Después (etapas 1 a 4):** cableas el DHT11, el BMP280, el BH1750 y el módulo de lluvia MH-RD, uno a
+**Después (etapas 1 a 5):** cableas el DHT11, el BMP280, el BH1750 y el módulo de lluvia MH-RD, uno a
 uno, y el mismo `object` se va llenando con `temp_dht_c`, `humedad_pct`, `presion_hpa`, `lux`,
-`lluvia_pct`…
+`lluvia_pct`… Por último le pones **batería, módulo de carga USB-C y celda solar** para dejarla
+funcionando sola.
 
 ---
 
@@ -49,6 +50,7 @@ uno, y el mismo `object` se va llenando con `temp_dht_c`, `humedad_pct`, `presio
 - [ ] **Usuario y contraseña del LNS** con acceso al tenant donde vive el device.
 - [ ] *(Etapa 0, opcional)* batería LiPo de 3.7 V con conector de 2 pines (la placa la carga por USB).
 - [ ] *(Etapas 1–4)* DHT11, BMP280, BH1750, MH-RD, cables Dupont hembra-hembra y una protoboard pequeña.
+- [ ] *(Etapa 5)* batería LiPo 3.7 V (1000–2000 mAh, con conector SH1.25-2 o para soldar), **módulo de carga USB-C TP4056** (el de 6 pines: IN+/IN−, B+/B−, OUT+/OUT−, con protección DW01), **celda solar de 6 V** (1–2 W), cable con conector SH1.25-2, multímetro.
 - [ ] *(Paso 10, opcional)* `git` para clonar; si no lo tienes, hay opción de descarga ZIP.
 
 ### Conoce la placa
@@ -357,7 +359,7 @@ export MQTT_USER=equipoNN MQTT_PASS='...' APP_ID='<uuid>'
 
 ---
 
-## 🌦️ Etapas 1 a 4: los sensores
+## 🌦️ Etapas 1 a 5: los sensores y la energía
 
 La estación crece **un sensor cada vez**. El método es siempre el mismo:
 
@@ -436,6 +438,87 @@ moja la placa con unas gotas, anota el `AO=` y ponlo en `MHRD_WET_RAW`. Reflashe
 0 (seco) a 100 (empapado). El potenciómetro del módulo ajusta el umbral de `DO` (lluvia sí/no, bit
 `lluvia` en ChirpStack).
 
+### Etapa 5 — Energía: batería, módulo de carga USB-C y celda solar
+
+Hasta aquí la estación vive del USB. Para dejarla en la intemperie necesita **batería** y algo que la
+recargue. Hay dos formas de armarlo; la **A** usa lo que ya trae la placa y la **B** añade un módulo de
+carga USB-C, que es más versátil (permite cargar desde cualquier cargador de móvil además del sol).
+
+**Datos de la placa que mandan en las dos opciones** (documentación de Heltec):
+
+| Dato | Valor |
+|---|---|
+| Conector de batería | **SH1.25-2** (2 pines, paso 1.25 mm), LiPo de **3.7 V** una celda |
+| Cargador integrado | sí: carga la batería desde el **USB** y conmuta solo entre USB y batería |
+| Entrada solar propia | conector de 2 pines / pin **VS**, panel de **5.5 a 7 V** |
+| Consumo en reposo | **3.5 µA** en sueño profundo |
+| Medida de batería | la lee el firmware (`Bateria : … mV` en el Monitor Serie y `vbat_mv` en ChirpStack) |
+
+> ⚠️ **Antes de conectar nada:** mide con el multímetro la polaridad del cable de la batería y del
+> panel. Los conectores SH1.25 de los vendedores **no siempre respetan** rojo = positivo. Un LiPo al
+> revés destruye el cargador de la placa.
+
+#### Opción A — la entrada solar de la propia CubeCell (la más simple)
+
+```
+   celda solar 6 V ──(+)──► conector SOLAR / pin VS de la CubeCell
+                   ──(−)──► GND
+   batería LiPo 3.7 V ─────► conector BAT (SH1.25-2) de la CubeCell
+```
+
+- Panel de **6 V nominal** (1–2 W): en sol directo da 6–7 V, dentro del rango 5.5–7 V que admite la
+  placa. **No** uses un panel de 12 V ni uno de 5 V (con 5 V no llega a cargar).
+- La batería va al conector **BAT**. El cargador integrado la carga desde el panel o desde el USB.
+- No hay nada más que hacer. Es la opción recomendada si la placa va a estar en un sitio con sol.
+
+#### Opción B — módulo de carga USB-C (TP4056) entre el panel y la batería
+
+Con esta opción el **módulo** es el que carga la batería (desde el panel o desde su propio USB-C), y la
+CubeCell solo **consume** de ella. El módulo de 6 pines lleva el cargador TP4056 y la protección
+DW01 (corte por sobredescarga, sobrecarga y cortocircuito).
+
+```
+   celda solar 6 V ──(+)──► IN+  ┌───────────────┐  B+ ◄──(+)── batería LiPo 3.7 V
+                   ──(−)──► IN−  │ módulo TP4056 │  B− ◄──(−)──
+                                 │   USB-C       │
+                                 │               │  OUT+ ──(+)──► CubeCell conector BAT (SH1.25-2)
+                                 └───────────────┘  OUT− ──(−)──► CubeCell conector BAT (SH1.25-2)
+```
+
+| Pin del módulo | Se conecta a | Notas |
+|---|---|---|
+| **IN+ / IN−** | celda solar (+ / −) | o deja los pines libres y carga por el **USB-C** del módulo con un cargador de móvil |
+| **B+ / B−** | batería LiPo (+ / −) | soldado o con el conector de la batería |
+| **OUT+ / OUT−** | conector **BAT** de la CubeCell (+ / −) | por aquí sale la batería **protegida** hacia la placa |
+
+Pasos:
+
+1. **Corriente de carga.** El TP4056 viene ajustado a **1 A** (resistencia R3 de 1.2 kΩ). Para una
+   batería de 1000 mAh y un panel pequeño es demasiado: cambia R3 por **5 kΩ (≈ 250 mA)** o
+   **10 kΩ (≈ 130 mA)**. Si no quieres soldar, usa una batería de 2000 mAh o más, que admite 1 A.
+2. **Panel.** 6 V nominal, 1–2 W. El TP4056 admite hasta 8 V en IN; un panel de 6 V en sol directo
+   queda dentro. Un panel de 5 V carga solo con sol fuerte; uno de 12 V **lo quema**.
+3. **Suelda o conecta** B+/B− a la batería y OUT+/OUT− a un cable con conector SH1.25-2 hacia el
+   conector **BAT** de la CubeCell. Comprueba la polaridad con el multímetro **en el extremo del
+   conector** antes de enchufarlo.
+4. **Conecta el panel** a IN+/IN−. Con sol, el LED rojo del módulo indica *cargando* y el azul
+   *batería llena*.
+5. **No conectes el USB de la CubeCell mientras el módulo esté cargando.** El cargador integrado de la
+   placa y el TP4056 estarían cargando la misma batería a la vez. Para programar o ver el Monitor Serie,
+   desconecta antes el panel del módulo (o el USB-C del módulo).
+
+> ℹ️ El conector **SOLAR / VS** de la CubeCell queda **sin usar** en la opción B: el panel entra por el
+> módulo, no por la placa.
+
+#### Verificación (las dos opciones)
+
+- Con el USB desconectado, la placa sigue encendida y el Monitor Serie no está disponible: mira en
+  ChirpStack que **Last seen** siga avanzando cada 60 s. Ese es el nodo funcionando **solo con batería**.
+- En `object.vbat_mv` de cada uplink verás el voltaje. Con el panel al sol debe **subir** poco a poco
+  (hasta ~4.2 V); de noche, **bajar** muy despacio.
+- Autonomía orientativa: con el ciclo de 60 s y los cuatro sensores, una LiPo de 1000 mAh dura
+  **varias semanas** sin sol. Para alargarla, sube `PICARO_UPLINK_INTERVAL_S` a 300 (5 min).
+
 ---
 
 ## ✅ Cómo saber que funcionó
@@ -446,6 +529,7 @@ moja la placa con unas gotas, anota el `AO=` y ponlo en `MHRD_WET_RAW`. Reflashe
 - [ ] ChirpStack: **Events ▸ up ▸ object** con `vbat_mv` (tras pegar el codec).
 - [ ] En el uplink #5: `confirmed uplink sending ...` y `[downlink] ACK del servidor`.
 - [ ] Por cada sensor activado: su lectura en el Monitor Serie y su campo en `object`.
+- [ ] Etapa 5: con el USB desconectado, *last seen* sigue avanzando y `vbat_mv` sube con el panel al sol.
 
 ## 🛠️ Si algo falla
 
@@ -466,6 +550,8 @@ moja la placa con unas gotas, anota el `AO=` y ponlo en `MHRD_WET_RAW`. Reflashe
 | `BMP280 : NO RESPONDE` / `BH1750 : NO RESPONDE` | SDA/SCL cruzados, dirección I2C, o VCC no va a Vext | Etapas 2 y 3; prueba 0x77 en el BMP280 |
 | `lluvia_pct` siempre 0 o 100 | `MHRD_DRY_RAW` / `MHRD_WET_RAW` sin calibrar | Etapa 4, calibración |
 | Batería en ChirpStack "2 %" con LiPo cargada | Es el `DevStatusAns` de la pila, no calibrado | Usa `vbat_mv` del payload |
+| La placa no enciende solo con batería | Polaridad del conector BAT invertida, o la protección del módulo cortó por batería vacía | Mide la polaridad; carga la batería por USB-C del módulo hasta que su LED cambie a azul |
+| `vbat_mv` no sube con el panel al sol | Panel de 5 V (insuficiente), polaridad del panel, o corriente de carga muy alta para el panel | Usa panel de 6 V; revisa IN+/IN−; baja la corriente del TP4056 (R3) |
 
 ---
 
