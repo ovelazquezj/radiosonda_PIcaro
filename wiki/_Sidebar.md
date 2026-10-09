@@ -33,6 +33,7 @@
 - [Dar de alta un LR1110 nuevo](How-To-Dar-de-alta-un-LR1110-nuevo)
 - [Dar de alta un TTGO nuevo](How-To-Dar-de-alta-un-TTGO-nuevo)
 - [Montar un gateway de 1 canal](How-To-Montar-un-gateway-de-1-canal)
+- [Configurar un gateway Kerlink iBTS](How-To-Configurar-un-gateway-Kerlink-iBTS)
 
 ---
 [Repo](https://github.com/ovelazquezj/radiosonda_PIcaro) · [Semtech SWL2001](https://github.com/Lora-net/SWL2001)

@@ -41,6 +41,7 @@ provisión y consumo). Recorrido guiado en **[Cómo usar el proyecto](Cómo-usar
 6. **[Dar de alta un LR1110 nuevo](How-To-Dar-de-alta-un-LR1110-nuevo)** — credenciales propias: código → build → ChirpStack.
 7. **[Dar de alta un TTGO nuevo](How-To-Dar-de-alta-un-TTGO-nuevo)** — igual para TTGO (¡ojo al orden de bytes invertido!).
 8. **[Montar un gateway de 1 canal](How-To-Montar-un-gateway-de-1-canal)** — tu propio gateway TTGO → ChirpStack (ejercicio 07).
+9. **[Configurar un gateway Kerlink iBTS](How-To-Configurar-un-gateway-Kerlink-iBTS)** — un gateway profesional de 8 canales (US915) conectado al LNS de PiCARO.
 
 ## ¿Qué vas a lograr?
 - Unir un dispositivo a una red LoRaWAN (**join OTAA**) y ver sus tramas.
