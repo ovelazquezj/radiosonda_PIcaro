@@ -278,6 +278,15 @@ status_lorawan_t region_us_915_get_join_next_channel( smtc_real_t* real, uint8_t
         *active_channel_nb = 0;
         for( uint8_t i = snapshot_bank_tx_mask * 8; i < ( ( snapshot_bank_tx_mask * 8 ) + 8 ); i++ )
         {
+#if defined( US915_SUB_BAND )
+            // Join solo en la sub-banda US915_SUB_BAND (1..8): sus 8 canales de 125 kHz y su canal de 500 kHz.
+            // Sin esto el join recorre los 64 canales y casi nunca cae donde escucha un gateway de 8 canales.
+            if( ( i < ( NUMBER_OF_TX_CHANNEL_US_915 - 8 ) ) ? ( ( i / 8 ) != ( US915_SUB_BAND - 1 ) )
+                                                          : ( i != ( NUMBER_OF_TX_CHANNEL_US_915 - 9 + US915_SUB_BAND ) ) )
+            {
+                continue;
+            }
+#endif
             if( ( SMTC_GET_BIT8( snapshot_channel_tx_mask, i ) == CHANNEL_ENABLED ) &&
                 ( SMTC_GET_BIT8( channel_index_enabled, i ) == CHANNEL_ENABLED ) )
             {

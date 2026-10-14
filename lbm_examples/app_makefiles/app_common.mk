@@ -303,6 +303,13 @@ APP_C_SOURCES += \
 	main_examples/main_porting_tests.c
 endif
 
+ifeq ($(MODEM_APP),VUELO_LRFHSS)
+APP_C_SOURCES += \
+	main_examples/main_vuelo_lrfhss.c
+# Join solo en la sub-banda 2 de US915 (canales 8-15 + 65), la de los gateways PiCARO
+LBM_FLAGS += -DUS915_SUB_BAND=2
+endif
+
 ifeq ($(MODEM_APP),LCTT_CERTIF)
 APP_C_SOURCES += \
 	main_examples/main_lctt_certif.c

@@ -92,6 +92,9 @@ int main( void )
     main_porting_tests( );
 #elif MAKEFILE_APP == LCTT_CERTIF
     main_lctt_certif( );
+#elif MAKEFILE_APP == VUELO_LRFHSS
+    // Prueba de vuelo LR-FHSS (US915)
+    main_vuelo_lrfhss( );
 #else
 #error "Unknown application" ## MAKEFILE_APP
 #endif

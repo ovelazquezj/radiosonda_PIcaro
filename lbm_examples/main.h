@@ -69,6 +69,7 @@ extern "C" {
 #define HW_MODEM 1
 #define PORTING_TESTS 2
 #define LCTT_CERTIF 3
+#define VUELO_LRFHSS 4
 
 /*
  * -----------------------------------------------------------------------------
@@ -78,6 +79,7 @@ extern "C" {
 void main_periodical_uplink( void );
 void main_hw_modem( void );
 void main_porting_tests( void );
+void main_vuelo_lrfhss( void );
 void main_lctt_certif( void );
 
 #ifdef __cplusplus
