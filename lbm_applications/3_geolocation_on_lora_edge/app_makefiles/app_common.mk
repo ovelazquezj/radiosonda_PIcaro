@@ -102,6 +102,12 @@ ifeq ($(MODEM_APP),EXAMPLE_WIFI_REGION_DETECTION)
 LBM_BUILD_OPTIONS += LBM_GEOLOCATION=yes
 endif
 
+ifeq ($(MODEM_APP),VUELO_GNSS)
+LBM_BUILD_OPTIONS += LBM_GEOLOCATION=yes
+# Join solo en la sub-banda 2 de US915 (canales 8-15 + 65), la de los gateways PiCARO
+LBM_FLAGS += -DUS915_SUB_BAND=2
+endif
+
 # Clean up commas
 COMMA := ,
 BUILD_TARGET := $(subst $(COMMA),_,$(BUILD_TARGET))
@@ -282,6 +288,11 @@ endif
 ifeq ($(MODEM_APP),EXAMPLE_FULL_ALMANAC_UPDATE)
 APP_C_SOURCES += \
 	main_full_almanac_update/main_full_almanac_update.c
+endif
+
+ifeq ($(MODEM_APP),VUELO_GNSS)
+APP_C_SOURCES += \
+	main_vuelo_gnss/main_vuelo_gnss.c
 endif
 
 ifeq ($(MODEM_APP),EXAMPLE_LR11XX_FLASHER)

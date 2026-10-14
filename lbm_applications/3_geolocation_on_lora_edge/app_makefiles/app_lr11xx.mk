@@ -39,6 +39,11 @@ APP_C_SOURCES += \
 	lr11xx_board/lr1110_board_mb1lxks.c
 endif
 
+ifeq ($(MODEM_APP),VUELO_GNSS)
+APP_C_SOURCES += \
+	lr11xx_board/lr1110_board_mb1lxks.c
+endif
+
 #-----------------------------------------------------------------------------
 # Includes
 #-----------------------------------------------------------------------------
@@ -69,6 +74,11 @@ COMMON_C_DEFS += \
 endif
 
 ifeq ($(MODEM_APP),EXAMPLE_WIFI_REGION_DETECTION)
+COMMON_C_DEFS += \
+	-DENABLE_MODEM_GNSS_FEATURE
+endif
+
+ifeq ($(MODEM_APP),VUELO_GNSS)
 COMMON_C_DEFS += \
 	-DENABLE_MODEM_GNSS_FEATURE
 endif

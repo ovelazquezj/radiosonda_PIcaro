@@ -90,6 +90,9 @@ int main( void )
     main_lr11xx_flasher( );
 #elif MAKEFILE_APP == EXAMPLE_WIFI_REGION_DETECTION
     main_wifi_region_detection( );
+#elif MAKEFILE_APP == VUELO_GNSS
+    // Prueba de vuelo con el escaner GNSS del LR1110 (US915)
+    main_vuelo_gnss( );
 #else
 #error "Unknown application" ## MAKEFILE_APP
 #endif
