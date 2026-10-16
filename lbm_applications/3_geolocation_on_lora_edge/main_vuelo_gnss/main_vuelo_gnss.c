@@ -5,9 +5,11 @@
  *
  * Arranca sola al encender: join OTAA en la sub-banda 2 y, una vez unida, un escaneo
  * GNSS cada VUELO_GNSS_PERIOD_S segundos. El resultado del escaneo (sin resolver: no hay
- * solver) sale en un uplink LoRa DR0 / SF10 de 11 bytes, igual que las corridas VUELO de
- * las otras sondas. ADR apagado en el dispositivo. No reporta a la app de campo: se
- * verifica en ChirpStack y en el monitor serie.
+ * solver) sale en un uplink LoRa de 11 bytes seguido de un LinkCheck (trama propia), los dos
+ * con el mismo SF. Los ciclos alternan SF10 (DR0) y SF7 (DR3) a potencia maxima: ADR apagado,
+ * el DR lo fija la placa antes de cada ciclo. Asi cada distancia queda medida con los dos SF.
+ * No reporta a la app de campo: se verifica en ChirpStack, en el monitor serie y en la TFT
+ * del kit (pantalla.c).
  *
  * Payload (fPort 20, 11 bytes, little-endian):
  *   [0..1]  secuencia (uint16), empieza en 0 tras cada arranque
@@ -42,6 +44,14 @@
 #include "lr11xx_system.h"
 
 #include "lr1110_board.h"
+
+#include "pantalla.h"
+
+/*
+ * Funcion interna de LBM (lorawan_api.h) que solo se usa para mostrar el DevAddr en la pantalla. Se
+ * declara aqui para no arrastrar toda la cadena de includes internos de la pila.
+ */
+uint32_t lorawan_api_devaddr_get( uint8_t stack_id );
 
 /*
  * -----------------------------------------------------------------------------
@@ -88,13 +98,27 @@
     }
 
 /**
- * @brief Periodo entre escaneos GNSS (y por tanto entre uplinks), en segundos
+ * @brief Periodo entre el inicio de dos escaneos GNSS (y por tanto entre uplinks), en segundos
+ *
+ * Si un escaneo dura mas que el periodo (arranque en frio), el siguiente espera VUELO_GNSS_MIN_GAP_S.
  */
 #ifndef VUELO_GNSS_PERIOD_S
-#define VUELO_GNSS_PERIOD_S ( 5 * 60 )
+#define VUELO_GNSS_PERIOD_S 30
 #endif
 
-#define VUELO_DR 0  // US915 DR0 = LoRa SF10 BW125, 11 bytes maximo
+/**
+ * @brief Hueco minimo entre el fin de un escaneo y el siguiente, en segundos
+ *
+ * El escaneo GNSS tiene prioridad en el radio planner y aborta un uplink que coincida con el. Este hueco
+ * deja salir el uplink GNSS, el LinkCheck y sus ventanas RX1/RX2.
+ */
+#define VUELO_GNSS_MIN_GAP_S 20
+
+/**
+ * @brief DR de cada ciclo, indexados como en pantalla.h: DR0 = SF10 y DR3 = SF7 (US915, 125 kHz)
+ */
+static const uint8_t vuelo_dr_ciclo[PANTALLA_NB_SF] = { 0, 3 };
+
 #define VUELO_FPORT 20
 #define VUELO_PAYLOAD_LEN 11
 #define VUELO_NB_SV_IN_PAYLOAD 4
@@ -109,6 +133,11 @@
  */
 #define WATCHDOG_RELOAD_PERIOD_MS 20000
 
+/**
+ * @brief La pantalla se refresca como mucho una vez por segundo (cuentas atras y "hace N s")
+ */
+#define PANTALLA_REFRESH_MS 1000
+
 /*
  * -----------------------------------------------------------------------------
  * --- PRIVATE VARIABLES -------------------------------------------------------
@@ -118,11 +147,16 @@ static const uint8_t vuelo_dev_eui[8]  = VUELO_DEVICE_EUI;
 static const uint8_t vuelo_join_eui[8] = VUELO_JOIN_EUI;
 static const uint8_t vuelo_app_key[16] = VUELO_APP_KEY;
 
-static uint16_t uplink_seq        = 0;      // Secuencia del proximo uplink
-static uint32_t tx_sent_count     = 0;      // Uplinks que el modem confirma como enviados
+static uint16_t uplink_seq        = 0;      // Secuencia del proximo uplink GNSS
 static bool     gnss_started      = false;  // El ciclo de escaneos ya esta en marcha
 static bool     almanac_started   = false;  // El servicio de demodulacion de almanaque ya se lanzo
 static bool     gnss_fw_supported = false;  // El firmware del LR1110 admite el servicio GNSS
+static uint32_t last_navgroup_ms  = 0;      // Duracion del ultimo grupo de escaneos
+static uint8_t  ciclo_sf          = PANTALLA_SF10;  // SF del proximo ciclo
+static uint8_t  linkcheck_sf      = PANTALLA_SF10;  // SF con el que salio el ultimo LinkCheck
+
+static pantalla_estado_t estado            = { 0 };
+static bool              pantalla_presente = false;
 
 static uint8_t                  rx_payload[SMTC_MODEM_MAX_LORAWAN_PAYLOAD_LENGTH] = { 0 };
 static uint8_t                  rx_payload_size                                   = 0;
@@ -146,6 +180,11 @@ static bool check_lr11xx_fw_version( void );
  */
 static void send_gnss_uplink( const smtc_modem_gnss_event_data_scan_done_t* scan_done );
 
+/**
+ * @brief Refresca los datos que la pila no notifica por evento (DR, energia) y redibuja la pantalla
+ */
+static void refrescar_pantalla( void );
+
 /*
  * -----------------------------------------------------------------------------
  * --- PUBLIC FUNCTIONS DEFINITION ---------------------------------------------
@@ -153,25 +192,39 @@ static void send_gnss_uplink( const smtc_modem_gnss_event_data_scan_done_t* scan
 
 void main_vuelo_gnss( void )
 {
-    uint32_t sleep_time_ms = 0;
+    uint32_t sleep_time_ms     = 0;
+    uint32_t ultimo_refresco_s = 0;
 
     hal_mcu_disable_irq( );
     hal_mcu_init( );
     smtc_modem_init( &modem_event_callback );
     hal_mcu_enable_irq( );
 
-    SMTC_HAL_TRACE_INFO( "[VUELO] Prueba de vuelo GNSS: escaneo cada %d s, uplink LoRa DR%d fPort %d\n",
-                         VUELO_GNSS_PERIOD_S, VUELO_DR, VUELO_FPORT );
+    SMTC_HAL_TRACE_INFO( "[VUELO] Prueba de vuelo GNSS: ciclo cada %d s (escaneo + uplink fPort %d + LinkCheck), "
+                         "alternando SF10 y SF7, ADR apagado\n",
+                         VUELO_GNSS_PERIOD_S, VUELO_FPORT );
+
+    // La TFT comparte el SPI con el LR1110: se inicializa despues del modem (que ya configuro el SPI)
+    uint16_t tft_id   = pantalla_init( );
+    pantalla_presente = true;
+    SMTC_HAL_TRACE_INFO( "[VUELO] TFT inicializada (id leido 0x%04X; 0x9341 = ILI9341)\n", tft_id );
 
     while( 1 )
     {
         sleep_time_ms = smtc_modem_run_engine( );
 
+        const uint32_t ahora_s = smtc_modem_hal_get_time_in_s( );
+        if( ahora_s != ultimo_refresco_s )
+        {
+            ultimo_refresco_s = ahora_s;
+            refrescar_pantalla( );
+        }
+
         hal_mcu_disable_irq( );
         if( smtc_modem_is_irq_flag_pending( ) == false )
         {
             hal_watchdog_reload( );
-            hal_mcu_set_sleep_for_ms( MIN( sleep_time_ms, WATCHDOG_RELOAD_PERIOD_MS ) );
+            hal_mcu_set_sleep_for_ms( MIN( MIN( sleep_time_ms, WATCHDOG_RELOAD_PERIOD_MS ), PANTALLA_REFRESH_MS ) );
         }
         hal_watchdog_reload( );
         hal_mcu_enable_irq( );
@@ -189,6 +242,7 @@ static void modem_event_callback( void )
     uint8_t                                event_pending_count;
     uint8_t                                stack_id            = STACK_ID;
     smtc_modem_gnss_event_data_scan_done_t gnss_scan_done_data = { 0 };
+    const uint32_t                         ahora_s             = smtc_modem_hal_get_time_in_s( );
 
     do
     {
@@ -204,7 +258,10 @@ static void modem_event_callback( void )
             // LoRaWAN 1.0.x: la AppKey es la NwkKey
             CHECK_SMTC_MODEM_RC( smtc_modem_set_nwkkey( stack_id, vuelo_app_key ) );
             CHECK_SMTC_MODEM_RC( smtc_modem_set_region( stack_id, SMTC_MODEM_REGION_US_915 ) );
+            // Tambien los downlinks solo de MAC (LinkCheckAns, LinkADRReq): dan RSSI/SNR para la pantalla
+            CHECK_SMTC_MODEM_RC( smtc_modem_set_report_all_downlinks_to_user( stack_id, true ) );
             CHECK_SMTC_MODEM_RC( smtc_modem_join_network( stack_id ) );
+            estado.intentos_join = 1;
             if( gnss_fw_supported == true )
             {
                 // El resultado se manda en el payload propio: el servicio no envia el NAV
@@ -221,31 +278,30 @@ static void modem_event_callback( void )
             SMTC_HAL_TRACE_INFO( "[VUELO] UNIDA a la red\n" );
             smtc_board_led_set( smtc_board_get_led_tx_mask( ), false );
             uplink_seq    = 0;
-            tx_sent_count = 0;
-            {
-                // Perfil ADR propio con un solo DR: todos los uplinks salen en DR0 (una transmision)
-                uint8_t dr_list[SMTC_MODEM_CUSTOM_ADR_DATA_LENGTH];
-                memset( dr_list, VUELO_DR, sizeof( dr_list ) );
-                CHECK_SMTC_MODEM_RC( smtc_modem_adr_set_profile( stack_id, SMTC_MODEM_ADR_PROFILE_CUSTOM, dr_list ) );
-            }
+            estado.unida  = true;
+            estado.devaddr = lorawan_api_devaddr_get( stack_id );
+            ciclo_sf       = PANTALLA_SF10;
             if( gnss_fw_supported == false )
             {
                 SMTC_HAL_TRACE_ERROR( "[VUELO] Sin servicio GNSS: actualiza el firmware del LR1110\n" );
             }
             else if( gnss_started == false )
             {
-                gnss_started = true;
+                gnss_started            = true;
+                estado.t_prox_escaneo_s = ahora_s;
                 SMTC_HAL_TRACE_INFO( "[VUELO] Primer escaneo GNSS ahora\n" );
                 CHECK_SMTC_MODEM_RC( smtc_modem_gnss_scan( stack_id, SMTC_MODEM_GNSS_MODE_MOBILE, 0 ) );
             }
             break;
 
         case SMTC_MODEM_EVENT_JOINFAIL:
+            estado.intentos_join++;
             SMTC_HAL_TRACE_WARNING( "[VUELO] Join fallido, el modem reintenta solo\n" );
             break;
 
         case SMTC_MODEM_EVENT_GNSS_SCAN_DONE:
             CHECK_SMTC_MODEM_RC( smtc_modem_gnss_get_event_data_scan_done( stack_id, &gnss_scan_done_data ) );
+            last_navgroup_ms = gnss_scan_done_data.navgroup_duration_ms;
             if( ( gnss_scan_done_data.time_available == true ) && ( almanac_started == false ) )
             {
                 // Con hora GPS el LR1110 ya puede ir actualizando el almanaque desde el cielo
@@ -256,42 +312,82 @@ static void modem_event_callback( void )
             break;
 
         case SMTC_MODEM_EVENT_GNSS_TERMINATED:
-            CHECK_SMTC_MODEM_RC( smtc_modem_gnss_scan( stack_id, SMTC_MODEM_GNSS_MODE_MOBILE, VUELO_GNSS_PERIOD_S ) );
-            SMTC_HAL_TRACE_INFO( "[VUELO] Proximo escaneo GNSS en %d s\n", VUELO_GNSS_PERIOD_S );
+        {
+            // El periodo se cuenta desde el inicio del escaneo: se descuenta lo que ya duro
+            const uint32_t dur_s   = ( last_navgroup_ms + 999 ) / 1000;
+            uint32_t       delay_s = ( dur_s < VUELO_GNSS_PERIOD_S ) ? VUELO_GNSS_PERIOD_S - dur_s : 0;
+            if( delay_s < VUELO_GNSS_MIN_GAP_S )
+            {
+                delay_s = VUELO_GNSS_MIN_GAP_S;
+            }
+            CHECK_SMTC_MODEM_RC( smtc_modem_gnss_scan( stack_id, SMTC_MODEM_GNSS_MODE_MOBILE, delay_s ) );
+            estado.t_prox_escaneo_s = ahora_s + delay_s;
+            SMTC_HAL_TRACE_INFO( "[VUELO] Proximo escaneo GNSS en %lu s\n", ( unsigned long ) delay_s );
             break;
+        }
 
         case SMTC_MODEM_EVENT_GNSS_ALMANAC_DEMOD_UPDATE:
         {
             smtc_modem_almanac_demodulation_event_data_almanac_update_t almanac = { 0 };
             CHECK_SMTC_MODEM_RC(
                 smtc_modem_almanac_demodulation_get_event_data_almanac_update( stack_id, &almanac ) );
+            estado.almanaque_gps = almanac.update_progress_gps;
             SMTC_HAL_TRACE_INFO( "[VUELO] Almanaque: GPS %u %%, BeiDou %u %%\n", almanac.update_progress_gps,
                                  almanac.update_progress_beidou );
             break;
         }
 
         case SMTC_MODEM_EVENT_TXDONE:
+            estado.t_ultimo_tx_s = ahora_s;
             if( current_event.event_data.txdone.status == SMTC_MODEM_EVENT_TXDONE_NOT_SENT )
             {
+                estado.ul_no++;
                 SMTC_HAL_TRACE_WARNING( "[VUELO] TX NO enviado\n" );
             }
             else
             {
-                tx_sent_count++;
+                estado.ul_ok++;
                 smtc_board_led_pulse( smtc_board_get_led_tx_mask( ), true, 250 );
-                SMTC_HAL_TRACE_INFO( "[VUELO] TX OK  enviados=%lu\n", ( unsigned long ) tx_sent_count );
+                SMTC_HAL_TRACE_INFO( "[VUELO] TX OK  enviados=%u\n", estado.ul_ok );
             }
             break;
+
+        case SMTC_MODEM_EVENT_LINK_CHECK:
+        {
+            pantalla_sf_t* sf = &estado.sf[linkcheck_sf];
+            sf->t_s           = ahora_s;
+            if( current_event.event_data.link_check.status == SMTC_MODEM_EVENT_MAC_REQUEST_ANSWERED )
+            {
+                CHECK_SMTC_MODEM_RC( smtc_modem_get_lorawan_link_check_data( stack_id, &sf->margen_db, &sf->gw ) );
+                sf->ultimo_ok = true;
+                sf->respuestas++;
+                SMTC_HAL_TRACE_INFO( "[VUELO] LinkCheck %s: margen %u dB, %u gateway(s)  (%u/%u)\n",
+                                     ( linkcheck_sf == PANTALLA_SF10 ) ? "SF10" : "SF7", sf->margen_db, sf->gw,
+                                     sf->respuestas, sf->enviados );
+            }
+            else
+            {
+                sf->ultimo_ok = false;
+                SMTC_HAL_TRACE_WARNING( "[VUELO] LinkCheck %s sin respuesta  (%u/%u)\n",
+                                        ( linkcheck_sf == PANTALLA_SF10 ) ? "SF10" : "SF7", sf->respuestas,
+                                        sf->enviados );
+            }
+            break;
+        }
 
         case SMTC_MODEM_EVENT_DOWNDATA:
             CHECK_SMTC_MODEM_RC(
                 smtc_modem_get_downlink_data( rx_payload, &rx_payload_size, &rx_metadata, &rx_remaining ) );
+            estado.dl_valido = true;
+            estado.dl_rssi   = rx_metadata.rssi - 64;
+            estado.dl_snr    = rx_metadata.snr >> 2;
+            estado.t_dl_s    = ahora_s;
             SMTC_HAL_TRACE_INFO( "[VUELO] Downlink fPort %u, RSSI %d dBm, SNR %d dB\n", rx_metadata.fport,
-                                 rx_metadata.rssi - 64, rx_metadata.snr >> 2 );
+                                 estado.dl_rssi, estado.dl_snr );
             break;
 
         case SMTC_MODEM_EVENT_NO_DOWNLINK_THRESHOLD:
-            // Sin ADR del servidor no se esperan downlinks: solo se informa, no se re-une en pleno vuelo
+            // ADR apagado: no se espera nada de la red; no se re-une en pleno vuelo
             SMTC_HAL_TRACE_WARNING( "[VUELO] Umbral sin downlinks alcanzado (se ignora)\n" );
             break;
 
@@ -314,6 +410,10 @@ static void send_gnss_uplink( const smtc_modem_gnss_event_data_scan_done_t* scan
         }
     }
     const uint8_t nb_svs = ( best != NULL ) ? best->nb_svs : 0;
+
+    estado.gnss_sv     = nb_svs;
+    estado.gnss_hora   = scan_done->time_available;
+    estado.gnss_valido = scan_done->is_valid;
 
     uint8_t buff[VUELO_PAYLOAD_LEN];
     buff[0] = uplink_seq & 0xFF;
@@ -363,8 +463,45 @@ static void send_gnss_uplink( const smtc_modem_gnss_event_data_scan_done_t* scan
         SMTC_HAL_TRACE_WARNING( "[VUELO] Sin red: el escaneo no se envia\n" );
         return;
     }
+    // DR del ciclo: perfil ADR propio con un solo DR (la distribucion propia de LBM sortea el DR al azar).
+    // Vale para el uplink GNSS y para el LinkCheck, que salen antes de que empiece el siguiente ciclo.
+    uint8_t dr_list[SMTC_MODEM_CUSTOM_ADR_DATA_LENGTH];
+    memset( dr_list, vuelo_dr_ciclo[ciclo_sf], sizeof( dr_list ) );
+    CHECK_SMTC_MODEM_RC( smtc_modem_adr_set_profile( STACK_ID, SMTC_MODEM_ADR_PROFILE_CUSTOM, dr_list ) );
+    estado.sf_actual = ciclo_sf;
+    SMTC_HAL_TRACE_INFO( "[VUELO] Ciclo %s (DR%u)\n", ( ciclo_sf == PANTALLA_SF10 ) ? "SF10" : "SF7",
+                         vuelo_dr_ciclo[ciclo_sf] );
+
     CHECK_SMTC_MODEM_RC( smtc_modem_request_uplink( STACK_ID, VUELO_FPORT, false, buff, VUELO_PAYLOAD_LEN ) );
     uplink_seq++;
+    estado.ul_pedidos = uplink_seq;
+
+    // El LinkCheck sale en un uplink corto propio: en DR0 no cabe junto a los 11 bytes del payload
+    if( smtc_modem_trig_lorawan_mac_request( STACK_ID, SMTC_MODEM_LORAWAN_MAC_REQ_LINK_CHECK ) == SMTC_MODEM_RC_OK )
+    {
+        linkcheck_sf = ciclo_sf;
+        estado.sf[ciclo_sf].enviados++;
+    }
+    else
+    {
+        SMTC_HAL_TRACE_ERROR( "[VUELO] No se pudo pedir el LinkCheck\n" );
+    }
+
+    ciclo_sf = ( ciclo_sf == PANTALLA_SF10 ) ? PANTALLA_SF7 : PANTALLA_SF10;
+}
+
+static void refrescar_pantalla( void )
+{
+    if( pantalla_presente == false )
+    {
+        return;
+    }
+    uint32_t charge_mah = 0;
+    if( smtc_modem_get_charge( &charge_mah ) == SMTC_MODEM_RC_OK )
+    {
+        estado.energia_mah = charge_mah;
+    }
+    pantalla_actualizar( &estado, smtc_modem_hal_get_time_in_s( ) );
 }
 
 static bool check_lr11xx_fw_version( void )

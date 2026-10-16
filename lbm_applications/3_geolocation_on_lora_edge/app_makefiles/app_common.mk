@@ -292,7 +292,9 @@ endif
 
 ifeq ($(MODEM_APP),VUELO_GNSS)
 APP_C_SOURCES += \
-	main_vuelo_gnss/main_vuelo_gnss.c
+	main_vuelo_gnss/main_vuelo_gnss.c \
+	main_vuelo_gnss/pantalla.c \
+	main_vuelo_gnss/tft_ili9341.c
 endif
 
 ifeq ($(MODEM_APP),EXAMPLE_LR11XX_FLASHER)
