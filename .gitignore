@@ -34,3 +34,4 @@ Thumbs.db
 
 # Ficheros de notas/secretos que NO deben versionarse
 **/ignorar.txt
+**/credenciales_campo.h

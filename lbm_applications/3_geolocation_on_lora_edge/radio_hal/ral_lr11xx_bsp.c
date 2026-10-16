@@ -363,7 +363,13 @@ void ral_lr11xx_bsp_get_xosc_cfg( const void* context, ral_xosc_cfg_t* xosc_cfg,
 {
     // Get startup value defined in modem_hal to avoid mis-alignment
     uint32_t startup_time_ms = smtc_modem_hal_get_radio_tcxo_startup_delay_ms( );
-    *xosc_cfg                = RAL_XOSC_CFG_TCXO_RADIO_CTRL;
+#if defined( LR1121 )
+    // El shield LR1121MB1DIS no lleva TCXO sino cristal: si se pide arrancar el TCXO la calibracion
+    // no termina nunca y BUSY se queda en alto (referencia: smtc_shield_lr11x1_common.c de SWSD003)
+    *xosc_cfg = RAL_XOSC_CFG_XTAL;
+#else
+    *xosc_cfg = RAL_XOSC_CFG_TCXO_RADIO_CTRL;
+#endif
     *supply_voltage          = LR11XX_SYSTEM_TCXO_CTRL_1_8V;
     // tick is 30.52µs
     *startup_time_in_tick = lr11xx_radio_convert_time_in_ms_to_rtc_step( startup_time_ms );

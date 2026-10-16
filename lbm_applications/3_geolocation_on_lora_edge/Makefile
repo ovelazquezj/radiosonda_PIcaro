@@ -9,7 +9,7 @@
 # default action: print help
 #-----------------------------------------------------------------------------
 help:
-	$(call echo_help_b, "Available TARGETs:	lr1110	lr1120")
+	$(call echo_help_b, "Available TARGETs:	lr1110	lr1120	lr1121 (lr1121: solo MODEM_APP=PRUEBA_CAMPO)")
 	$(call echo_help, "")
 	$(call echo_help_b, "-------------------------------- Clean -------------------------------------")
 	$(call echo_help, " * make clean_<TARGET>             : clean basic_modem app and lib for a given target")
@@ -65,6 +65,10 @@ ifeq ($(TARGET_RADIO),lr1120)
 -include app_makefiles/app_lr11xx.mk
 endif
 
+ifeq ($(TARGET_RADIO),lr1121)
+-include app_makefiles/app_lr11xx.mk
+endif
+
 #-----------------------------------------------------------------------------
 -include app_makefiles/app_common.mk
 
@@ -83,6 +87,10 @@ clean_lr1110:
 clean_lr1120:
 	$(MAKE) clean_modem TARGET_RADIO=lr1120
 	$(MAKE) clean_target TARGET_RADIO=lr1120
+
+clean_lr1121:
+	$(MAKE) clean_modem TARGET_RADIO=lr1121
+	$(MAKE) clean_target TARGET_RADIO=lr1121
 
 clean:
 	$(MAKE) clean_modem
@@ -130,3 +138,12 @@ full_lr1120:
 	$(MAKE) clean_modem TARGET_RADIO=lr1120
 	$(MAKE) clean_target TARGET_RADIO=lr1120
 	$(MAKE) app_build TARGET_RADIO=lr1120 $(MTHREAD_FLAG)
+
+#-- LR1121 (sin GNSS ni Wi-Fi: solo PRUEBA_CAMPO) ----------------------------
+lr1121:
+	$(MAKE) app_build TARGET_RADIO=lr1121 $(MTHREAD_FLAG)
+
+full_lr1121:
+	$(MAKE) clean_modem TARGET_RADIO=lr1121
+	$(MAKE) clean_target TARGET_RADIO=lr1121
+	$(MAKE) app_build TARGET_RADIO=lr1121 $(MTHREAD_FLAG)

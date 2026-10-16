@@ -108,6 +108,11 @@ LBM_BUILD_OPTIONS += LBM_GEOLOCATION=yes
 LBM_FLAGS += -DUS915_SUB_BAND=2
 endif
 
+ifeq ($(MODEM_APP),PRUEBA_CAMPO)
+# Join solo en la sub-banda 2 de US915 (canales 8-15 + 65), la de los gateways PiCARO
+LBM_FLAGS += -DUS915_SUB_BAND=2
+endif
+
 # Clean up commas
 COMMA := ,
 BUILD_TARGET := $(subst $(COMMA),_,$(BUILD_TARGET))
@@ -295,6 +300,17 @@ APP_C_SOURCES += \
 	main_vuelo_gnss/main_vuelo_gnss.c \
 	main_vuelo_gnss/pantalla.c \
 	main_vuelo_gnss/tft_ili9341.c
+endif
+
+ifeq ($(MODEM_APP),PRUEBA_CAMPO)
+# Reutiliza el driver de la TFT de VUELO_GNSS
+APP_C_SOURCES += \
+	main_prueba_campo/main_prueba_campo.c \
+	main_prueba_campo/pantalla_campo.c \
+	main_vuelo_gnss/tft_ili9341.c
+COMMON_C_INCLUDES += \
+	-Imain_vuelo_gnss \
+	-Imain_prueba_campo
 endif
 
 ifeq ($(MODEM_APP),EXAMPLE_LR11XX_FLASHER)

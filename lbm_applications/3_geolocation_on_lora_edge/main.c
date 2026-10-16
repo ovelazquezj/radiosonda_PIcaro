@@ -93,6 +93,9 @@ int main( void )
 #elif MAKEFILE_APP == VUELO_GNSS
     // Prueba de vuelo con el escaner GNSS del LR1110 (US915)
     main_vuelo_gnss( );
+#elif MAKEFILE_APP == PRUEBA_CAMPO
+    // Prueba de campo del alcance de los gateways con el LR1121-DevKit (US915)
+    main_prueba_campo( );
 #else
 #error "Unknown application" ## MAKEFILE_APP
 #endif

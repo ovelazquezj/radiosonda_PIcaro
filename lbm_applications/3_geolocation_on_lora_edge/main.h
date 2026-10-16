@@ -70,6 +70,7 @@ extern "C" {
 #define EXAMPLE_FULL_ALMANAC_UPDATE 2
 #define EXAMPLE_WIFI_REGION_DETECTION 3
 #define VUELO_GNSS 4
+#define PRUEBA_CAMPO 5
 
 /*
  * -----------------------------------------------------------------------------
@@ -81,6 +82,7 @@ void main_lr11xx_flasher( void );
 void main_full_almanac_update( void );
 void main_wifi_region_detection( void );
 void main_vuelo_gnss( void );
+void main_prueba_campo( void );
 
 #ifdef __cplusplus
 }

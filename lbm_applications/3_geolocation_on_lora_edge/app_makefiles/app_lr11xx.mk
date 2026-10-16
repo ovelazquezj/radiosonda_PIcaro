@@ -9,6 +9,9 @@ endif
 ifeq ($(TARGET_RADIO),lr1120)
 TARGET = lr1120
 endif
+ifeq ($(TARGET_RADIO),lr1121)
+TARGET = lr1121
+endif
 
 #-----------------------------------------------------------------------------
 # User application sources
@@ -40,6 +43,11 @@ APP_C_SOURCES += \
 endif
 
 ifeq ($(MODEM_APP),VUELO_GNSS)
+APP_C_SOURCES += \
+	lr11xx_board/lr1110_board_mb1lxks.c
+endif
+
+ifeq ($(MODEM_APP),PRUEBA_CAMPO)
 APP_C_SOURCES += \
 	lr11xx_board/lr1110_board_mb1lxks.c
 endif
@@ -83,9 +91,20 @@ COMMON_C_DEFS += \
 	-DENABLE_MODEM_GNSS_FEATURE
 endif
 
+ifeq ($(MODEM_APP),PRUEBA_CAMPO)
+# Sin servicio GNSS: el define solo habilita los pines de LEDs y LNA del shield EVK (modem_pinout.h)
+COMMON_C_DEFS += \
+	-DENABLE_MODEM_GNSS_FEATURE
+endif
+
 ifeq ($(TARGET_RADIO),lr1120)
 COMMON_C_DEFS += \
 	-DLR1120
+endif
+
+ifeq ($(TARGET_RADIO),lr1121)
+COMMON_C_DEFS += \
+	-DLR1121
 endif
 
 ifeq ($(TARGET_RADIO),lr1110)
