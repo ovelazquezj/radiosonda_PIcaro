@@ -1,0 +1,1 @@
+372e6a194d4f9a9c541143c022c94c7c95f0a60f14a07c178183f5ee15c177ee *picaro-gw-heltec-v4_us915-fsb2.bin

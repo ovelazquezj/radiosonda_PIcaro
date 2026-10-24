@@ -1,0 +1,1540 @@
+diff --git a/components/liblorahub/lorahub_hal.c b/components/liblorahub/lorahub_hal.c
+index a95ccdd..dcf9f68 100644
+--- a/components/liblorahub/lorahub_hal.c
++++ b/components/liblorahub/lorahub_hal.c
+@@ -34,6 +34,13 @@ License: Revised BSD License, see LICENSE.TXT file include in the project
+ #endif
+ #endif
+ 
++#if defined( CONFIG_HELTEC_WIFI_LORA_32_V4 )
++#if !defined( CONFIG_RADIO_TYPE_SX1262 )
++#error "Wrong radio selected for Heltec WiFi LoRa 32 v4 board. Please select sx1262 radio type"
++#endif
++#include "heltec_wifi_lora_32_v4.h"
++#endif
++
+ #if defined( CONFIG_EBYTES_ESP32_LR1121 )
+ #if !defined( CONFIG_RADIO_TYPE_LR1121 )
+ #error "Wrong radio selected for EBytes ESP32+LR1121 board. Please select lr1121 radio type"
+@@ -211,6 +218,11 @@ int lgw_connect( void )
+         ESP_LOGI( TAG_HAL, "LED_TX_GPIO not set" );
+     }
+ 
++#if defined( CONFIG_HELTEC_WIFI_LORA_32_V4 )
++    /* Power the RF front-end module and set it for RX */
++    heltec_wifi_lora_32_v4_board_init( );
++#endif
++
+     /* SPI configuration */
+     spi_bus_config_t spi_bus_config = { .mosi_io_num   = radio_context.spi_mosi,
+                                         .miso_io_num   = radio_context.spi_miso,
+diff --git a/components/liblorahub/lorahub_hal_rx.c b/components/liblorahub/lorahub_hal_rx.c
+index c6c96e0..d73a7dd 100644
+--- a/components/liblorahub/lorahub_hal_rx.c
++++ b/components/liblorahub/lorahub_hal_rx.c
+@@ -17,6 +17,10 @@ License: Revised BSD License, see LICENSE.TXT file include in the project
+ 
+ #include <string.h>
+ 
++#if defined( CONFIG_HELTEC_WIFI_LORA_32_V4 )
++#include "heltec_wifi_lora_32_v4.h"
++#endif
++
+ #include "lorahub_log.h"
+ #include "lorahub_aux.h"
+ #include "lorahub_hal.h"
+@@ -141,6 +145,10 @@ int lgw_radio_configure_rx( const ral_t* ral, uint32_t freq_hz, const struct lgw
+     set_led_rx( ral, false );
+     set_led_tx( ral, false );
+ 
++#if defined( CONFIG_HELTEC_WIFI_LORA_32_V4 )
++    heltec_wifi_lora_32_v4_fem_set_tx( false );
++#endif
++
+     /* Check parameters */
+     if( lgw_check_lora_mod_params( freq_hz, modulation_params->bandwidth, modulation_params->coderate ) !=
+         LGW_HAL_SUCCESS )
+diff --git a/components/liblorahub/lorahub_hal_tx.c b/components/liblorahub/lorahub_hal_tx.c
+index aeb1e43..d5d3f28 100644
+--- a/components/liblorahub/lorahub_hal_tx.c
++++ b/components/liblorahub/lorahub_hal_tx.c
+@@ -17,6 +17,10 @@ License: Revised BSD License, see LICENSE.TXT file include in the project
+ 
+ #include <string.h>
+ 
++#if defined( CONFIG_HELTEC_WIFI_LORA_32_V4 )
++#include "heltec_wifi_lora_32_v4.h"
++#endif
++
+ #include "lorahub_log.h"
+ #include "lorahub_aux.h"
+ #include "lorahub_hal.h"
+@@ -73,6 +77,10 @@ int lgw_radio_configure_tx( const ral_t* ral, struct lgw_pkt_tx_s* pkt_data )
+     set_led_rx( ral, false );
+     set_led_tx( ral, true );
+ 
++#if defined( CONFIG_HELTEC_WIFI_LORA_32_V4 )
++    heltec_wifi_lora_32_v4_fem_set_tx( true );
++#endif
++
+     /* Check parameters */
+     if( lgw_check_lora_mod_params( pkt_data->freq_hz, pkt_data->bandwidth, pkt_data->coderate ) != LGW_HAL_SUCCESS )
+     {
+diff --git a/components/smtc_ral/CMakeLists.txt b/components/smtc_ral/CMakeLists.txt
+index 4e51eb3..a6425fe 100644
+--- a/components/smtc_ral/CMakeLists.txt
++++ b/components/smtc_ral/CMakeLists.txt
+@@ -1,6 +1,6 @@
+ set(component_ral "src/ral_sx126x.c" "src/ral_llcc68.c" "src/ral_lr11xx.c")
+ set(component_ral_bsp "bsp/sx126x/ral_sx126x_bsp.c" "bsp/llcc68/ral_llcc68_bsp.c" "bsp/lr11xx/ral_lr11xxx_bsp.c")
+-set(component_shields_sx126x "bsp/sx126x/smtc_shield_sx1261mb1bas.c" "bsp/sx126x/smtc_shield_sx1262mb1cas.c" "bsp/sx126x/smtc_shield_sx1268mb1gas.c" "bsp/sx126x/heltec_wifi_lora_32_v3.c" "bsp/sx126x/seeed_xiao_sx1262.c" "bsp/sx126x/lilygo_t3s3_lora32_sx1262.c")
++set(component_shields_sx126x "bsp/sx126x/smtc_shield_sx1261mb1bas.c" "bsp/sx126x/smtc_shield_sx1262mb1cas.c" "bsp/sx126x/smtc_shield_sx1268mb1gas.c" "bsp/sx126x/heltec_wifi_lora_32_v3.c" "bsp/sx126x/heltec_wifi_lora_32_v4.c" "bsp/sx126x/seeed_xiao_sx1262.c" "bsp/sx126x/lilygo_t3s3_lora32_sx1262.c")
+ set(component_shields_llcc68 "bsp/llcc68/smtc_shield_llcc68mb2cas.c")
+ set(component_shields_lr11xx "bsp/lr11xx/smtc_shield_lr11xx_common.c" "bsp/lr11xx/smtc_shield_lr11x1_common.c" "bsp/lr11xx/smtc_shield_lr1121mb2thdas.c" "bsp/lr11xx/ebytes_esp32_lr1121.c")
+ 
+diff --git a/components/smtc_ral/bsp/sx126x/heltec_wifi_lora_32_v4.c b/components/smtc_ral/bsp/sx126x/heltec_wifi_lora_32_v4.c
+new file mode 100644
+index 0000000..6480bb1
+--- /dev/null
++++ b/components/smtc_ral/bsp/sx126x/heltec_wifi_lora_32_v4.c
+@@ -0,0 +1,184 @@
++/*!
++ * @file      heltec_wifi_lora_32_v4.c
++ *
++ * @brief     Interface specific to Heltec WiFi LoRa 32 v4 board.
++ *
++ * The Clear BSD License
++ * Copyright Semtech Corporation 2022. All rights reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted (subject to the limitations in the disclaimer
++ * below) provided that the following conditions are met:
++ *     * Redistributions of source code must retain the above copyright
++ *       notice, this list of conditions and the following disclaimer.
++ *     * Redistributions in binary form must reproduce the above copyright
++ *       notice, this list of conditions and the following disclaimer in the
++ *       documentation and/or other materials provided with the distribution.
++ *     * Neither the name of the Semtech corporation nor the
++ *       names of its contributors may be used to endorse or promote products
++ *       derived from this software without specific prior written permission.
++ *
++ * NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE GRANTED BY
++ * THIS LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
++ * CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
++ * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
++ * PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL SEMTECH CORPORATION BE
++ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
++ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
++ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
++ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
++ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
++ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
++ * POSSIBILITY OF SUCH DAMAGE.
++ */
++
++/*
++ * -----------------------------------------------------------------------------
++ * --- DEPENDENCIES ------------------------------------------------------------
++ */
++
++#include <stddef.h>
++#include <stdbool.h>
++#include <stdint.h>
++
++#include <driver/gpio.h>
++#include <esp_rom_sys.h>
++#include <esp_log.h>
++
++#include "smtc_shield_sx126x_types.h"
++#include "heltec_wifi_lora_32_v4.h"
++
++/*
++ * -----------------------------------------------------------------------------
++ * --- PRIVATE MACROS ----------------------------------------------------------
++ */
++
++/*
++ * -----------------------------------------------------------------------------
++ * --- PRIVATE CONSTANTS -------------------------------------------------------
++ */
++
++#define FEM_POWER_GPIO 7    /* VFEM_Ctrl: FEM LDO enable */
++#define FEM_ENABLE_GPIO 2   /* GC1109 CSD / KCT8103L CSD: chip enable (HIGH=on) */
++#define GC1109_CPS_GPIO 46  /* GC1109 CPS: HIGH=PA, LOW=bypass */
++#define KCT8103L_CTX_GPIO 5 /* KCT8103L CTX: HIGH=TX or RX bypass, LOW=RX through LNA */
++
++/* Gain of the FEM PA. The datasheets give 11 dB at low drive, down to 7 dB near saturation: 10 dB
++ * keeps the output close to the request without exceeding it at the levels used by downlinks. */
++#define FEM_PA_GAIN_DB 10
++
++/* Output power range at the antenna connector */
++#define HELTEC_V4_PWR_MIN ( SMTC_SHIELD_SX1262_MIN_PWR + FEM_PA_GAIN_DB )
++#define HELTEC_V4_PWR_MAX 27
++
++static const char* TAG_HELTEC_V4 = "HELTEC_V4";
++
++/**
++ * @brief XOSC configuration: TCXO driven by DIO3 at 1.8 V
++ */
++const smtc_shield_sx126x_xosc_cfg_t heltec_wifi_lora_32_v4_xosc_cfg = {
++    .tcxo_is_radio_controlled = true,
++    .supply_voltage           = SX126X_TCXO_CTRL_1_8V,
++    .startup_time_in_tick     = 300,
++};
++
++/**
++ * @brief Board capabilities (power at the antenna connector)
++ */
++const smtc_shield_sx126x_capabilities_t heltec_wifi_lora_32_v4_capabilities = {
++    .freq_hz_min   = SMTC_SHIELD_SX126X_FREQ_MIN,
++    .freq_hz_max   = SMTC_SHIELD_SX126X_FREQ_MAX,
++    .power_dbm_min = HELTEC_V4_PWR_MIN,
++    .power_dbm_max = HELTEC_V4_PWR_MAX,
++};
++
++/*
++ * -----------------------------------------------------------------------------
++ * --- PRIVATE VARIABLES -------------------------------------------------------
++ */
++
++static heltec_v4_fem_type_t fem_type = HELTEC_V4_FEM_UNKNOWN;
++
++/*
++ * -----------------------------------------------------------------------------
++ * --- PUBLIC FUNCTIONS DEFINITION ---------------------------------------------
++ */
++
++const smtc_shield_sx126x_pa_pwr_cfg_t* heltec_wifi_lora_32_v4_get_pa_pwr_cfg( const uint32_t rf_freq_in_hz,
++                                                                             int8_t expected_output_pwr_in_dbm )
++{
++    int8_t chip_pwr_in_dbm = expected_output_pwr_in_dbm - FEM_PA_GAIN_DB;
++
++    if( chip_pwr_in_dbm < SMTC_SHIELD_SX1262_MIN_PWR )
++    {
++        chip_pwr_in_dbm = SMTC_SHIELD_SX1262_MIN_PWR;
++    }
++    if( chip_pwr_in_dbm > ( HELTEC_V4_PWR_MAX - FEM_PA_GAIN_DB ) )
++    {
++        chip_pwr_in_dbm = HELTEC_V4_PWR_MAX - FEM_PA_GAIN_DB;
++    }
++
++    return smtc_shield_sx1262mb1das_get_pa_pwr_cfg( rf_freq_in_hz, chip_pwr_in_dbm );
++}
++
++const smtc_shield_sx126x_xosc_cfg_t* heltec_wifi_lora_32_v4_get_xosc_cfg( void )
++{
++    return &heltec_wifi_lora_32_v4_xosc_cfg;
++}
++
++const smtc_shield_sx126x_capabilities_t* heltec_wifi_lora_32_v4_get_capabilities( void )
++{
++    return &heltec_wifi_lora_32_v4_capabilities;
++}
++
++heltec_v4_fem_type_t heltec_wifi_lora_32_v4_board_init( void )
++{
++    /* FEM LDO on (the Vext rail is powered by the application at startup) */
++    gpio_reset_pin( FEM_POWER_GPIO );
++    gpio_set_direction( FEM_POWER_GPIO, GPIO_MODE_OUTPUT );
++    gpio_set_level( FEM_POWER_GPIO, 1 );
++    esp_rom_delay_us( 1000 );
++
++    /* Detect the FEM: the KCT8103L pulls its CSD line high, the GC1109 leaves its EN line low */
++    gpio_reset_pin( FEM_ENABLE_GPIO );
++    gpio_set_direction( FEM_ENABLE_GPIO, GPIO_MODE_INPUT );
++    gpio_set_pull_mode( FEM_ENABLE_GPIO, GPIO_FLOATING );
++    esp_rom_delay_us( 100 );
++    fem_type = ( gpio_get_level( FEM_ENABLE_GPIO ) == 1 ) ? HELTEC_V4_FEM_KCT8103L : HELTEC_V4_FEM_GC1109;
++
++    /* FEM enabled */
++    gpio_set_direction( FEM_ENABLE_GPIO, GPIO_MODE_OUTPUT );
++    gpio_set_level( FEM_ENABLE_GPIO, 1 );
++
++    if( fem_type == HELTEC_V4_FEM_GC1109 )
++    {
++        gpio_reset_pin( GC1109_CPS_GPIO );
++        gpio_set_direction( GC1109_CPS_GPIO, GPIO_MODE_OUTPUT );
++        ESP_LOGI( TAG_HELTEC_V4, "FEM detected: GC1109 (hardware v4.2)" );
++    }
++    else
++    {
++        gpio_reset_pin( KCT8103L_CTX_GPIO );
++        gpio_set_direction( KCT8103L_CTX_GPIO, GPIO_MODE_OUTPUT );
++        ESP_LOGI( TAG_HELTEC_V4, "FEM detected: KCT8103L (hardware v4.3)" );
++    }
++
++    heltec_wifi_lora_32_v4_fem_set_tx( false );
++
++    return fem_type;
++}
++
++void heltec_wifi_lora_32_v4_fem_set_tx( bool tx )
++{
++    if( fem_type == HELTEC_V4_FEM_GC1109 )
++    {
++        gpio_set_level( GC1109_CPS_GPIO, ( tx == true ) ? 1 : 0 );
++    }
++    else if( fem_type == HELTEC_V4_FEM_KCT8103L )
++    {
++        /* RX through the LNA */
++        gpio_set_level( KCT8103L_CTX_GPIO, ( tx == true ) ? 1 : 0 );
++    }
++}
++
++/* --- EOF ------------------------------------------------------------------ */
+diff --git a/components/smtc_ral/bsp/sx126x/heltec_wifi_lora_32_v4.h b/components/smtc_ral/bsp/sx126x/heltec_wifi_lora_32_v4.h
+new file mode 100644
+index 0000000..47cba84
+--- /dev/null
++++ b/components/smtc_ral/bsp/sx126x/heltec_wifi_lora_32_v4.h
+@@ -0,0 +1,124 @@
++/*!
++ * @file      heltec_wifi_lora_32_v4.h
++ *
++ * @brief     Interface specific to Heltec WiFi LoRa 32 v4 board.
++ *              Same radio wiring as the v3 board, plus an RF front-end module (FEM) between the
++ *              sx1262 and the antenna: GC1109 on hardware v4.2, KCT8103L on hardware v4.3.
++ *
++ * The Clear BSD License
++ * Copyright Semtech Corporation 2022. All rights reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted (subject to the limitations in the disclaimer
++ * below) provided that the following conditions are met:
++ *     * Redistributions of source code must retain the above copyright
++ *       notice, this list of conditions and the following disclaimer.
++ *     * Redistributions in binary form must reproduce the above copyright
++ *       notice, this list of conditions and the following disclaimer in the
++ *       documentation and/or other materials provided with the distribution.
++ *     * Neither the name of the Semtech corporation nor the
++ *       names of its contributors may be used to endorse or promote products
++ *       derived from this software without specific prior written permission.
++ *
++ * NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE GRANTED BY
++ * THIS LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
++ * CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
++ * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
++ * PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL SEMTECH CORPORATION BE
++ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
++ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
++ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
++ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
++ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
++ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
++ * POSSIBILITY OF SUCH DAMAGE.
++ */
++#ifndef HELTEC_WIFI_LORA_32_V4_H
++#define HELTEC_WIFI_LORA_32_V4_H
++
++#ifdef __cplusplus
++extern "C" {
++#endif
++
++/*
++ * -----------------------------------------------------------------------------
++ * --- DEPENDENCIES ------------------------------------------------------------
++ */
++
++#include <stdbool.h>
++#include <stdint.h>
++#include "smtc_shield_sx126x_types.h"
++#include "heltec_wifi_lora_32_v3.h"
++
++/*
++ * -----------------------------------------------------------------------------
++ * --- PUBLIC MACROS -----------------------------------------------------------
++ */
++
++/* Radio pinout, RF switch and regulator are the same as the v3 board */
++#define HELTEC_WIFI_LORA_32_V4_INSTANTIATE                                         \
++    {                                                                              \
++        .get_pa_pwr_cfg           = heltec_wifi_lora_32_v4_get_pa_pwr_cfg,         \
++        .is_dio2_set_as_rf_switch = smtc_shield_sx1262mb1das_is_dio2_set_as_rf_switch, \
++        .get_reg_mode             = smtc_shield_sx1262mb1das_get_reg_mode,         \
++        .get_xosc_cfg             = heltec_wifi_lora_32_v4_get_xosc_cfg,           \
++        .get_pinout               = smtc_shield_sx1262mb1das_get_pinout,           \
++        .get_capabilities         = heltec_wifi_lora_32_v4_get_capabilities,       \
++    }
++
++/*
++ * -----------------------------------------------------------------------------
++ * --- PUBLIC CONSTANTS --------------------------------------------------------
++ */
++
++/*
++ * -----------------------------------------------------------------------------
++ * --- PUBLIC TYPES ------------------------------------------------------------
++ */
++
++typedef enum
++{
++    HELTEC_V4_FEM_UNKNOWN,
++    HELTEC_V4_FEM_GC1109,   /* hardware v4.2 */
++    HELTEC_V4_FEM_KCT8103L, /* hardware v4.3 */
++} heltec_v4_fem_type_t;
++
++/*
++ * -----------------------------------------------------------------------------
++ * --- PUBLIC FUNCTIONS PROTOTYPES ---------------------------------------------
++ */
++
++/**
++ * @see smtc_shield_sx126x_get_pa_pwr_cfg
++ * The expected output power is the power at the antenna connector, after the FEM.
++ */
++const smtc_shield_sx126x_pa_pwr_cfg_t* heltec_wifi_lora_32_v4_get_pa_pwr_cfg( const uint32_t rf_freq_in_hz,
++                                                                             int8_t expected_output_pwr_in_dbm );
++
++/**
++ * @see smtc_shield_sx126x_get_xosc_cfg
++ */
++const smtc_shield_sx126x_xosc_cfg_t* heltec_wifi_lora_32_v4_get_xosc_cfg( void );
++
++/**
++ * @see smtc_shield_sx126x_get_capabilities
++ */
++const smtc_shield_sx126x_capabilities_t* heltec_wifi_lora_32_v4_get_capabilities( void );
++
++/**
++ * @brief Power the FEM, detect its type and put it in RX mode
++ *
++ * @returns The FEM type detected
++ */
++heltec_v4_fem_type_t heltec_wifi_lora_32_v4_board_init( void );
++
++/**
++ * @brief Switch the FEM between TX (PA enabled) and RX (LNA enabled) modes
++ */
++void heltec_wifi_lora_32_v4_fem_set_tx( bool tx );
++
++#ifdef __cplusplus
++}
++#endif
++
++#endif  // HELTEC_WIFI_LORA_32_V4_H
+diff --git a/components/smtc_ral/bsp/sx126x/ral_sx126x_bsp.c b/components/smtc_ral/bsp/sx126x/ral_sx126x_bsp.c
+index f065f19..be23e36 100644
+--- a/components/smtc_ral/bsp/sx126x/ral_sx126x_bsp.c
++++ b/components/smtc_ral/bsp/sx126x/ral_sx126x_bsp.c
+@@ -79,6 +79,9 @@ static const char* TAG_BSP_SX126X = "BSP_SX126X";
+ #if defined( CONFIG_HELTEC_WIFI_LORA_32_V3 )
+ #include "heltec_wifi_lora_32_v3.h"
+ smtc_shield_sx126x_t shield = SMTC_SHIELD_SX1262MB1DAS_INSTANTIATE;
++#elif defined( CONFIG_HELTEC_WIFI_LORA_32_V4 )
++#include "heltec_wifi_lora_32_v4.h"
++smtc_shield_sx126x_t shield = HELTEC_WIFI_LORA_32_V4_INSTANTIATE;
+ #elif defined( CONFIG_SEEED_XIAO_ESP32S3_DEVKIT )
+ #include "seeed_xiao_sx1262.h"
+ smtc_shield_sx126x_t shield = SEEED_XIAO_SX1262_INSTANTIATE;
+diff --git a/lorahub/main/CMakeLists.txt b/lorahub/main/CMakeLists.txt
+index 7be0f34..ccd5b80 100644
+--- a/lorahub/main/CMakeLists.txt
++++ b/lorahub/main/CMakeLists.txt
+@@ -1,5 +1,5 @@
+ set(libtools "base64.c" "parson.c")
+-set(pkt-fwd "jitqueue.c" "config_nvs.c" "display.c" "wifi.c" "http_server.c" "pkt_fwd.c" "main.c" )
++set(pkt-fwd "jitqueue.c" "config_nvs.c" "display.c" "wifi.c" "wifi_portal.c" "http_server.c" "pkt_fwd.c" "main.c" )
+ 
+ idf_component_register(SRCS "${libtools}" "${pkt-fwd}"
+                        INCLUDE_DIRS ".")
+diff --git a/lorahub/main/Kconfig.projbuild b/lorahub/main/Kconfig.projbuild
+index 620dba3..ce77383 100644
+--- a/lorahub/main/Kconfig.projbuild
++++ b/lorahub/main/Kconfig.projbuild
+@@ -19,6 +19,10 @@ menu "Hardware Configuration"
+             bool "Heltec WiFi LoRa 32 v3"
+             help
+                 Select Heltec WiFi LoRa 32 v3.
++        config HELTEC_WIFI_LORA_32_V4
++            bool "Heltec WiFi LoRa 32 v4"
++            help
++                Select Heltec WiFi LoRa 32 v4 (sx1262 + GC1109/KCT8103L front-end module).
+         config SEEED_XIAO_ESP32S3_DEVKIT
+             bool "Seeed Xiao ESP32S3"
+             help
+@@ -32,6 +36,7 @@ menu "Hardware Configuration"
+ 	choice RADIO_TYPE
+ 		prompt "LoRa radio type"
+ 		default RADIO_TYPE_SX1262 if HELTEC_WIFI_LORA_32_V3
++		default RADIO_TYPE_SX1262 if HELTEC_WIFI_LORA_32_V4
+ 		help
+ 			Select the radio type used by the LoRaHub (sx1261, sx1262, sx1268, llcc68, lr1121).
+ 
+@@ -153,6 +158,35 @@ menu "WiFi Configuration"
+         help
+             The Gateway will initiate WiFi provisioning over BLE.
+ 
++    config WIFI_PROV_SOFTAP
++        bool "Enable WiFi configuration portal (SoftAP + web page)"
++        depends on !WIFI_PROV_OVER_BLE
++        default n
++        help
++            The Gateway opens its own WiFi access point with a web page to enter the WiFi
++            credentials and the LoRaWAN network server address. The configuration is saved in NVS.
++            The portal starts when no WiFi is configured, when the user button is pressed at
++            startup, or when the configured WiFi cannot be joined.
++
++    if WIFI_PROV_SOFTAP
++        config WIFI_PORTAL_AP_PREFIX
++            string "Access point SSID prefix"
++            default "LRHB_"
++            help
++                The 3 last bytes of the MAC address are appended to this prefix.
++        config WIFI_PORTAL_AP_PASSWORD
++            string "Access point password (8 to 63 characters, empty for an open network)"
++            default "lorahub1234"
++            help
++                WPA2 password of the configuration access point.
++        config WIFI_PORTAL_DELAY_S
++            int "Configuration portal request delay (s)"
++            default 5
++            range 0 255
++            help
++                Waiting period at startup for the user to press the button and open the portal.
++    endif # WIFI_PROV_SOFTAP
++
+     if WIFI_PROV_OVER_BLE
+         config WIFI_PROV_DELAY_S
+             int  "WiFi provisioning delay (s)"
+@@ -162,7 +196,7 @@ menu "WiFi Configuration"
+                 Waiting period at startup for the user to activate WiFi provisioning mode (in seconds).
+     endif # WIFI_PROV_OVER_BLE
+ 
+-    if !WIFI_PROV_OVER_BLE
++    if !WIFI_PROV_OVER_BLE && !WIFI_PROV_SOFTAP
+         config WIFI_SSID
+             string  "WiFi SSID"
+             default "my-ssid"
+diff --git a/lorahub/main/display.c b/lorahub/main/display.c
+index 56c8db9..f7d9907 100644
+--- a/lorahub/main/display.c
++++ b/lorahub/main/display.c
+@@ -17,6 +17,7 @@ License: Revised BSD License, see LICENSE.TXT file include in the project
+ 
+ #include <stdint.h>  /* C99 types */
+ #include <stdbool.h> /* bool type */
++#include <string.h>  /* strlen */
+ 
+ #include <esp_log.h>
+ #include <esp_timer.h>
+@@ -90,6 +91,9 @@ static display_connection_info_t disp_connection = { 0 };
+ /* Last received packet information to be sent to display */
+ static display_last_rx_packet_t disp_last_rx_pkt = { 0 };
+ 
++/* Configuration portal access point name to be sent to display */
++static char disp_portal_ssid[33] = { 0 };
++
+ /* Fatal error to be sent to display */
+ static display_error_t disp_error = { .err = LRHB_ERROR_NONE, .line = 0 };
+ 
+@@ -286,8 +290,15 @@ void display_refresh( void )
+             snprintf( label_str, sizeof label_str, "LoRaHub - Initializing" );
+             break;
+         case DISPLAY_STATUS_WIFI_PROVISIONING:
+-            snprintf( label_str, sizeof label_str,
+-                      "LoRaHub - WiFi provisioning" );  // TODO: display LoRaHub identifier ? LRHB_xxxxxx
++            if( strlen( disp_portal_ssid ) > 0 )
++            {
++                snprintf( label_str, sizeof label_str, "WiFi %s - http://192.168.4.1", disp_portal_ssid );
++            }
++            else
++            {
++                snprintf( label_str, sizeof label_str,
++                          "LoRaHub - WiFi provisioning" );  // TODO: display LoRaHub identifier ? LRHB_xxxxxx
++            }
+             break;
+         case DISPLAY_STATUS_RECEIVING:
+             snprintf( label_str, sizeof label_str, "LoRaHub - Receiving" );
+@@ -386,6 +397,15 @@ void display_update_status( display_status_t status )
+ 
+ /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ 
++void display_update_portal_info( const char* ap_ssid )
++{
++    snprintf( disp_portal_ssid, sizeof disp_portal_ssid, "%s", ap_ssid );
++
++    flag_refresh_status = true;
++}
++
++/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
++
+ void display_update_statistics( const display_stats_t* stats )
+ {
+     disp_stats.nb_rx += stats->nb_rx;
+diff --git a/lorahub/main/display.h b/lorahub/main/display.h
+index dc17168..eab76d2 100644
+--- a/lorahub/main/display.h
++++ b/lorahub/main/display.h
+@@ -81,6 +81,8 @@ void display_refresh( void );
+ 
+ void display_update_status( display_status_t status );
+ 
++void display_update_portal_info( const char* ap_ssid );
++
+ void display_update_connection_info( const display_connection_info_t* info );
+ 
+ void display_update_channel_config( const display_channel_conf_t* chan_cfg );
+diff --git a/lorahub/main/hw_board_defs.h b/lorahub/main/hw_board_defs.h
+index 668d2ff..5ad0c58 100644
+--- a/lorahub/main/hw_board_defs.h
++++ b/lorahub/main/hw_board_defs.h
+@@ -31,6 +31,13 @@ License: Revised BSD License, see LICENSE.TXT file include in the project
+ #define OLED_DISPLAY_PIN_NUM_SDA 17
+ #define OLED_DISPLAY_PIN_NUM_SCL 18
+ #define OLED_DISPLAY_PIN_NUM_RST 21
++#elif defined( CONFIG_HELTEC_WIFI_LORA_32_V4 )
++#define USER_LED_GPIO 35   /* User LED */
++#define USER_BUTTON_GPIO 0 /* User button (PRG) from Heltec board */
++#define OLED_DISPLAY_PIN_NUM_SDA 17
++#define OLED_DISPLAY_PIN_NUM_SCL 18
++#define OLED_DISPLAY_PIN_NUM_RST 21
++#define VEXT_CTRL_GPIO 36 /* Vext rail (OLED, RF front-end), active low */
+ #elif defined( CONFIG_SEEED_XIAO_ESP32S3_DEVKIT )
+ #define USER_LED_GPIO 48            /* User LED from Xiao Wio-sx1262 board */
+ #define USER_BUTTON_GPIO 21         /* User button from Xiao Wio-sx1262 board */
+diff --git a/lorahub/main/main.c b/lorahub/main/main.c
+index 64e8f86..5443822 100644
+--- a/lorahub/main/main.c
++++ b/lorahub/main/main.c
+@@ -43,6 +43,10 @@ License: Revised BSD License, see LICENSE.TXT file include in the project
+ #include "display.h"
+ #include "http_server.h"
+ #include "pkt_fwd.h"
++#if CONFIG_WIFI_PROV_SOFTAP
++#include <esp_system.h>
++#include "wifi_portal.h"
++#endif  // CONFIG_WIFI_PROV_SOFTAP
+ 
+ #include "lorahub_version.h"
+ #include "main_defs.h"
+@@ -177,6 +181,14 @@ void app_main( )
+     /* display version informations */
+     ESP_LOGI( TAG_MAIN, "*** LoRaHUB v%s ***", LORAHUB_FW_VERSION_STR );
+ 
++#ifdef VEXT_CTRL_GPIO
++    /* Power the Vext rail before the OLED display is initialized */
++    gpio_reset_pin( VEXT_CTRL_GPIO );
++    gpio_set_direction( VEXT_CTRL_GPIO, GPIO_MODE_OUTPUT );
++    gpio_set_level( VEXT_CTRL_GPIO, 0 );
++    vTaskDelay( 100 / portTICK_PERIOD_MS );
++#endif
++
+     /* Initialize display */
+     i = pthread_create( &thrid_display, NULL, ( void* ( * ) ( void* ) ) thread_display, NULL );
+     if( i != 0 )
+@@ -229,11 +241,57 @@ void app_main( )
+     set_user_led( false );
+ #endif  // CONFIG_WIFI_PROV_OVER_BLE
+ 
++#if CONFIG_WIFI_PROV_SOFTAP
++    /* Open the configuration portal if the WiFi is not configured, if the configured WiFi could not be joined
++     * (request made before the last restart), or if the user presses the button */
++    {
++        char         ssid[WIFI_SSID_STR_MAX_SIZE];
++        char         password[WIFI_PASSWORD_STR_MAX_SIZE];
++        unsigned int portal_timeout_s = 0; /* no timeout: wait for the user */
++        bool         open_portal      = false;
++
++        if( wifi_portal_get_credentials( ssid, password ) == false )
++        {
++            ESP_LOGW( TAG_MAIN, "No WiFi configured" );
++            open_portal = true;
++        }
++        else if( ( esp_reset_reason( ) == ESP_RST_SW ) && wifi_portal_requested( ) )
++        {
++            ESP_LOGW( TAG_MAIN, "WiFi \"%s\" could not be joined", ssid );
++            open_portal      = true;
++            portal_timeout_s = 300; /* then retry the configured WiFi */
++        }
++        else
++        {
++            uint8_t wait_portal_nb        = 0;
++            uint8_t wait_portal_delay_max = ( uint8_t ) CONFIG_WIFI_PORTAL_DELAY_S;
++            set_user_led( true );
++            while( ( wait_portal_nb < wait_portal_delay_max ) && ( user_button_pressed == 0 ) )
++            {
++                ESP_LOGI( TAG_MAIN, "Press the button to open the WiFi configuration portal (%u)",
++                          wait_portal_delay_max - wait_portal_nb );
++                vTaskDelay( 1000 / portTICK_PERIOD_MS );
++                wait_portal_nb += 1;
++            }
++            set_user_led( false );
++            open_portal = ( user_button_pressed > 0 );
++        }
++
++        if( open_portal == true )
++        {
++            wifi_portal_run( portal_timeout_s );
++        }
++    }
++#endif  // CONFIG_WIFI_PROV_SOFTAP
++
+     /* Initialize WiFi driver and configure for STAtion mode */
+     i = wifi_sta_init( reset_wifi_provisioning );
+     if( i != 0 )
+     {
+         ESP_LOGE( TAG_MAIN, "ERROR: failed to initialize WiFi station" );
++#if CONFIG_WIFI_PROV_SOFTAP
++        wifi_portal_request_at_next_boot( );
++#endif  // CONFIG_WIFI_PROV_SOFTAP
+         wait_on_error( LRHB_ERROR_WIFI, __LINE__ );
+     }
+ 
+diff --git a/lorahub/main/wifi.c b/lorahub/main/wifi.c
+index 04fe7ee..e2057e4 100644
+--- a/lorahub/main/wifi.c
++++ b/lorahub/main/wifi.c
+@@ -33,6 +33,11 @@ License: Revised BSD License, see LICENSE.TXT file include in the project
+ 
+ #include "wifi.h"
+ 
++#if CONFIG_WIFI_PROV_SOFTAP
++#include <esp_system.h>
++#include "wifi_portal.h"
++#endif  // CONFIG_WIFI_PROV_SOFTAP
++
+ /* -------------------------------------------------------------------------- */
+ /* --- PRIVATE MACROS ------------------------------------------------------- */
+ 
+@@ -99,6 +104,10 @@ static int                wifi_connect_retry_num = 0;
+ 
+ static wifi_status_t wifi_status = WIFI_STATUS_UNKNOWN;
+ 
++#if CONFIG_WIFI_PROV_SOFTAP
++static bool wifi_was_connected = false;
++#endif  // CONFIG_WIFI_PROV_SOFTAP
++
+ /* -------------------------------------------------------------------------- */
+ /* --- PRIVATE FUNCTIONS DECLARATION ---------------------------------------- */
+ 
+@@ -126,6 +135,14 @@ static void event_handler( void* arg, esp_event_base_t event_base, int32_t event
+         }
+         else
+         {
++#if CONFIG_WIFI_PROV_SOFTAP
++            if( wifi_was_connected == true )
++            {
++                /* WiFi lost while running: restart, the configuration portal opens if it cannot be joined */
++                ESP_LOGE( TAG_WIFI, "WiFi lost, restarting" );
++                esp_restart( );
++            }
++#endif  // CONFIG_WIFI_PROV_SOFTAP
+             xEventGroupSetBits( wifi_event_group, WIFI_FAIL_BIT );
+         }
+     }
+@@ -142,6 +159,9 @@ static void event_handler( void* arg, esp_event_base_t event_base, int32_t event
+         ip_event_got_ip_t* event = ( ip_event_got_ip_t* ) event_data;
+         ESP_LOGI( TAG_WIFI, "got ip:" IPSTR, IP2STR( &event->ip_info.ip ) );
+         wifi_connect_retry_num = 0;
++#if CONFIG_WIFI_PROV_SOFTAP
++        wifi_was_connected = true;
++#endif  // CONFIG_WIFI_PROV_SOFTAP
+         xEventGroupSetBits( wifi_event_group, WIFI_CONNECTED_BIT );
+     }
+ #if CONFIG_WIFI_PROV_OVER_BLE
+@@ -421,12 +441,29 @@ int wifi_sta_init( bool reset_provisioning )
+         return -1;
+     }
+ 
++#if CONFIG_WIFI_PROV_SOFTAP
++    /* WiFi credentials saved by the configuration portal */
++    wifi_config_t wifi_config = { 0 };
++    char          ssid[WIFI_SSID_STR_MAX_SIZE];
++    char          password[WIFI_PASSWORD_STR_MAX_SIZE];
++    if( wifi_portal_get_credentials( ssid, password ) == false )
++    {
++        ESP_LOGE( TAG_WIFI, "ERROR: no WiFi configured" );
++        return -1;
++    }
++    /* 802.11 fields: not null terminated when full length */
++    memcpy( wifi_config.sta.ssid, ssid, strnlen( ssid, sizeof wifi_config.sta.ssid ) );
++    memcpy( wifi_config.sta.password, password, strnlen( password, sizeof wifi_config.sta.password ) );
++    ESP_LOGI( TAG_WIFI, "Connecting to WiFi \"%s\"", ssid );
++    esp_wifi_set_storage( WIFI_STORAGE_RAM );
++#else
+     wifi_config_t wifi_config = {
+         .sta = {
+             .ssid = CONFIG_WIFI_SSID,
+             .password = CONFIG_WIFI_PASSWORD,
+         },
+     };
++#endif  // CONFIG_WIFI_PROV_SOFTAP
+     err = esp_wifi_set_config( WIFI_IF_STA, &wifi_config );
+     if( err != ESP_OK )
+     {
+diff --git a/lorahub/main/wifi_portal.c b/lorahub/main/wifi_portal.c
+new file mode 100644
+index 0000000..b56f1e3
+--- /dev/null
++++ b/lorahub/main/wifi_portal.c
+@@ -0,0 +1,678 @@
++/*______                              _
++ / _____)             _              | |
++( (____  _____ ____ _| |_ _____  ____| |__
++ \____ \| ___ |    (_   _) ___ |/ ___)  _ \
++ _____) ) ____| | | || |_| ____( (___| | | |
++(______/|_____)_|_|_| \__)_____)\____)_| |_|
++  (C)2024 Semtech
++
++Description:
++    LoRaHub WiFi configuration portal (SoftAP + web page)
++
++    The gateway opens its own access point. A DNS server answers every name with the gateway address, so
++    phones and laptops open the configuration page by themselves (captive portal). The page saves the WiFi
++    credentials, the LoRaWAN network server address/port and the channel in NVS, then restarts.
++
++License: Revised BSD License, see LICENSE.TXT file include in the project
++*/
++
++/* -------------------------------------------------------------------------- */
++/* --- DEPENDENCIES --------------------------------------------------------- */
++
++#include <string.h>
++#include <stdlib.h>
++#include <ctype.h>
++
++#include <unistd.h>
++#include <sys/socket.h>
++#include <netinet/in.h>
++
++#include <freertos/FreeRTOS.h>
++#include <freertos/task.h>
++
++#include <esp_log.h>
++#include <esp_wifi.h>
++#include <esp_netif.h>
++#include <esp_mac.h>
++#include <esp_attr.h>
++#include <esp_timer.h>
++#include <esp_http_server.h>
++#include <nvs_flash.h>
++
++#include "wifi_portal.h"
++#include "config_nvs.h"
++#include "display.h"
++
++/* -------------------------------------------------------------------------- */
++/* --- PRIVATE CONSTANTS ---------------------------------------------------- */
++
++#define NVS_NAMESPACE "storage"
++#define NVS_KEY_WIFI_SSID "wifi_ssid"
++#define NVS_KEY_WIFI_PASSWORD "wifi_pass"
++
++#define PORTAL_REQUEST_MAGIC 0x504F5254 /* "PORT" */
++
++#define PORTAL_IP_STR "192.168.4.1"
++#define PORTAL_URL "http://" PORTAL_IP_STR "/"
++
++#define SCAN_LIST_MAX_SIZE 20
++#define FORM_BODY_MAX_SIZE 512
++#define FORM_VALUE_MAX_SIZE 96
++
++#define DNS_PORT 53
++#define DNS_BUFFER_SIZE 512
++
++static const char* TAG_PORTAL = "portal";
++
++static const char html_header[] =
++    "<!DOCTYPE html><html><head><meta charset=\"utf-8\">"
++    "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">"
++    "<title>LoRaHub - configuracion</title>"
++    "<style>"
++    "body{font-family:sans-serif;margin:0;padding:16px;background:#f4f6f8;color:#1d2733}"
++    "main{max-width:420px;margin:auto;background:#fff;border-radius:8px;padding:16px 20px}"
++    "h1{font-size:1.3em;margin:0 0 4px}h2{font-size:1.05em;margin:20px 0 6px;color:#2a5d8f}"
++    "p.id{margin:0;color:#5a6773;font-size:.9em}"
++    "label{display:block;margin-top:10px;font-size:.9em}"
++    "input,select{width:100%;box-sizing:border-box;padding:8px;margin-top:3px;font-size:1em;"
++    "border:1px solid #b9c3cc;border-radius:4px}"
++    "button{width:100%;margin-top:20px;padding:10px;font-size:1em;border:0;border-radius:4px;"
++    "background:#2a5d8f;color:#fff}"
++    ".err{color:#b3261e}.ok{color:#1e7b34}"
++    "</style></head><body><main>";
++
++static const char html_footer[] = "</main></body></html>";
++
++/* -------------------------------------------------------------------------- */
++/* --- PRIVATE VARIABLES ---------------------------------------------------- */
++
++/* Survives a software reset, not a power cycle */
++static RTC_NOINIT_ATTR uint32_t portal_request;
++
++static char ap_ssid[WIFI_SSID_STR_MAX_SIZE] = { 0 };
++
++static char     scan_ssids[SCAN_LIST_MAX_SIZE][WIFI_SSID_STR_MAX_SIZE];
++static uint16_t scan_count = 0;
++
++static volatile bool    config_saved          = false;
++static volatile int64_t last_activity_time_us = 0;
++
++/* -------------------------------------------------------------------------- */
++/* --- PRIVATE FUNCTIONS DEFINITION ----------------------------------------- */
++
++static esp_err_t save_credentials( const char* ssid, const char* password )
++{
++    nvs_handle_t handle;
++    esp_err_t    err = nvs_open( NVS_NAMESPACE, NVS_READWRITE, &handle );
++    if( err != ESP_OK )
++    {
++        return err;
++    }
++    err = nvs_set_str( handle, NVS_KEY_WIFI_SSID, ssid );
++    if( err == ESP_OK )
++    {
++        err = nvs_set_str( handle, NVS_KEY_WIFI_PASSWORD, password );
++    }
++    if( err == ESP_OK )
++    {
++        err = nvs_commit( handle );
++    }
++    nvs_close( handle );
++    return err;
++}
++
++/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
++
++static void url_decode( char* str )
++{
++    char* src = str;
++    char* dst = str;
++    while( *src != '\0' )
++    {
++        if( ( *src == '%' ) && isxdigit( ( unsigned char ) src[1] ) && isxdigit( ( unsigned char ) src[2] ) )
++        {
++            char hex[3] = { src[1], src[2], '\0' };
++            *dst++      = ( char ) strtol( hex, NULL, 16 );
++            src += 3;
++        }
++        else if( *src == '+' )
++        {
++            *dst++ = ' ';
++            src++;
++        }
++        else
++        {
++            *dst++ = *src++;
++        }
++    }
++    *dst = '\0';
++}
++
++/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
++
++static bool get_form_value( const char* body, const char* key, char* value, size_t size )
++{
++    if( httpd_query_key_value( body, key, value, size ) != ESP_OK )
++    {
++        value[0] = '\0';
++        return false;
++    }
++    url_decode( value );
++    return true;
++}
++
++/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
++
++/* Send a string with the HTML special characters escaped */
++static void send_escaped( httpd_req_t* req, const char* str )
++{
++    char   buf[64];
++    size_t n = 0;
++    for( const char* p = str; *p != '\0'; p++ )
++    {
++        const char* rep = NULL;
++        switch( *p )
++        {
++        case '&':
++            rep = "&amp;";
++            break;
++        case '<':
++            rep = "&lt;";
++            break;
++        case '>':
++            rep = "&gt;";
++            break;
++        case '"':
++            rep = "&quot;";
++            break;
++        case '\'':
++            rep = "&#39;";
++            break;
++        default:
++            break;
++        }
++        size_t len = ( rep != NULL ) ? strlen( rep ) : 1;
++        if( n + len >= sizeof buf )
++        {
++            buf[n] = '\0';
++            httpd_resp_sendstr_chunk( req, buf );
++            n = 0;
++        }
++        if( rep != NULL )
++        {
++            memcpy( &buf[n], rep, len );
++        }
++        else
++        {
++            buf[n] = *p;
++        }
++        n += len;
++    }
++    /* never send an empty chunk: it would terminate the chunked response */
++    if( n > 0 )
++    {
++        buf[n] = '\0';
++        httpd_resp_sendstr_chunk( req, buf );
++    }
++}
++
++/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
++
++static void send_form( httpd_req_t* req, const char* message, bool is_error )
++{
++    char ssid[WIFI_SSID_STR_MAX_SIZE];
++    char password[WIFI_PASSWORD_STR_MAX_SIZE];
++    char buf[160];
++
++    const lgw_nvs_cfg_t* cfg;
++    lgw_nvs_get_config( &cfg );
++    wifi_portal_get_credentials( ssid, password );
++
++    httpd_resp_set_type( req, "text/html" );
++    httpd_resp_sendstr_chunk( req, html_header );
++
++    httpd_resp_sendstr_chunk( req, "<h1>LoRaHub - configuracion</h1><p class=\"id\">" );
++    send_escaped( req, ap_ssid );
++    httpd_resp_sendstr_chunk( req, "</p>" );
++
++    if( message != NULL )
++    {
++        httpd_resp_sendstr_chunk( req, is_error ? "<p class=\"err\">" : "<p class=\"ok\">" );
++        send_escaped( req, message );
++        httpd_resp_sendstr_chunk( req, "</p>" );
++    }
++
++    httpd_resp_sendstr_chunk( req, "<form method=\"post\" action=\"/save\">" );
++
++    /* WiFi */
++    httpd_resp_sendstr_chunk( req, "<h2>Red WiFi local</h2>" );
++    if( scan_count > 0 )
++    {
++        /* networks found at startup: picking one fills the SSID field */
++        httpd_resp_sendstr_chunk( req, "<label for=\"redes\">Redes encontradas</label>"
++                                       "<select id=\"redes\" onchange=\"if(this.value)"
++                                       "document.getElementById('ssid').value=this.value\">"
++                                       "<option value=\"\">-- elige una red --</option>" );
++        for( uint16_t i = 0; i < scan_count; i++ )
++        {
++            httpd_resp_sendstr_chunk( req, "<option value=\"" );
++            send_escaped( req, scan_ssids[i] );
++            httpd_resp_sendstr_chunk( req, "\">" );
++            send_escaped( req, scan_ssids[i] );
++            httpd_resp_sendstr_chunk( req, "</option>" );
++        }
++        httpd_resp_sendstr_chunk( req, "</select>" );
++    }
++    httpd_resp_sendstr_chunk( req, "<label for=\"ssid\">Nombre de la red (SSID)</label>"
++                                   "<input id=\"ssid\" name=\"ssid\" maxlength=\"32\" required value=\"" );
++    send_escaped( req, ssid );
++    httpd_resp_sendstr_chunk( req, "\">" );
++    httpd_resp_sendstr_chunk( req, "<label for=\"pass\">Contrase&ntilde;a" );
++    if( strlen( ssid ) > 0 )
++    {
++        httpd_resp_sendstr_chunk( req, " (vac&iacute;a = conservar la guardada)" );
++    }
++    httpd_resp_sendstr_chunk( req, "</label><input id=\"pass\" name=\"pass\" type=\"password\" maxlength=\"64\">" );
++
++    /* LNS */
++    httpd_resp_sendstr_chunk( req, "<h2>Servidor LoRaWAN (LNS)</h2>" );
++    httpd_resp_sendstr_chunk( req, "<label for=\"lns\">IP o nombre del servidor</label>"
++                                   "<input id=\"lns\" name=\"lns\" maxlength=\"63\" required value=\"" );
++    send_escaped( req, cfg->lns_address );
++    httpd_resp_sendstr_chunk( req, "\">" );
++    snprintf( buf, sizeof buf,
++              "<label for=\"port\">Puerto UDP</label>"
++              "<input id=\"port\" name=\"port\" type=\"number\" min=\"1\" max=\"65535\" required value=\"%u\">",
++              cfg->lns_port );
++    httpd_resp_sendstr_chunk( req, buf );
++
++    /* Channel */
++    httpd_resp_sendstr_chunk( req, "<h2>Canal LoRa</h2>" );
++    snprintf( buf, sizeof buf,
++              "<label for=\"freq\">Frecuencia (Hz)</label>"
++              "<input id=\"freq\" name=\"freq\" type=\"number\" required value=\"%lu\">",
++              ( unsigned long ) cfg->chan_freq_hz );
++    httpd_resp_sendstr_chunk( req, buf );
++    httpd_resp_sendstr_chunk( req, "<label for=\"sf\">Spreading factor (BW 125 kHz)</label><select id=\"sf\" name=\"sf\">" );
++    for( int sf = 7; sf <= 12; sf++ )
++    {
++        snprintf( buf, sizeof buf, "<option value=\"%d\"%s>SF%d</option>", sf,
++                  ( sf == cfg->chan_datarate_1 ) ? " selected" : "", sf );
++        httpd_resp_sendstr_chunk( req, buf );
++    }
++    httpd_resp_sendstr_chunk( req, "</select>" );
++
++    httpd_resp_sendstr_chunk( req, "<button type=\"submit\">Guardar y reiniciar</button></form>" );
++    httpd_resp_sendstr_chunk( req, html_footer );
++    httpd_resp_sendstr_chunk( req, NULL );
++}
++
++/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
++
++static esp_err_t portal_root_get_handler( httpd_req_t* req )
++{
++    last_activity_time_us = esp_timer_get_time( );
++    send_form( req, NULL, false );
++    return ESP_OK;
++}
++
++/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
++
++static esp_err_t portal_save_post_handler( httpd_req_t* req )
++{
++    char body[FORM_BODY_MAX_SIZE];
++    char ssid[FORM_VALUE_MAX_SIZE];
++    char password[FORM_VALUE_MAX_SIZE];
++    char lns[FORM_VALUE_MAX_SIZE];
++    char value[FORM_VALUE_MAX_SIZE];
++
++    last_activity_time_us = esp_timer_get_time( );
++
++    if( req->content_len >= sizeof body )
++    {
++        send_form( req, "Formulario demasiado largo.", true );
++        return ESP_OK;
++    }
++    int received = 0;
++    while( received < req->content_len )
++    {
++        int ret = httpd_req_recv( req, body + received, req->content_len - received );
++        if( ret <= 0 )
++        {
++            if( ret == HTTPD_SOCK_ERR_TIMEOUT )
++            {
++                continue;
++            }
++            return ESP_FAIL;
++        }
++        received += ret;
++    }
++    body[received] = '\0';
++
++    /* WiFi credentials */
++    get_form_value( body, "ssid", ssid, sizeof ssid );
++    get_form_value( body, "pass", password, sizeof password );
++    if( ( strlen( ssid ) == 0 ) || ( strlen( ssid ) > 32 ) )
++    {
++        send_form( req, "El nombre de la red debe tener de 1 a 32 caracteres.", true );
++        return ESP_OK;
++    }
++    if( strlen( password ) == 0 )
++    {
++        /* keep the saved password if the network is the same */
++        char saved_ssid[WIFI_SSID_STR_MAX_SIZE];
++        char saved_password[WIFI_PASSWORD_STR_MAX_SIZE];
++        if( wifi_portal_get_credentials( saved_ssid, saved_password ) && ( strcmp( saved_ssid, ssid ) == 0 ) )
++        {
++            snprintf( password, sizeof password, "%s", saved_password );
++        }
++    }
++    else if( ( strlen( password ) < 8 ) || ( strlen( password ) > 63 ) )
++    {
++        send_form( req, "La contrasena WPA2 debe tener de 8 a 63 caracteres.", true );
++        return ESP_OK;
++    }
++
++    /* LNS and channel */
++    const lgw_nvs_cfg_t* current_cfg;
++    lgw_nvs_get_config( &current_cfg );
++    lgw_nvs_cfg_t cfg = *current_cfg;
++
++    get_form_value( body, "lns", lns, sizeof lns );
++    if( ( strlen( lns ) == 0 ) || ( strlen( lns ) >= LNS_ADDRESS_STR_MAX_SIZE ) )
++    {
++        send_form( req, "Indica la IP o el nombre del servidor LNS.", true );
++        return ESP_OK;
++    }
++    memcpy( cfg.lns_address, lns, strlen( lns ) + 1 ); /* length checked above */
++
++    get_form_value( body, "port", value, sizeof value );
++    long port = strtol( value, NULL, 10 );
++    if( ( port < 1 ) || ( port > 65535 ) )
++    {
++        send_form( req, "Puerto invalido (1-65535).", true );
++        return ESP_OK;
++    }
++    cfg.lns_port = ( uint16_t ) port;
++
++    get_form_value( body, "freq", value, sizeof value );
++    unsigned long freq = strtoul( value, NULL, 10 );
++    if( ( freq < 150000000UL ) || ( freq > 960000000UL ) )
++    {
++        send_form( req, "Frecuencia invalida (en Hz, p. ej. 903900000).", true );
++        return ESP_OK;
++    }
++    cfg.chan_freq_hz = ( uint32_t ) freq;
++
++    get_form_value( body, "sf", value, sizeof value );
++    long sf = strtol( value, NULL, 10 );
++    if( ( sf < 7 ) || ( sf > 12 ) )
++    {
++        send_form( req, "Spreading factor invalido (7-12).", true );
++        return ESP_OK;
++    }
++    cfg.chan_datarate_1    = ( uint8_t ) sf;
++    cfg.chan_bandwidth_khz = 125;
++
++    /* Save */
++    lgw_nvs_set_config( &cfg );
++    if( ( lgw_nvs_save_config( ) != ESP_OK ) || ( save_credentials( ssid, password ) != ESP_OK ) )
++    {
++        send_form( req, "No se pudo guardar la configuracion en la flash.", true );
++        return ESP_OK;
++    }
++    ESP_LOGI( TAG_PORTAL, "Configuration saved: WiFi \"%s\", LNS %s:%u, %lu Hz SF%u", ssid, cfg.lns_address,
++              cfg.lns_port, ( unsigned long ) cfg.chan_freq_hz, cfg.chan_datarate_1 );
++
++    httpd_resp_set_type( req, "text/html" );
++    httpd_resp_sendstr_chunk( req, html_header );
++    httpd_resp_sendstr_chunk( req, "<h1>Configuraci&oacute;n guardada</h1><p class=\"ok\">El gateway se reinicia y se "
++                                   "conecta a la red <b>" );
++    send_escaped( req, ssid );
++    httpd_resp_sendstr_chunk( req, "</b>. Esta red WiFi de configuraci&oacute;n desaparecer&aacute;.</p>" );
++    httpd_resp_sendstr_chunk( req, html_footer );
++    httpd_resp_sendstr_chunk( req, NULL );
++
++    config_saved = true;
++    return ESP_OK;
++}
++
++/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
++
++/* Any other URL (connectivity checks of phones and laptops) is redirected to the configuration page */
++static esp_err_t portal_redirect_handler( httpd_req_t* req )
++{
++    httpd_resp_set_status( req, "302 Found" );
++    httpd_resp_set_hdr( req, "Location", PORTAL_URL );
++    httpd_resp_send( req, NULL, 0 );
++    return ESP_OK;
++}
++
++/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
++
++/* Minimal DNS server: answers every A query with the portal address */
++static void dns_server_task( void* arg )
++{
++    uint8_t buf[DNS_BUFFER_SIZE];
++
++    int sock = socket( AF_INET, SOCK_DGRAM, IPPROTO_UDP );
++    if( sock < 0 )
++    {
++        ESP_LOGE( TAG_PORTAL, "DNS: socket failed" );
++        vTaskDelete( NULL );
++        return;
++    }
++    struct sockaddr_in addr = { .sin_family = AF_INET, .sin_port = htons( DNS_PORT ), .sin_addr.s_addr = 0 };
++    if( bind( sock, ( struct sockaddr* ) &addr, sizeof addr ) < 0 )
++    {
++        ESP_LOGE( TAG_PORTAL, "DNS: bind failed" );
++        close( sock );
++        vTaskDelete( NULL );
++        return;
++    }
++
++    esp_ip4_addr_t portal_ip;
++    esp_netif_str_to_ip4( PORTAL_IP_STR, &portal_ip );
++
++    while( true )
++    {
++        struct sockaddr_in client;
++        socklen_t          client_len = sizeof client;
++        int len = recvfrom( sock, buf, sizeof buf - 16, 0, ( struct sockaddr* ) &client, &client_len );
++        if( len < 12 )
++        {
++            continue;
++        }
++        /* only standard queries with one question */
++        if( ( ( buf[2] & 0x80 ) != 0 ) || ( buf[4] != 0 ) || ( buf[5] != 1 ) )
++        {
++            continue;
++        }
++        /* end of the question name */
++        int pos = 12;
++        while( ( pos < len ) && ( buf[pos] != 0 ) )
++        {
++            pos += buf[pos] + 1;
++        }
++        if( pos + 5 > len )
++        {
++            continue;
++        }
++        uint16_t qtype = ( buf[pos + 1] << 8 ) | buf[pos + 2];
++        pos += 5; /* null label + QTYPE + QCLASS */
++
++        buf[2] = 0x84 | ( buf[2] & 0x01 ); /* response, authoritative, keep RD */
++        buf[3] = 0x80;                     /* RA, no error */
++        buf[6] = 0;
++        buf[7] = ( qtype == 1 ) ? 1 : 0; /* ANCOUNT */
++        memset( &buf[8], 0, 4 );         /* NSCOUNT, ARCOUNT */
++        if( qtype == 1 )
++        {
++            const uint8_t answer[] = { 0xC0, 0x0C, 0x00, 0x01, 0x00, 0x01, 0x00, 0x00, 0x00, 0x3C, 0x00, 0x04 };
++            memcpy( &buf[pos], answer, sizeof answer );
++            pos += sizeof answer;
++            memcpy( &buf[pos], &portal_ip.addr, 4 );
++            pos += 4;
++        }
++        sendto( sock, buf, pos, 0, ( struct sockaddr* ) &client, client_len );
++    }
++}
++
++/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
++
++static void scan_networks( void )
++{
++    wifi_scan_config_t scan_cfg = { 0 };
++    if( esp_wifi_scan_start( &scan_cfg, true ) != ESP_OK )
++    {
++        ESP_LOGW( TAG_PORTAL, "WiFi scan failed" );
++        return;
++    }
++    uint16_t          nb      = SCAN_LIST_MAX_SIZE;
++    wifi_ap_record_t* records = calloc( SCAN_LIST_MAX_SIZE, sizeof( wifi_ap_record_t ) );
++    if( records == NULL )
++    {
++        esp_wifi_clear_ap_list( );
++        return;
++    }
++    if( esp_wifi_scan_get_ap_records( &nb, records ) != ESP_OK )
++    {
++        free( records );
++        return;
++    }
++    scan_count = 0;
++    for( uint16_t i = 0; i < nb; i++ )
++    {
++        const char* name = ( const char* ) records[i].ssid;
++        bool        dup  = ( strlen( name ) == 0 );
++        for( uint16_t j = 0; ( j < scan_count ) && !dup; j++ )
++        {
++            dup = ( strcmp( scan_ssids[j], name ) == 0 );
++        }
++        if( !dup )
++        {
++            snprintf( scan_ssids[scan_count++], WIFI_SSID_STR_MAX_SIZE, "%s", name );
++        }
++    }
++    free( records );
++    ESP_LOGI( TAG_PORTAL, "%u WiFi networks found", scan_count );
++}
++
++/* -------------------------------------------------------------------------- */
++/* --- PUBLIC FUNCTIONS DEFINITION ------------------------------------------ */
++
++bool wifi_portal_get_credentials( char ssid[WIFI_SSID_STR_MAX_SIZE], char password[WIFI_PASSWORD_STR_MAX_SIZE] )
++{
++    nvs_handle_t handle;
++    size_t       size;
++
++    ssid[0]     = '\0';
++    password[0] = '\0';
++    if( nvs_open( NVS_NAMESPACE, NVS_READONLY, &handle ) != ESP_OK )
++    {
++        return false;
++    }
++    size = WIFI_SSID_STR_MAX_SIZE;
++    if( nvs_get_str( handle, NVS_KEY_WIFI_SSID, ssid, &size ) != ESP_OK )
++    {
++        ssid[0] = '\0';
++    }
++    size = WIFI_PASSWORD_STR_MAX_SIZE;
++    if( nvs_get_str( handle, NVS_KEY_WIFI_PASSWORD, password, &size ) != ESP_OK )
++    {
++        password[0] = '\0';
++    }
++    nvs_close( handle );
++
++    return ( strlen( ssid ) > 0 );
++}
++
++/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
++
++void wifi_portal_request_at_next_boot( void )
++{
++    portal_request = PORTAL_REQUEST_MAGIC;
++}
++
++/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
++
++bool wifi_portal_requested( void )
++{
++    bool requested = ( portal_request == PORTAL_REQUEST_MAGIC );
++    portal_request = 0;
++    return requested;
++}
++
++/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
++
++void wifi_portal_run( unsigned int timeout_s )
++{
++    uint8_t mac[6];
++
++    ESP_ERROR_CHECK( esp_event_loop_create_default( ) );
++    esp_netif_create_default_wifi_ap( );
++    esp_netif_create_default_wifi_sta( ); /* for the scan */
++
++    wifi_init_config_t init_cfg = WIFI_INIT_CONFIG_DEFAULT( );
++    ESP_ERROR_CHECK( esp_wifi_init( &init_cfg ) );
++    ESP_ERROR_CHECK( esp_wifi_set_storage( WIFI_STORAGE_RAM ) );
++    ESP_ERROR_CHECK( esp_wifi_set_mode( WIFI_MODE_APSTA ) );
++
++    /* Same suffix as the gateway ID (station MAC address) */
++    esp_read_mac( mac, ESP_MAC_WIFI_STA );
++    snprintf( ap_ssid, sizeof ap_ssid, "%s%02X%02X%02X", CONFIG_WIFI_PORTAL_AP_PREFIX, mac[3], mac[4], mac[5] );
++
++    wifi_config_t ap_cfg = { .ap = { .channel = 1, .max_connection = 4 } };
++    ap_cfg.ap.ssid_len = strnlen( ap_ssid, sizeof ap_cfg.ap.ssid );
++    memcpy( ap_cfg.ap.ssid, ap_ssid, ap_cfg.ap.ssid_len );
++    if( strlen( CONFIG_WIFI_PORTAL_AP_PASSWORD ) >= 8 )
++    {
++        snprintf( ( char* ) ap_cfg.ap.password, sizeof ap_cfg.ap.password, "%s", CONFIG_WIFI_PORTAL_AP_PASSWORD );
++        ap_cfg.ap.authmode = WIFI_AUTH_WPA2_PSK;
++    }
++    else
++    {
++        ap_cfg.ap.authmode = WIFI_AUTH_OPEN;
++    }
++    ESP_ERROR_CHECK( esp_wifi_set_config( WIFI_IF_AP, &ap_cfg ) );
++    ESP_ERROR_CHECK( esp_wifi_start( ) );
++
++    scan_networks( );
++
++    ESP_LOGI( TAG_PORTAL, "Configuration portal: join WiFi \"%s\" and open %s", ap_ssid, PORTAL_URL );
++    display_update_portal_info( ap_ssid );
++    display_update_status( DISPLAY_STATUS_WIFI_PROVISIONING );
++
++    xTaskCreate( dns_server_task, "dns_server", 4096, NULL, 5, NULL );
++
++    httpd_handle_t server = NULL;
++    httpd_config_t config = HTTPD_DEFAULT_CONFIG( );
++    config.uri_match_fn   = httpd_uri_match_wildcard;
++    config.lru_purge_enable = true;
++    ESP_ERROR_CHECK( httpd_start( &server, &config ) );
++
++    const httpd_uri_t root_uri     = { .uri = "/", .method = HTTP_GET, .handler = portal_root_get_handler };
++    const httpd_uri_t save_uri     = { .uri = "/save", .method = HTTP_POST, .handler = portal_save_post_handler };
++    const httpd_uri_t redirect_uri = { .uri = "/*", .method = HTTP_GET, .handler = portal_redirect_handler };
++    httpd_register_uri_handler( server, &root_uri );
++    httpd_register_uri_handler( server, &save_uri );
++    httpd_register_uri_handler( server, &redirect_uri );
++
++    last_activity_time_us = esp_timer_get_time( );
++    while( !config_saved )
++    {
++        vTaskDelay( 1000 / portTICK_PERIOD_MS );
++        if( ( timeout_s > 0 ) &&
++            ( ( esp_timer_get_time( ) - last_activity_time_us ) > ( int64_t ) timeout_s * 1000000 ) )
++        {
++            ESP_LOGW( TAG_PORTAL, "No configuration received for %u s, restarting", timeout_s );
++            break;
++        }
++    }
++
++    /* let the browser receive the answer */
++    vTaskDelay( 2000 / portTICK_PERIOD_MS );
++    esp_restart( );
++}
++
++/* --- EOF ------------------------------------------------------------------ */
+diff --git a/lorahub/main/wifi_portal.h b/lorahub/main/wifi_portal.h
+new file mode 100644
+index 0000000..ac351db
+--- /dev/null
++++ b/lorahub/main/wifi_portal.h
+@@ -0,0 +1,60 @@
++/*______                              _
++ / _____)             _              | |
++( (____  _____ ____ _| |_ _____  ____| |__
++ \____ \| ___ |    (_   _) ___ |/ ___)  _ \
++ _____) ) ____| | | || |_| ____( (___| | | |
++(______/|_____)_|_|_| \__)_____)\____)_| |_|
++  (C)2024 Semtech
++
++Description:
++    LoRaHub WiFi configuration portal (SoftAP + web page)
++
++License: Revised BSD License, see LICENSE.TXT file include in the project
++*/
++
++#ifndef _WIFI_PORTAL_H
++#define _WIFI_PORTAL_H
++
++/* -------------------------------------------------------------------------- */
++/* --- DEPENDENCIES --------------------------------------------------------- */
++
++#include <stdbool.h>
++#include <stddef.h>
++
++/* -------------------------------------------------------------------------- */
++/* --- PUBLIC CONSTANTS ----------------------------------------------------- */
++
++#define WIFI_SSID_STR_MAX_SIZE ( 32 + 1 )
++#define WIFI_PASSWORD_STR_MAX_SIZE ( 64 + 1 )
++
++/* -------------------------------------------------------------------------- */
++/* --- PUBLIC FUNCTIONS PROTOTYPES ------------------------------------------ */
++
++/**
++ * @brief Get the WiFi credentials saved in NVS
++ *
++ * @returns true if an SSID is configured
++ */
++bool wifi_portal_get_credentials( char ssid[WIFI_SSID_STR_MAX_SIZE], char password[WIFI_PASSWORD_STR_MAX_SIZE] );
++
++/**
++ * @brief Request the portal to be opened at next startup (used when the configured WiFi cannot be joined)
++ */
++void wifi_portal_request_at_next_boot( void );
++
++/**
++ * @brief Check (and clear) a portal request made before the last reset
++ */
++bool wifi_portal_requested( void );
++
++/**
++ * @brief Open the WiFi access point and the configuration page. Never returns: the ESP32 restarts once the
++ * configuration is saved, or after timeout_s seconds without any submission (0 for no timeout).
++ *
++ * esp_netif_init() and nvs_flash_init() must have been called before.
++ */
++void wifi_portal_run( unsigned int timeout_s );
++
++#endif  // _WIFI_PORTAL_H
++
++/* --- EOF ------------------------------------------------------------------ */
+diff --git a/lorahub/sdkconfig.defaults.heltec_v4 b/lorahub/sdkconfig.defaults.heltec_v4
+new file mode 100644
+index 0000000..a2db9fb
+--- /dev/null
++++ b/lorahub/sdkconfig.defaults.heltec_v4
+@@ -0,0 +1,20 @@
++# Heltec WiFi LoRa 32 v4 - US915 sub-band 2, one channel, configuration portal over WiFi (SoftAP)
++# Use on top of sdkconfig.defaults:
++#   idf.py -B build_heltec_v4 -D SDKCONFIG=sdkconfig.heltec_v4 -D SDKCONFIG_DEFAULTS="sdkconfig.defaults;sdkconfig.defaults.heltec_v4" build
++CONFIG_HELTEC_WIFI_LORA_32_V4=y
++CONFIG_RADIO_TYPE_SX1262=y
++CONFIG_ESPTOOLPY_FLASHSIZE_16MB=y
++CONFIG_ESP_CONSOLE_USB_SERIAL_JTAG=y
++CONFIG_BT_ENABLED=n
++CONFIG_ESP_MAIN_TASK_STACK_SIZE=8192
++# CONFIG_WIFI_PROV_OVER_BLE is not set
++CONFIG_WIFI_PROV_SOFTAP=y
++CONFIG_WIFI_PORTAL_AP_PREFIX="PiCARO-GW-"
++CONFIG_WIFI_PORTAL_AP_PASSWORD="picaro1234"
++CONFIG_WIFI_PORTAL_DELAY_S=5
++CONFIG_NETWORK_SERVER_ADDRESS=""
++CONFIG_NETWORK_SERVER_PORT=1700
++CONFIG_CHANNEL_FREQ_HZ=903900000
++CONFIG_CHANNEL_LORA_SPREADING_FACTOR_1=10
++CONFIG_CHANNEL_LORA_SPREADING_FACTOR_2=0
++CONFIG_CHANNEL_LORA_BANDWIDTH=125

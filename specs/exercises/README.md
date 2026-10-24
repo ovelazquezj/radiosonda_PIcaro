@@ -59,6 +59,10 @@ Para crear un ejercicio nuevo, copia [`_PLANTILLA/`](_PLANTILLA/) y rellena.
 >   **Arduino + CubeCell Development Framework** (pila LoRaWAN de Heltec): join OTAA y **estación
 >   meteorológica** que se construye por etapas (DHT11, BMP280, BH1750, lluvia MH-RD). **Verificado en
 >   hardware.**
+> - **Ejercicio 14 → banco de pruebas local (infraestructura).** Una **Heltec WiFi LoRa 32 V4**
+>   (ESP32-S3 + **SX1262**) hace de **gateway de 1 canal** (firmware *One Channel Hub* de Semtech adaptado)
+>   contra un **ChirpStack en Docker en tu PC**. Se configura desde el celular (WiFi propia con página) y
+>   sirve para **probar tu radiosonda sin servidores externos**. Firmware **precompilado**.
 
 | # | Ejercicio | Radio · Placa | Qué demuestra | ChirpStack | Dato para dashboard |
 |---|-----------|---------------|---------------|:----------:|---------------------|
@@ -76,6 +80,7 @@ Para crear un ejercicio nuevo, copia [`_PLANTILLA/`](_PLANTILLA/) y rellena.
 | [11](11_dashboard-servidor-remoto/) | Dashboard · servidor remoto | — · **Python + tkinter** (PC) | El ej.10 contra un ChirpStack en Internet: **MQTT sobre TLS**, credenciales y ACL por equipo | ✅ (consumidor MQTT+TLS) | Igual que el ej.10, desde un servidor compartido |
 | [12](12_heltec-lora32-v3-join/) | Join OTAA · Heltec LoRa 32 | **SX1262** · Heltec WiFi LoRa 32 V3/V4 (ESP32-S3) | Join OTAA con credenciales **generadas en ChirpStack**; traza verbose + OLED | ✅ (servidor del curso) | `counter`/`uptime_s`/`vbat_mv` por MQTT |
 | [13](13_cubecell-estacion-meteo/) | Estación meteo · CubeCell | **SX1262** · Heltec CubeCell HTCC-AB01 (ASR6501) | Join con la pila de Heltec, bajo consumo, sensores por etapas | ✅ (servidor del curso) | temp/hum/presión/lux/lluvia/batería por MQTT |
+| [14](14_heltec-v4-gateway-1canal/) | Banco de pruebas local | **SX1262** · Heltec WiFi LoRa 32 V4 (ESP32-S3) | Gateway de 1 canal + ChirpStack en Docker; configuración por WiFi desde el celular | ✅ (infra local) | — (habilita probar la radiosonda) |
 
 ## Arquitectura de datos (para dashboards)
 

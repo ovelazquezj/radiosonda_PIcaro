@@ -1,0 +1,2 @@
+# El parche debe conservar finales de linea LF para que "git apply" funcione en Windows
+*.patch -text
