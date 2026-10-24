@@ -381,7 +381,6 @@ En la mayoría de los celulares la página **se abre sola** al conectarte. Si no
 
 **<http://192.168.4.1>**
 
-![Página de configuración del gateway en el celular](img/07-portal-configuracion.png)
 
 ### C3. Llena el formulario
 
@@ -403,7 +402,6 @@ El celular muestra **"Configuración guardada"** y, a los 2 segundos, la red `Pi
 **desaparece** (es normal: la placa se reinicia y se conecta a tu WiFi). Tu celular volverá solo a su red
 de siempre.
 
-![Configuración guardada](img/07b-portal-guardado.png)
 
 ### C5. Comprueba la pantalla de la Heltec
 

@@ -30,6 +30,7 @@ provisión y consumo). Recorrido guiado en **[Cómo usar el proyecto](Cómo-usar
 - **[11 · Dashboard contra servidor remoto](Ejercicio-11-Dashboard-Servidor-Remoto)** — el mismo dashboard contra un ChirpStack **en Internet**: **MQTT sobre TLS**, credenciales por equipo y ACL. Sin hardware.
 - **[12 · Join OTAA con Heltec LoRa 32](Ejercicio-12-Heltec-LoRa32-Join)** — **Heltec WiFi LoRa 32 V3/V4** (ESP32-S3 + SX1262 + OLED) por Arduino/RadioLib: **credenciales generadas en ChirpStack** y copiadas a la placa, join y uplinks con traza detallada en el Monitor Serie y la OLED.
 - **[13 · Estación meteo con CubeCell](Ejercicio-13-CubeCell-Estacion-Meteo)** — **Heltec CubeCell HTCC-AB01** (bajo consumo, batería/solar) con la pila LoRaWAN de Heltec: join OTAA y **estación meteorológica** por etapas (DHT11, BMP280, BH1750, lluvia MH-RD). Verificado en hardware.
+- **[14 · Banco de pruebas local](Ejercicio-14-Banco-de-pruebas-Heltec-V4)** — **ChirpStack en Docker en tu PC** + **gateway de 1 canal** con una **Heltec WiFi LoRa 32 V4** (firmware precompilado, configuración desde el celular) para **probar tu radiosonda sin servidores externos**.
 
 ## 🔧 Guías prácticas (How-To)
 ¿Manos a la obra? Estas guías te llevan paso a paso:
@@ -42,6 +43,8 @@ provisión y consumo). Recorrido guiado en **[Cómo usar el proyecto](Cómo-usar
 7. **[Dar de alta un TTGO nuevo](How-To-Dar-de-alta-un-TTGO-nuevo)** — igual para TTGO (¡ojo al orden de bytes invertido!).
 8. **[Montar un gateway de 1 canal](How-To-Montar-un-gateway-de-1-canal)** — tu propio gateway TTGO → ChirpStack (ejercicio 07).
 9. **[Configurar un gateway Kerlink iBTS](How-To-Configurar-un-gateway-Kerlink-iBTS)** — un gateway profesional de 8 canales (US915) conectado al LNS de PiCARO.
+10. **[Banco de pruebas local con gateway Heltec V4](How-To-Banco-de-pruebas-local-Heltec-V4)** — ChirpStack en Docker + gateway de 1 canal configurable desde el celular, paso a paso (ejercicio 14).
+11. **[Memoria técnica del gateway Heltec V4](Memoria-tecnica-Gateway-Heltec-V4)** — cómo está hecho, por qué y sus límites; para integrarla en la memoria de tu proyecto.
 
 ## ¿Qué vas a lograr?
 - Unir un dispositivo a una red LoRaWAN (**join OTAA**) y ver sus tramas.
@@ -49,6 +52,7 @@ provisión y consumo). Recorrido guiado en **[Cómo usar el proyecto](Cómo-usar
 - Hacer **geolocalización GNSS/Wi-Fi** con el LR1110.
 - **Provisionar y leer datos** desde ChirpStack por API (REST/MQTT) para dashboards.
 - **Montar tu propio gateway** de 1 canal (TTGO ESP32) para recibir a tus nodos en ChirpStack.
+- Montar un **banco de pruebas local** (ChirpStack en Docker + gateway Heltec V4) para probar tu radiosonda sin depender de nadie.
 - Modificar el firmware y **compilar tus propios binarios**.
 
 ## Atribución

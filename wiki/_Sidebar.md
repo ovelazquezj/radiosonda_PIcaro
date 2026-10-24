@@ -8,7 +8,7 @@
 - [5 · Cómo usar el proyecto](Cómo-usar-el-proyecto)
 - [6 · Glosario y recursos](Glosario-y-recursos)
 
-**📟 Ejercicios (00–13)**
+**📟 Ejercicios (00–14)**
 - [00 · ChirpStack](Ejercicio-00-ChirpStack)
 - [01 · Periodical Uplink](Ejercicio-01-Periodical-Uplink)
 - [02 · BMP280 + GNSS](Ejercicio-02-BMP280-GNSS)
@@ -23,6 +23,7 @@
 - [11 · Dashboard contra servidor remoto](Ejercicio-11-Dashboard-Servidor-Remoto)
 - [12 · Join OTAA con Heltec LoRa 32 V3/V4](Ejercicio-12-Heltec-LoRa32-Join)
 - [13 · Estación meteo con CubeCell](Ejercicio-13-CubeCell-Estacion-Meteo)
+- [14 · Banco de pruebas local (Heltec V4 + ChirpStack)](Ejercicio-14-Banco-de-pruebas-Heltec-V4)
 
 **🔧 Guías prácticas (How-To)**
 - [Requisitos e instalación](How-To-Requisitos-e-instalación)
@@ -34,6 +35,8 @@
 - [Dar de alta un TTGO nuevo](How-To-Dar-de-alta-un-TTGO-nuevo)
 - [Montar un gateway de 1 canal](How-To-Montar-un-gateway-de-1-canal)
 - [Configurar un gateway Kerlink iBTS](How-To-Configurar-un-gateway-Kerlink-iBTS)
+- [Banco de pruebas local con gateway Heltec V4](How-To-Banco-de-pruebas-local-Heltec-V4)
+- [Memoria técnica del gateway Heltec V4](Memoria-tecnica-Gateway-Heltec-V4)
 
 ---
 [Repo](https://github.com/ovelazquezj/radiosonda_PIcaro) · [Semtech SWL2001](https://github.com/Lora-net/SWL2001)
