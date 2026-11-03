@@ -1,0 +1,13 @@
+sonda,gateway,fase,n_rx,frac_uplinks,frac_fcnt_esperado,rssi_p10,rssi_med,rssi_p90,rssi_min,snr_p10,snr_med,snr_p90,snr_min,margen_snr_min,margen_snr_p10,margen_snr_med,d_slant_max_km,d_slant_max_origen,margen_snr_en_dmax,alt_sonda_en_dmax,d_slant_max_propia_km,elev_min,elev_max
+"Sonda Orbitium (Sci-Fi), ITPA",ITPA-IOT-GW00,todo,1525,97.2,,-105.0,-93.0,-67.0,-121.0,8.2,11.5,13.5,-10.8,4.2,23.2,26.5,31.59,propia,6.8,4278.0,31.59,-69.87,64.31
+"Sonda Orbitium (Sci-Fi), ITPA",ITPA-IOT-GW00,vuelo,89,94.7,90.8,-120.0,-116.0,-107.0,-121.0,-7.9,-0.2,7.8,-10.8,4.2,7.1,14.8,31.59,propia,6.8,4278.0,31.59,4.17,40.22
+"Sonda Orbitium (Sci-Fi), ITPA",ITPA-IOT-GW01-kibts,todo,1513,96.4,,-106.0,-97.0,-90.0,-122.0,3.0,15.0,15.0,-17.0,-2.0,18.0,30.0,31.55,propia,6.8,4278.0,31.55,-65.11,42.15
+"Sonda Orbitium (Sci-Fi), ITPA",ITPA-IOT-GW01-kibts,vuelo,83,88.3,84.7,-120.0,-117.0,-107.0,-122.0,-12.0,-7.0,7.8,-17.0,-2.0,3.0,8.0,31.55,propia,6.8,4278.0,31.55,4.16,42.1
+"Sonda Orbitium (Sci-Fi), ITPA",picaro-lab-ags-001,todo,56,3.6,,-126.0,-123.0,-120.5,-129.0,-13.2,-10.0,-7.9,-16.0,-1.0,1.8,5.0,50.0,propia,5.5,8390.0,50.0,3.0,7.0
+"Sonda Orbitium (Sci-Fi), ITPA",picaro-lab-ags-001,vuelo,56,59.6,57.1,-126.0,-123.0,-120.5,-129.0,-13.2,-10.0,-7.9,-16.0,-1.0,1.8,5.0,50.0,propia,5.5,8390.0,50.0,3.0,7.0
+Sonda TAES (Instituto Tepeyac/UPA),ITPA-IOT-GW00,todo,1155,97.1,,-97.0,-81.0,-74.0,-121.0,10.0,13.8,14.2,-9.2,-1.7,17.5,21.3,24.67,propia,11.5,2291.0,24.67,-88.52,52.62
+Sonda TAES (Instituto Tepeyac/UPA),ITPA-IOT-GW00,vuelo,76,92.7,87.4,-119.5,-111.0,-100.0,-121.0,-4.1,6.0,11.8,-9.2,-1.7,3.4,13.5,24.67,propia,11.5,2291.0,24.67,0.79,52.62
+Sonda TAES (Instituto Tepeyac/UPA),ITPA-IOT-GW01-kibts,todo,1152,96.9,,-103.0,-93.0,-87.0,-118.0,6.0,14.0,15.0,-9.0,-1.5,13.5,21.5,24.64,propia,8.5,2124.0,24.64,-72.84,53.29
+Sonda TAES (Instituto Tepeyac/UPA),ITPA-IOT-GW01-kibts,vuelo,69,84.1,79.3,-117.0,-113.0,-101.8,-118.0,-5.0,0.0,12.2,-9.0,-1.5,2.5,7.5,24.64,propia,8.5,2124.0,24.64,0.38,53.29
+Sonda TAES (Instituto Tepeyac/UPA),picaro-lab-ags-001,todo,19,1.6,,-121.0,-120.0,-114.8,-121.0,-8.2,-5.5,-3.2,-8.25,-0.8,-0.8,2.0,51.0,propia,-0.8,3669.0,51.0,2.0,4.0
+Sonda TAES (Instituto Tepeyac/UPA),picaro-lab-ags-001,vuelo,19,23.2,21.8,-121.0,-120.0,-114.8,-121.0,-8.2,-5.5,-3.2,-8.25,-0.8,-0.8,2.0,51.0,propia,-0.8,3669.0,51.0,2.0,4.0

@@ -1,0 +1,139 @@
+=== A2 · perfil de vuelo y atmósfera ===
+Sonda Orbitium (Sci-Fi), ITPA: lanzamiento est. 22:37:04 local; fin 23:34:49; fixes usados 12
+Sonda TAES (Instituto Tepeyac/UPA): lanzamiento est. 22:53:18 local; fin 23:36:44; fixes usados 145
+
+-- Orbitium: segmentos entre fixes (GPS) --
+  22:37:04 -> 22:40:38: 1883 -> 2764 m, 214 s, vz = +4.12 m/s
+  22:40:38 -> 22:50:40: 2764 -> 4686 m, 602 s, vz = +3.19 m/s
+  22:50:40 -> 23:00:42: 4686 -> 6173 m, 602 s, vz = +2.47 m/s
+  23:00:42 -> 23:10:36: 6173 -> 7319 m, 593 s, vz = +1.93 m/s
+  23:10:36 -> 23:20:36: 7319 -> 8390 m, 600 s, vz = +1.78 m/s
+  23:20:36 -> 23:21:16: 8390 -> 8478 m, 40 s, vz = +2.19 m/s
+  23:21:16 -> 23:21:46: 8478 -> 8408 m, 30 s, vz = -2.31 m/s
+  23:21:46 -> 23:30:36: 8408 -> 4278 m, 529 s, vz = -7.80 m/s
+  ascenso medio lanzamiento->alt. máx.: 2.49 m/s (44.2 min para 6595 m)
+
+-- TAES: velocidad vertical suavizada (regresión +-60 s) --
+  T+ -0.6 min 22:52:44  z=  1897 m  vz=+2.05 m/s
+  T+  1.4 min 22:54:44  z=  2282 m  vz=+3.78 m/s
+  T+  3.4 min 22:56:44  z=  2713 m  vz=+3.91 m/s
+  T+  5.4 min 22:58:44  z=  3146 m  vz=+3.45 m/s
+  T+  7.4 min 23:00:44  z=  3574 m  vz=+3.55 m/s
+  T+  9.4 min 23:02:44  z=  4012 m  vz=+3.32 m/s
+  T+ 11.4 min 23:04:44  z=  4345 m  vz=+2.41 m/s
+  T+ 13.4 min 23:06:44  z=  4514 m  vz=+0.33 m/s
+  T+ 15.4 min 23:08:44  z=  4438 m  vz=-1.30 m/s
+  T+ 17.9 min 23:11:14  z=  4240 m  vz=+0.08 m/s
+  T+ 19.9 min 23:13:14  z=  4410 m  vz=+2.32 m/s
+  T+ 21.9 min 23:15:14  z=  4690 m  vz=+1.79 m/s
+  T+ 24.4 min 23:17:44  z=  4881 m  vz=+1.11 m/s
+  T+ 26.9 min 23:20:14  z=  5034 m  vz=+0.82 m/s
+  T+ 29.4 min 23:22:44  z=  5050 m  vz=-0.47 m/s
+  T+ 31.4 min 23:24:44  z=  4957 m  vz=-0.99 m/s
+  T+ 33.4 min 23:26:44  z=  4829 m  vz=-1.00 m/s
+  T+ 35.4 min 23:28:44  z=  4713 m  vz=-1.52 m/s
+  T+ 37.4 min 23:30:44  z=  4214 m  vz=-6.01 m/s
+  T+ 39.9 min 23:33:14  z=  3299 m  vz=-6.12 m/s
+  T+ 41.9 min 23:35:14  z=  2605 m  vz=-5.34 m/s
+
+-- TAES: fases (velocidad media entre fixes extremos de cada fase) --
+  ascenso 1              22:53:18 -> 23:04:44  1897 -> 4345 m  vz = +3.57 m/s
+  meseta/descenso leve   23:05:14 -> 23:11:14  4429 -> 4240 m  vz = -0.52 m/s
+  ascenso 2              23:11:44 -> 23:21:44  4265 -> 5065 m  vz = +1.33 m/s
+  descenso lento         23:22:14 -> 23:29:14  5062 -> 4683 m  vz = -0.90 m/s
+  descenso rápido        23:29:44 -> 23:36:44  4572 -> 2124 m  vz = -5.83 m/s
+  ascenso medio lanzamiento->alt. máx.: 1.86 m/s (28.4 min para 3168 m)
+  Orbitium: con 2.49 m/s, de su suelo (1883 m) a 15 km de altitud GPS tardaría 88 min; con la misma base, 5 m/s -> 43.7 min, 4 m/s -> 54.7 min
+  TAES: con 1.86 m/s, de su suelo (1897 m) a 15 km de altitud GPS tardaría 118 min; con la misma base, 5 m/s -> 43.7 min, 4 m/s -> 54.6 min
+
+-- Orbitium: temporizador (fPort 32) y corte (fPort 31) --
+  21:57:57 fPort 32 fase=desarmado  motivo=prueba    t_vuelo=    0.0 s  restante=      - s límite=3300.0 s
+  22:37:02 fPort 32 fase=armado     motivo=prueba    t_vuelo=    0.0 s  restante=      - s límite=3300.0 s
+  22:37:30 fPort 32 fase=vuelo      motivo=prueba    t_vuelo=    0.0 s  restante= 3300.0 s límite=3300.0 s
+  23:21:16 fPort 31 evento=inicio motivo=downlink seq=53.0 alt=8478.0 m (gps) vz=2.5 m/s t_vuelo=2625.0 s
+  23:21:23 fPort 32 fase=cortando   motivo=downlink  t_vuelo= 2625.0 s  restante=      - s límite=3300.0 s
+  23:21:46 fPort 31 evento=confirmado motivo=downlink seq=53.0 alt=8408.0 m (gps) vz=-9.6 m/s t_vuelo=2656.0 s
+  23:21:53 fPort 32 fase=terminado  motivo=downlink  t_vuelo= 2656.0 s  restante=      - s límite=3300.0 s
+  el temporizador habría cortado a las 23:32:30 local (fase vuelo 22:37:30 + 3300 s); el corte manual llegó 674 s antes
+  (inferencia) con el ascenso final de 2.19 m/s, en el disparo del temporizador la sonda habría estado a ~9955 m
+
+-- Presión vs GPS: altitud ISA vs altitud GPS --
+  Sonda Orbitium (Sci-Fi), ITPA: suelo, 4 pares: z_GPS - z_ISA mediana +77 m; p mediana 814.2 hPa
+  Sonda Orbitium (Sci-Fi), ITPA: punto más alto con presión: z_GPS=8412 m, p=359.6 hPa, z_ISA=7930 m, diferencia +482 m
+  Sonda TAES (Instituto Tepeyac/UPA): suelo, 63 pares: z_GPS - z_ISA mediana +103 m; p mediana 815.3 hPa
+  Sonda TAES (Instituto Tepeyac/UPA): punto más alto con presión: z_GPS=5065 m, p=555.5 hPa, z_ISA=4790 m, diferencia +275 m
+
+-- Validación cruzada: altitud de la Orbitium vs z(p) de la TAES a la misma presión --
+  p=733.6 hPa (ascenso): Orbitium 2785 m, TAES 2796 m, diferencia -11 m
+  p=580.2 hPa (ascenso): Orbitium 4702 m, TAES 4719 m, diferencia -17 m
+  p=610.1 hPa (descenso): Orbitium 4226 m, TAES 4313 m, diferencia -87 m
+
+-- Temperatura virtual media de capa (ecuación hipsométrica, ESTIMACIÓN) --
+  dispersión vertical GPS en tierra (desv. est.): TAES 32.7 m; Orbitium 21.2 m
+  TAES         ascenso           2000- 2500 m  Tv =  +21.5 ±  3.3 °C   ISA   +0.3 °C   sensor  22.8 °C
+  TAES         ascenso           2500- 3000 m  Tv =  +12.5 ±  1.2 °C   ISA   -3.0 °C   sensor  22.3 °C
+  TAES         ascenso           3000- 3500 m  Tv =  +10.1 ±  0.9 °C   ISA   -6.2 °C   sensor  21.5 °C
+  TAES         ascenso           3500- 4000 m  Tv =   +6.0 ±  0.8 °C   ISA   -9.3 °C   sensor  20.5 °C
+  TAES         ascenso           4000- 4500 m  Tv =   +3.9 ±  0.5 °C   ISA  -13.1 °C   sensor  17.3 °C
+  TAES         ascenso           4500- 5000 m  Tv =   +0.1 ±  0.4 °C   ISA  -15.8 °C   sensor  14.7 °C
+  TAES         descenso          2100- 2700 m  Tv =  +12.3 ±  1.1 °C   ISA   -0.4 °C   sensor  11.1 °C
+  TAES         descenso          2700- 3300 m  Tv =  +11.9 ±  1.3 °C   ISA   -4.7 °C   sensor  10.3 °C
+  TAES         descenso          4500- 5100 m  Tv =   +0.3 ±  0.6 °C   ISA  -16.6 °C   sensor  11.0 °C
+  Orbitium     ascenso           1904- 2785 m  Tv =  +15.1 ±  9.8 °C   ISA   -0.2 °C   sensor  27.8 °C
+  Orbitium     ascenso           2785- 4702 m  Tv =   +6.1 ±  4.4 °C   ISA   -9.3 °C   sensor  27.1 °C
+  Orbitium     ascenso           4702- 6186 m  Tv =   -2.3 ±  5.5 °C   ISA  -20.4 °C   sensor  25.4 °C
+  Orbitium     ascenso           6186- 7334 m  Tv =   -9.8 ±  6.9 °C   ISA  -28.9 °C   sensor  22.9 °C
+  Orbitium     ascenso           7334- 8412 m  Tv =  -14.3 ±  7.2 °C   ISA  -36.2 °C   sensor  20.0 °C
+  Orbitium     ascenso/descenso  4226- 8412 m  Tv =   -2.6 ±  1.9 °C   ISA  -26.1 °C   sensor  17.0 °C
+  ajuste lineal (ponderado): Tv(z) = 30.8 °C -6.39 K/km·z[km]; Tv(2 km) = +18.0 °C, Tv(5 km) = -1.2 °C, Tv(8.4 km) = -22.9 °C
+  ISA: 2 km +2.0 °C, 5 km -17.5 °C, 8.4 km -39.6 °C
+  perfil solo TAES (2.5-5 km): Tv(z) = 29.6 °C -6.13 K/km·z[km]
+  Orbitium a 359.6 hPa (23:20:46): GPS interpolado 8412 m. Desde 580.2 hPa / 4702 m: con el perfil TAES extrapolado 8382 m; con Tv(4.75 km) y -6.5 K/km 8372 m; con temperaturas ISA 8152 m; ISA pura desde 1013 hPa 7930 m
+  TAES: z_GPS(descenso) - z_GPS(ascenso) a la misma presión: mediana -2 m (n=29, rango -5 a +7 m)
+
+-- Viento por capa (deriva del globo) --
+  TAES         ascenso         1900- 2400 m 22:53:44->22:55:14    5.1 m/s (  18 km/h) desde 123° (ESE)
+  TAES         ascenso         2400- 2900 m 22:55:44->22:57:14    4.9 m/s (  18 km/h) desde 151° (SSE)
+  TAES         ascenso         2900- 3400 m 22:57:44->22:59:44    4.0 m/s (  14 km/h) desde 150° (SSE)
+  TAES         ascenso         3400- 3900 m 23:00:14->23:02:14    7.4 m/s (  27 km/h) desde 178° (S)
+  TAES         ascenso         3900- 4400 m 23:02:44->23:12:44   10.4 m/s (  37 km/h) desde 191° (S)
+  TAES         ascenso         4400- 4900 m 23:05:14->23:17:44   11.7 m/s (  42 km/h) desde 194° (SSO)
+  TAES         ascenso         4900- 5400 m 23:18:44->23:21:44   14.1 m/s (  51 km/h) desde 209° (SSO)
+  TAES         descenso        2400- 2900 m 23:34:44->23:35:44    4.6 m/s (  16 km/h) desde 136° (SE)
+  TAES         descenso        2900- 3400 m 23:33:14->23:34:14    4.3 m/s (  16 km/h) desde 167° (SSE)
+  TAES         descenso        3400- 3900 m 23:31:44->23:32:44    8.8 m/s (  32 km/h) desde 180° (S)
+  TAES         descenso        4400- 4900 m 23:25:44->23:29:44   13.2 m/s (  48 km/h) desde 201° (SSO)
+  TAES         descenso        4900- 5400 m 23:21:44->23:25:14   14.3 m/s (  52 km/h) desde 206° (SSO)
+  Orbitium     ascenso         2764- 4686 m 22:40:38->22:50:40    7.2 m/s (  26 km/h) desde 182° (S)
+  Orbitium     ascenso         4686- 6173 m 22:50:40->23:00:42   12.2 m/s (  44 km/h) desde 221° (SO)
+  Orbitium     ascenso         6173- 7319 m 23:00:42->23:10:36   11.3 m/s (  41 km/h) desde 233° (SO)
+  Orbitium     ascenso         7319- 8390 m 23:10:36->23:20:36   12.8 m/s (  46 km/h) desde 238° (OSO)
+  Orbitium     ascenso+caída   4278- 8390 m 23:20:36->23:30:36   11.6 m/s (  42 km/h) desde 223° (SO)
+
+-- Deriva total y último punto conocido --
+  Sonda Orbitium (Sci-Fi), ITPA: último fix 23:30:36 en 22.37433, -102.06780 a 4278 m; deriva desde el último fix en tierra 31.6 km hacia 41° (NE); a 31.5 km de ITPA-IOT-GW00
+  Sonda TAES (Instituto Tepeyac/UPA): último fix 23:36:44 en 22.37809, -102.21893 a 2124 m; deriva desde el último fix en tierra 24.8 km hacia 12° (NNE); a 24.7 km de ITPA-IOT-GW00
+
+-- Descenso: velocidad terminal escalada con la densidad (INFERENCIA) --
+  TAES: descenso rápido, v normalizada a 2000 m = 5.42 m/s (mediana de 13; rango 4.73-5.75); a 4.5 km correspondería 6.1 m/s
+  Orbitium: caída 8408 -> 4278 m en 529 s (media 7.8 m/s); v0 ajustada a 2000 m = 6.28 m/s; a 8.4 km eso da 8.7 m/s (firmware: -9.6 m/s en 'confirmado')
+  Orbitium (inferencia): en la última recepción (23:34:49) estaría a ~2569 m; aterrizaje ~23:36:03-23:36:35 local (terreno 2100-1900 m)
+  Orbitium (inferencia): con el viento de la TAES en descenso, deriva adicional hasta 2000 m ≈ 2.0 km hacia 347° en 5.7 min -> zona ≈ 22.392, -102.072
+  TAES (inferencia): de 2124 m a 1900 m faltaban ~42 s
+  TAES (inferencia): de 2124 m a 2000 m faltaban ~24 s
+  TAES (inferencia): de 2124 m a 2100 m faltaban ~6 s
+
+-- Humedad --
+  Orbitium: 138 lecturas de HR; 24 pegadas en 100 % (2026-10-27T09:26 a 2026-10-27T13:09)
+  TAES: 1189 lecturas de HR; 0 pegadas en 100 %
+  Sonda Orbitium (Sci-Fi), ITPA: suelo HR 58.0 %, rocío 19.2 °C, w 17.5 g/kg; en 8412 m: HR 45.0 %, T 18.4 °C, rocío 6.3 °C, w 16.9 g/kg
+  Sonda TAES (Instituto Tepeyac/UPA): suelo HR 77.8 %, rocío 19.6 °C, w 17.9 g/kg; en 5065 m: HR 70.2 %, T 12.2 °C, rocío 6.9 °C, w 11.3 g/kg
+
+-- Temperatura de la cápsula y batería --
+  Sonda Orbitium (Sci-Fi), ITPA: T sensor en tierra (mediana) 28.3 °C; mínima en vuelo 15.50 °C a T+53.6 min (4226 m)
+     (estimación) aire (Tv por hipsometría) a 4226 m ≈ 3.8 °C: la cápsula iba +12 K por encima
+  Sonda TAES (Instituto Tepeyac/UPA): T sensor en tierra (mediana) 23.7 °C; mínima en vuelo 9.87 °C a T+38.9 min (3669 m)
+     (estimación) aire (Tv por hipsometría) a 3669 m ≈ 7.3 °C: la cápsula iba +3 K por encima
+  TAES batería en vuelo: 4.038 -> 4.016 V (caída 22 mV); umbral de la prueba de frío: 3.3 V
+  TAES batería todo el registro: 4.065 V (19:40:29) -> 4.016 V (23:36:44), 586 lecturas
+  Orbitium: lecturas de batería/INA219 en todo el dataset: 0; bandera usb en vuelo: ['1', '1', '1', '1']

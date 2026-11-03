@@ -1,0 +1,39 @@
+t_local,sonda,hito,fuente
+2026-10-28T10:40:30-06:00,"Sonda Orbitium (Sci-Fi), ITPA",último join (sesión 35); ya no hubo más,joins.csv
+2026-10-28T17:00:13-06:00,"Sonda Orbitium (Sci-Fi), ITPA",primer uplink desde las 17:00,uplinks.csv
+2026-10-28T18:23:25-06:00,Sonda TAES (Instituto Tepeyac/UPA),primer join-request rechazado,eventos_red.csv
+2026-10-28T18:45:47-06:00,Sonda TAES (Instituto Tepeyac/UPA),primer uplink desde las 17:00,uplinks.csv
+2026-10-28T19:04:53-06:00,"Sonda Orbitium (Sci-Fi), ITPA",downlink prueba_corte seq 38 (respuesta: si),downlinks.csv
+2026-10-28T19:46:11-06:00,"Sonda Orbitium (Sci-Fi), ITPA",downlink prueba_corte seq 39 (respuesta: si),downlinks.csv
+2026-10-28T19:49:41-06:00,"Sonda Orbitium (Sci-Fi), ITPA",downlink marco seq 40 (respuesta: si),downlinks.csv
+2026-10-28T20:51:49-06:00,Sonda TAES (Instituto Tepeyac/UPA),primer paquete en formato de 27 B (cambio de firmware),uplinks.csv
+2026-10-28T21:41:44-06:00,Sonda TAES (Instituto Tepeyac/UPA),último join (sesión 12); ya no hubo más,joins.csv
+2026-10-28T22:11:37-06:00,"Sonda Orbitium (Sci-Fi), ITPA",downlink marco seq 41 (respuesta: si),downlinks.csv
+2026-10-28T22:30:36-06:00,"Sonda Orbitium (Sci-Fi), ITPA",último fix en tierra,vuelos.csv
+2026-10-28T22:37:00-06:00,"Sonda Orbitium (Sci-Fi), ITPA",downlink armar_temporizador seq 42 (respuesta: si),downlinks.csv
+2026-10-28T22:37:02-06:00,"Sonda Orbitium (Sci-Fi), ITPA",temporizador armado (firmware),vuelos.csv
+2026-10-28T22:37:04-06:00,"Sonda Orbitium (Sci-Fi), ITPA",despegue estimado,vuelos.csv
+2026-10-28T22:37:30-06:00,"Sonda Orbitium (Sci-Fi), ITPA",fase 'vuelo' del firmware (detección de despegue),vuelos.csv
+2026-10-28T22:38:23-06:00,"Sonda Orbitium (Sci-Fi), ITPA",downlink marco seq 43 (respuesta: si),downlinks.csv
+2026-10-28T22:40:38-06:00,"Sonda Orbitium (Sci-Fi), ITPA",primer fix en el aire,vuelos.csv
+2026-10-28T22:43:17-06:00,"Sonda Orbitium (Sci-Fi), ITPA",downlink marco seq 44 (respuesta: si),downlinks.csv
+2026-10-28T22:43:55-06:00,"Sonda Orbitium (Sci-Fi), ITPA",downlink marco seq 45 (respuesta: si),downlinks.csv
+2026-10-28T22:48:45-06:00,"Sonda Orbitium (Sci-Fi), ITPA",downlink marco seq 46 (respuesta: si),downlinks.csv
+2026-10-28T22:52:08-06:00,"Sonda Orbitium (Sci-Fi), ITPA",downlink marco seq 47 (respuesta: si),downlinks.csv
+2026-10-28T22:53:14-06:00,Sonda TAES (Instituto Tepeyac/UPA),último fix en tierra,vuelos.csv
+2026-10-28T22:53:18-06:00,Sonda TAES (Instituto Tepeyac/UPA),despegue estimado,vuelos.csv
+2026-10-28T22:53:44-06:00,Sonda TAES (Instituto Tepeyac/UPA),primer fix en el aire,vuelos.csv
+2026-10-28T22:58:29-06:00,"Sonda Orbitium (Sci-Fi), ITPA",downlink marco seq 48 (respuesta: si),downlinks.csv
+2026-10-28T23:02:13-06:00,"Sonda Orbitium (Sci-Fi), ITPA",downlink marco seq 49 (respuesta: si),downlinks.csv
+2026-10-28T23:09:46-06:00,"Sonda Orbitium (Sci-Fi), ITPA",downlink marco seq 50 (respuesta: si),downlinks.csv
+2026-10-28T23:13:42-06:00,"Sonda Orbitium (Sci-Fi), ITPA",downlink marco seq 51 (respuesta: si),downlinks.csv
+2026-10-28T23:17:27-06:00,"Sonda Orbitium (Sci-Fi), ITPA",downlink marco seq 52 (respuesta: si),downlinks.csv
+2026-10-28T23:21:14-06:00,"Sonda Orbitium (Sci-Fi), ITPA",downlink corte seq 53 (respuesta: si),downlinks.csv
+2026-10-28T23:21:16-06:00,"Sonda Orbitium (Sci-Fi), ITPA",altitud máxima 8478.0 m,vuelos.csv
+2026-10-28T23:21:16-06:00,"Sonda Orbitium (Sci-Fi), ITPA",inicio de corte por downlink,vuelos.csv
+2026-10-28T23:21:44-06:00,Sonda TAES (Instituto Tepeyac/UPA),altitud máxima 5065.0 m,vuelos.csv
+2026-10-28T23:21:46-06:00,"Sonda Orbitium (Sci-Fi), ITPA",corte confirmado,vuelos.csv
+2026-10-28T23:23:30-06:00,"Sonda Orbitium (Sci-Fi), ITPA",downlink marco seq 54 (respuesta: no),downlinks.csv
+2026-10-28T23:34:49-06:00,"Sonda Orbitium (Sci-Fi), ITPA",última recepción,vuelos.csv
+2026-10-28T23:36:44-06:00,Sonda TAES (Instituto Tepeyac/UPA),última recepción,vuelos.csv
+2026-10-28T23:43:25-06:00,"Sonda Orbitium (Sci-Fi), ITPA",downlink marco seq 55 (respuesta: no),downlinks.csv

@@ -1,0 +1,4 @@
+gateway,bins_5min_con_trafico,bins_con_recepcion,pct
+ITPA-IOT-GW00,80,80,100.0
+ITPA-IOT-GW01-kibts,80,79,98.8
+picaro-lab-ags-001,80,11,13.8

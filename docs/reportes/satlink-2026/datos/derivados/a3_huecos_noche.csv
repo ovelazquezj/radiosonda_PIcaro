@@ -1,0 +1,18 @@
+sonda,periodo,nominal_s,desde_local,hasta_local,hueco_s,fcnt_antes,fcnt_despues,sesion_antes,sesion_despues,rejoin,en_vuelo
+"Sonda Orbitium (Sci-Fi), ITPA",fPort32,60,28-Oct 17:39:21,28-Oct 17:42:22,181,605,612,35,35,no,0
+"Sonda Orbitium (Sci-Fi), ITPA",fPort32,60,28-Oct 17:44:22,28-Oct 17:46:23,121,614,616,35,35,no,0
+"Sonda Orbitium (Sci-Fi), ITPA",fPort32,60,28-Oct 17:47:23,28-Oct 17:51:50,267,617,618,35,35,no,0
+"Sonda Orbitium (Sci-Fi), ITPA",fPort32,60,28-Oct 17:51:55,28-Oct 17:53:56,121,625,626,35,35,no,0
+"Sonda Orbitium (Sci-Fi), ITPA",fPort32,60,28-Oct 17:55:33,28-Oct 17:59:26,233,628,633,35,35,no,0
+"Sonda Orbitium (Sci-Fi), ITPA",fPort32,60,28-Oct 23:22:46,28-Oct 23:24:47,120,1111,1113,35,35,no,1
+Sonda TAES (Instituto Tepeyac/UPA),cambio de sesión (re-join),6,28-Oct 19:38:23,28-Oct 19:40:29,126,474,0,1,2,si,0
+Sonda TAES (Instituto Tepeyac/UPA),cambio de sesión (re-join),7,28-Oct 19:51:21,28-Oct 19:51:52,31,99,0,2,3,si,0
+Sonda TAES (Instituto Tepeyac/UPA),cambio de sesión (re-join),7,28-Oct 19:57:55,28-Oct 19:58:11,16,53,0,3,4,si,0
+Sonda TAES (Instituto Tepeyac/UPA),cambio de sesión (re-join),7,28-Oct 19:59:17,28-Oct 20:06:24,427,10,0,4,5,si,0
+Sonda TAES (Instituto Tepeyac/UPA),cambio de sesión (re-join),22,28-Oct 20:24:48,28-Oct 20:29:09,261,0,0,6,7,si,0
+Sonda TAES (Instituto Tepeyac/UPA),cambio de sesión (re-join),22,28-Oct 20:46:13,28-Oct 20:51:49,336,47,0,7,8,si,0
+Sonda TAES (Instituto Tepeyac/UPA),cambio de sesión (re-join),24,28-Oct 21:19:49,28-Oct 21:21:45,116,77,0,8,9,si,0
+Sonda TAES (Instituto Tepeyac/UPA),sesión 11 (27 B),30,28-Oct 21:27:21,28-Oct 21:28:21,60,6,8,11,11,no,0
+Sonda TAES (Instituto Tepeyac/UPA),sesión 12 (27 B),30,28-Oct 22:46:44,28-Oct 22:47:44,60,130,132,12,12,no,0
+Sonda TAES (Instituto Tepeyac/UPA),sesión 12 (27 B),30,28-Oct 23:08:44,28-Oct 23:09:44,60,174,176,12,12,no,1
+Sonda TAES (Instituto Tepeyac/UPA),sesión 12 (27 B),30,28-Oct 23:30:44,28-Oct 23:31:44,60,218,220,12,12,no,1

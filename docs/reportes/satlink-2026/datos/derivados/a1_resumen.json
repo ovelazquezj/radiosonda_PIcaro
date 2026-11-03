@@ -1,0 +1,1396 @@
+{
+ "vuelo": {
+  "Sonda Orbitium (Sci-Fi), ITPA": {
+   "sesiones": {
+    "35": [
+     1031,
+     1128
+    ]
+   },
+   "fcnt_esperados": 98,
+   "uplinks_recibidos": 94
+  },
+  "Sonda TAES (Instituto Tepeyac/UPA)": {
+   "sesiones": {
+    "12": [
+     144,
+     230
+    ]
+   },
+   "fcnt_esperados": 87,
+   "uplinks_recibidos": 82
+  }
+ },
+ "por_gateway": [
+  {
+   "sonda": "Sonda Orbitium (Sci-Fi), ITPA",
+   "gateway": "ITPA-IOT-GW00",
+   "fase": "todo",
+   "n_rx": 1525,
+   "frac_uplinks": 97.2,
+   "frac_fcnt_esperado": "",
+   "rssi_p10": -105.0,
+   "rssi_med": -93.0,
+   "rssi_p90": -67.0,
+   "rssi_min": -121.0,
+   "snr_p10": 8.2,
+   "snr_med": 11.5,
+   "snr_p90": 13.5,
+   "snr_min": -10.8,
+   "margen_snr_min": 4.2,
+   "margen_snr_p10": 23.2,
+   "margen_snr_med": 26.5,
+   "d_slant_max_km": 31.59,
+   "d_slant_max_origen": "propia",
+   "margen_snr_en_dmax": 6.8,
+   "alt_sonda_en_dmax": 4278.0,
+   "d_slant_max_propia_km": 31.59,
+   "elev_min": -69.87,
+   "elev_max": 64.31
+  },
+  {
+   "sonda": "Sonda Orbitium (Sci-Fi), ITPA",
+   "gateway": "ITPA-IOT-GW00",
+   "fase": "vuelo",
+   "n_rx": 89,
+   "frac_uplinks": 94.7,
+   "frac_fcnt_esperado": 90.8,
+   "rssi_p10": -120.0,
+   "rssi_med": -116.0,
+   "rssi_p90": -107.0,
+   "rssi_min": -121.0,
+   "snr_p10": -7.9,
+   "snr_med": -0.2,
+   "snr_p90": 7.8,
+   "snr_min": -10.8,
+   "margen_snr_min": 4.2,
+   "margen_snr_p10": 7.1,
+   "margen_snr_med": 14.8,
+   "d_slant_max_km": 31.59,
+   "d_slant_max_origen": "propia",
+   "margen_snr_en_dmax": 6.8,
+   "alt_sonda_en_dmax": 4278.0,
+   "d_slant_max_propia_km": 31.59,
+   "elev_min": 4.17,
+   "elev_max": 40.22
+  },
+  {
+   "sonda": "Sonda Orbitium (Sci-Fi), ITPA",
+   "gateway": "ITPA-IOT-GW01-kibts",
+   "fase": "todo",
+   "n_rx": 1513,
+   "frac_uplinks": 96.4,
+   "frac_fcnt_esperado": "",
+   "rssi_p10": -106.0,
+   "rssi_med": -97.0,
+   "rssi_p90": -90.0,
+   "rssi_min": -122.0,
+   "snr_p10": 3.0,
+   "snr_med": 15.0,
+   "snr_p90": 15.0,
+   "snr_min": -17.0,
+   "margen_snr_min": -2.0,
+   "margen_snr_p10": 18.0,
+   "margen_snr_med": 30.0,
+   "d_slant_max_km": 31.55,
+   "d_slant_max_origen": "propia",
+   "margen_snr_en_dmax": 6.8,
+   "alt_sonda_en_dmax": 4278.0,
+   "d_slant_max_propia_km": 31.55,
+   "elev_min": -65.11,
+   "elev_max": 42.15
+  },
+  {
+   "sonda": "Sonda Orbitium (Sci-Fi), ITPA",
+   "gateway": "ITPA-IOT-GW01-kibts",
+   "fase": "vuelo",
+   "n_rx": 83,
+   "frac_uplinks": 88.3,
+   "frac_fcnt_esperado": 84.7,
+   "rssi_p10": -120.0,
+   "rssi_med": -117.0,
+   "rssi_p90": -107.0,
+   "rssi_min": -122.0,
+   "snr_p10": -12.0,
+   "snr_med": -7.0,
+   "snr_p90": 7.8,
+   "snr_min": -17.0,
+   "margen_snr_min": -2.0,
+   "margen_snr_p10": 3.0,
+   "margen_snr_med": 8.0,
+   "d_slant_max_km": 31.55,
+   "d_slant_max_origen": "propia",
+   "margen_snr_en_dmax": 6.8,
+   "alt_sonda_en_dmax": 4278.0,
+   "d_slant_max_propia_km": 31.55,
+   "elev_min": 4.16,
+   "elev_max": 42.1
+  },
+  {
+   "sonda": "Sonda Orbitium (Sci-Fi), ITPA",
+   "gateway": "picaro-lab-ags-001",
+   "fase": "todo",
+   "n_rx": 56,
+   "frac_uplinks": 3.6,
+   "frac_fcnt_esperado": "",
+   "rssi_p10": -126.0,
+   "rssi_med": -123.0,
+   "rssi_p90": -120.5,
+   "rssi_min": -129.0,
+   "snr_p10": -13.2,
+   "snr_med": -10.0,
+   "snr_p90": -7.9,
+   "snr_min": -16.0,
+   "margen_snr_min": -1.0,
+   "margen_snr_p10": 1.8,
+   "margen_snr_med": 5.0,
+   "d_slant_max_km": 50.0,
+   "d_slant_max_origen": "propia",
+   "margen_snr_en_dmax": 5.5,
+   "alt_sonda_en_dmax": 8390.0,
+   "d_slant_max_propia_km": 50.0,
+   "elev_min": 3.0,
+   "elev_max": 7.0
+  },
+  {
+   "sonda": "Sonda Orbitium (Sci-Fi), ITPA",
+   "gateway": "picaro-lab-ags-001",
+   "fase": "vuelo",
+   "n_rx": 56,
+   "frac_uplinks": 59.6,
+   "frac_fcnt_esperado": 57.1,
+   "rssi_p10": -126.0,
+   "rssi_med": -123.0,
+   "rssi_p90": -120.5,
+   "rssi_min": -129.0,
+   "snr_p10": -13.2,
+   "snr_med": -10.0,
+   "snr_p90": -7.9,
+   "snr_min": -16.0,
+   "margen_snr_min": -1.0,
+   "margen_snr_p10": 1.8,
+   "margen_snr_med": 5.0,
+   "d_slant_max_km": 50.0,
+   "d_slant_max_origen": "propia",
+   "margen_snr_en_dmax": 5.5,
+   "alt_sonda_en_dmax": 8390.0,
+   "d_slant_max_propia_km": 50.0,
+   "elev_min": 3.0,
+   "elev_max": 7.0
+  },
+  {
+   "sonda": "Sonda TAES (Instituto Tepeyac/UPA)",
+   "gateway": "ITPA-IOT-GW00",
+   "fase": "todo",
+   "n_rx": 1155,
+   "frac_uplinks": 97.1,
+   "frac_fcnt_esperado": "",
+   "rssi_p10": -97.0,
+   "rssi_med": -81.0,
+   "rssi_p90": -74.0,
+   "rssi_min": -121.0,
+   "snr_p10": 10.0,
+   "snr_med": 13.8,
+   "snr_p90": 14.2,
+   "snr_min": -9.2,
+   "margen_snr_min": -1.7,
+   "margen_snr_p10": 17.5,
+   "margen_snr_med": 21.3,
+   "d_slant_max_km": 24.67,
+   "d_slant_max_origen": "propia",
+   "margen_snr_en_dmax": 11.5,
+   "alt_sonda_en_dmax": 2291.0,
+   "d_slant_max_propia_km": 24.67,
+   "elev_min": -88.52,
+   "elev_max": 52.62
+  },
+  {
+   "sonda": "Sonda TAES (Instituto Tepeyac/UPA)",
+   "gateway": "ITPA-IOT-GW00",
+   "fase": "vuelo",
+   "n_rx": 76,
+   "frac_uplinks": 92.7,
+   "frac_fcnt_esperado": 87.4,
+   "rssi_p10": -119.5,
+   "rssi_med": -111.0,
+   "rssi_p90": -100.0,
+   "rssi_min": -121.0,
+   "snr_p10": -4.1,
+   "snr_med": 6.0,
+   "snr_p90": 11.8,
+   "snr_min": -9.2,
+   "margen_snr_min": -1.7,
+   "margen_snr_p10": 3.4,
+   "margen_snr_med": 13.5,
+   "d_slant_max_km": 24.67,
+   "d_slant_max_origen": "propia",
+   "margen_snr_en_dmax": 11.5,
+   "alt_sonda_en_dmax": 2291.0,
+   "d_slant_max_propia_km": 24.67,
+   "elev_min": 0.79,
+   "elev_max": 52.62
+  },
+  {
+   "sonda": "Sonda TAES (Instituto Tepeyac/UPA)",
+   "gateway": "ITPA-IOT-GW01-kibts",
+   "fase": "todo",
+   "n_rx": 1152,
+   "frac_uplinks": 96.9,
+   "frac_fcnt_esperado": "",
+   "rssi_p10": -103.0,
+   "rssi_med": -93.0,
+   "rssi_p90": -87.0,
+   "rssi_min": -118.0,
+   "snr_p10": 6.0,
+   "snr_med": 14.0,
+   "snr_p90": 15.0,
+   "snr_min": -9.0,
+   "margen_snr_min": -1.5,
+   "margen_snr_p10": 13.5,
+   "margen_snr_med": 21.5,
+   "d_slant_max_km": 24.64,
+   "d_slant_max_origen": "propia",
+   "margen_snr_en_dmax": 8.5,
+   "alt_sonda_en_dmax": 2124.0,
+   "d_slant_max_propia_km": 24.64,
+   "elev_min": -72.84,
+   "elev_max": 53.29
+  },
+  {
+   "sonda": "Sonda TAES (Instituto Tepeyac/UPA)",
+   "gateway": "ITPA-IOT-GW01-kibts",
+   "fase": "vuelo",
+   "n_rx": 69,
+   "frac_uplinks": 84.1,
+   "frac_fcnt_esperado": 79.3,
+   "rssi_p10": -117.0,
+   "rssi_med": -113.0,
+   "rssi_p90": -101.8,
+   "rssi_min": -118.0,
+   "snr_p10": -5.0,
+   "snr_med": 0.0,
+   "snr_p90": 12.2,
+   "snr_min": -9.0,
+   "margen_snr_min": -1.5,
+   "margen_snr_p10": 2.5,
+   "margen_snr_med": 7.5,
+   "d_slant_max_km": 24.64,
+   "d_slant_max_origen": "propia",
+   "margen_snr_en_dmax": 8.5,
+   "alt_sonda_en_dmax": 2124.0,
+   "d_slant_max_propia_km": 24.64,
+   "elev_min": 0.38,
+   "elev_max": 53.29
+  },
+  {
+   "sonda": "Sonda TAES (Instituto Tepeyac/UPA)",
+   "gateway": "picaro-lab-ags-001",
+   "fase": "todo",
+   "n_rx": 19,
+   "frac_uplinks": 1.6,
+   "frac_fcnt_esperado": "",
+   "rssi_p10": -121.0,
+   "rssi_med": -120.0,
+   "rssi_p90": -114.8,
+   "rssi_min": -121.0,
+   "snr_p10": -8.2,
+   "snr_med": -5.5,
+   "snr_p90": -3.2,
+   "snr_min": -8.25,
+   "margen_snr_min": -0.8,
+   "margen_snr_p10": -0.8,
+   "margen_snr_med": 2.0,
+   "d_slant_max_km": 51.0,
+   "d_slant_max_origen": "propia",
+   "margen_snr_en_dmax": -0.8,
+   "alt_sonda_en_dmax": 3669.0,
+   "d_slant_max_propia_km": 51.0,
+   "elev_min": 2.0,
+   "elev_max": 4.0
+  },
+  {
+   "sonda": "Sonda TAES (Instituto Tepeyac/UPA)",
+   "gateway": "picaro-lab-ags-001",
+   "fase": "vuelo",
+   "n_rx": 19,
+   "frac_uplinks": 23.2,
+   "frac_fcnt_esperado": 21.8,
+   "rssi_p10": -121.0,
+   "rssi_med": -120.0,
+   "rssi_p90": -114.8,
+   "rssi_min": -121.0,
+   "snr_p10": -8.2,
+   "snr_med": -5.5,
+   "snr_p90": -3.2,
+   "snr_min": -8.25,
+   "margen_snr_min": -0.8,
+   "margen_snr_p10": -0.8,
+   "margen_snr_med": 2.0,
+   "d_slant_max_km": 51.0,
+   "d_slant_max_origen": "propia",
+   "margen_snr_en_dmax": -0.8,
+   "alt_sonda_en_dmax": 3669.0,
+   "d_slant_max_propia_km": 51.0,
+   "elev_min": 2.0,
+   "elev_max": 4.0
+  }
+ ],
+ "diversidad": {
+  "Sonda Orbitium (Sci-Fi), ITPA|todo": {
+   "n_uplinks": 1569,
+   "base": 1569,
+   "por_n_gateways": {
+    "1": 93,
+    "2": 1427,
+    "3": 49
+   },
+   "salvados_solo_por": {
+    "GW00": 50,
+    "GW01-kibts": 42,
+    "lab-ags": 1
+   },
+   "combinaciones": {
+    "GW00+GW01-kibts": 1421,
+    "GW01-kibts": 42,
+    "GW00": 50,
+    "GW00+GW01-kibts+lab-ags": 49,
+    "GW00+lab-ags": 5,
+    "lab-ags": 1,
+    "GW01-kibts+lab-ags": 1
+   },
+   "por_gateway": {
+    "GW00": 1525,
+    "GW01-kibts": 1513,
+    "lab-ags": 56
+   },
+   "campus_gw00_o_gw01": 1568,
+   "entrega_mejor_gw_pct": 97.2,
+   "entrega_campus_pct": 99.9,
+   "entrega_red_pct": 100.0
+  },
+  "Sonda Orbitium (Sci-Fi), ITPA|vuelo": {
+   "n_uplinks": 94,
+   "base": 98,
+   "por_n_gateways": {
+    "1": 9,
+    "2": 36,
+    "3": 49
+   },
+   "salvados_solo_por": {
+    "GW00": 5,
+    "GW01-kibts": 3,
+    "lab-ags": 1
+   },
+   "combinaciones": {
+    "GW00+GW01-kibts": 30,
+    "GW01-kibts": 3,
+    "GW00+GW01-kibts+lab-ags": 49,
+    "GW00": 5,
+    "GW00+lab-ags": 5,
+    "lab-ags": 1,
+    "GW01-kibts+lab-ags": 1
+   },
+   "por_gateway": {
+    "GW00": 89,
+    "GW01-kibts": 83,
+    "lab-ags": 56
+   },
+   "campus_gw00_o_gw01": 93,
+   "entrega_mejor_gw_pct": 90.8,
+   "entrega_campus_pct": 94.9,
+   "entrega_red_pct": 95.9
+  },
+  "Sonda TAES (Instituto Tepeyac/UPA)|todo": {
+   "n_uplinks": 1189,
+   "base": 1189,
+   "por_n_gateways": {
+    "1": 68,
+    "2": 1105,
+    "3": 16
+   },
+   "salvados_solo_por": {
+    "GW00": 34,
+    "GW01-kibts": 33,
+    "lab-ags": 1
+   },
+   "combinaciones": {
+    "GW00+GW01-kibts": 1103,
+    "GW01-kibts": 33,
+    "GW00": 34,
+    "GW00+GW01-kibts+lab-ags": 16,
+    "GW00+lab-ags": 2,
+    "lab-ags": 1
+   },
+   "por_gateway": {
+    "GW00": 1155,
+    "GW01-kibts": 1152,
+    "lab-ags": 19
+   },
+   "campus_gw00_o_gw01": 1188,
+   "entrega_mejor_gw_pct": 97.1,
+   "entrega_campus_pct": 99.9,
+   "entrega_red_pct": 100.0
+  },
+  "Sonda TAES (Instituto Tepeyac/UPA)|vuelo": {
+   "n_uplinks": 82,
+   "base": 87,
+   "por_n_gateways": {
+    "1": 16,
+    "2": 50,
+    "3": 16
+   },
+   "salvados_solo_por": {
+    "GW00": 10,
+    "GW01-kibts": 5,
+    "lab-ags": 1
+   },
+   "combinaciones": {
+    "GW00+GW01-kibts": 48,
+    "GW00": 10,
+    "GW00+GW01-kibts+lab-ags": 16,
+    "GW00+lab-ags": 2,
+    "GW01-kibts": 5,
+    "lab-ags": 1
+   },
+   "por_gateway": {
+    "GW00": 76,
+    "GW01-kibts": 69,
+    "lab-ags": 19
+   },
+   "campus_gw00_o_gw01": 81,
+   "entrega_mejor_gw_pct": 87.4,
+   "entrega_campus_pct": 93.1,
+   "entrega_red_pct": 94.3
+  }
+ },
+ "presupuesto": {
+  "ajuste": {
+   "Sonda Orbitium (Sci-Fi), ITPA|ITPA-IOT-GW00": {
+    "n": 68,
+    "exceso_med_db": 29.7,
+    "exceso_p10": 25.1,
+    "exceso_p90": 42.8,
+    "pendiente_db_por_decada": -13.4,
+    "n_exponente": 1.34,
+    "d_min_km": 0.92,
+    "d_max_km": 31.59
+   },
+   "Sonda Orbitium (Sci-Fi), ITPA|ITPA-IOT-GW01-kibts": {
+    "n": 62,
+    "exceso_med_db": 37.5,
+    "exceso_p10": 29.4,
+    "exceso_p90": 45.0,
+    "pendiente_db_por_decada": -17.5,
+    "n_exponente": 1.75,
+    "d_min_km": 0.87,
+    "d_max_km": 31.55
+   },
+   "Sonda Orbitium (Sci-Fi), ITPA|picaro-lab-ags-001": {
+    "n": 48,
+    "exceso_med_db": 36.6,
+    "exceso_p10": 33.1,
+    "exceso_p90": 43.4,
+    "pendiente_db_por_decada": 15.0,
+    "n_exponente": -1.5,
+    "d_min_km": 30.0,
+    "d_max_km": 50.0
+   },
+   "Sonda TAES (Instituto Tepeyac/UPA)|ITPA-IOT-GW00": {
+    "n": 76,
+    "exceso_med_db": 29.3,
+    "exceso_p10": 19.6,
+    "exceso_p90": 37.4,
+    "pendiente_db_por_decada": -12.9,
+    "n_exponente": 1.29,
+    "d_min_km": 0.16,
+    "d_max_km": 24.67
+   },
+   "Sonda TAES (Instituto Tepeyac/UPA)|ITPA-IOT-GW01-kibts": {
+    "n": 69,
+    "exceso_med_db": 29.7,
+    "exceso_p10": 23.0,
+    "exceso_p90": 38.1,
+    "pendiente_db_por_decada": -13.3,
+    "n_exponente": 1.33,
+    "d_min_km": 0.19,
+    "d_max_km": 24.64
+   },
+   "Sonda TAES (Instituto Tepeyac/UPA)|picaro-lab-ags-001": {
+    "n": 19,
+    "exceso_med_db": 31.2,
+    "exceso_p10": 24.8,
+    "exceso_p90": 34.8,
+    "pendiente_db_por_decada": -17.5,
+    "n_exponente": 1.75,
+    "d_min_km": 29.0,
+    "d_max_km": 51.0
+   }
+  },
+  "sens_teorica_dbm": {
+   "SF7": -124.5,
+   "SF10": -132.0
+  },
+  "sens_teorica_dl_sf12_500k": -131.0,
+  "prx_presup_30km": -94.2,
+  "presup_dbm_por_gateway": {
+   "ITPA-IOT-GW00": 27.0,
+   "ITPA-IOT-GW01-kibts": 27.0,
+   "picaro-lab-ags-001": 27.8
+  }
+ },
+ "margen_previsto_vs_real": [
+  {
+   "sonda": "Sonda Orbitium (Sci-Fi), ITPA",
+   "gateway": "ITPA-IOT-GW00",
+   "n": 68,
+   "margen_previsto_med": 46.6,
+   "margen_previsto_min": 37.4,
+   "margen_snr_real_med": 17.0,
+   "margen_snr_real_min": 6.5,
+   "margen_rssi_real_med": 17.0,
+   "margen_rssi_real_min": 4.8
+  },
+  {
+   "sonda": "Sonda Orbitium (Sci-Fi), ITPA",
+   "gateway": "ITPA-IOT-GW01-kibts",
+   "n": 62,
+   "margen_previsto_med": 49.1,
+   "margen_previsto_min": 37.4,
+   "margen_snr_real_med": 9.4,
+   "margen_snr_real_min": -1.0,
+   "margen_rssi_real_med": 12.5,
+   "margen_rssi_real_min": -2.0
+  },
+  {
+   "sonda": "Sonda Orbitium (Sci-Fi), ITPA",
+   "gateway": "picaro-lab-ags-001",
+   "n": 48,
+   "margen_previsto_med": 36.1,
+   "margen_previsto_min": 34.2,
+   "margen_snr_real_med": 5.0,
+   "margen_snr_real_min": -1.0,
+   "margen_rssi_real_med": -0.8,
+   "margen_rssi_real_min": -12.2
+  },
+  {
+   "sonda": "Sonda TAES (Instituto Tepeyac/UPA)",
+   "gateway": "ITPA-IOT-GW00",
+   "n": 76,
+   "margen_previsto_med": 39.8,
+   "margen_previsto_min": 31.5,
+   "margen_snr_real_med": 13.5,
+   "margen_snr_real_min": -1.7,
+   "margen_rssi_real_med": 13.0,
+   "margen_rssi_real_min": -5.2
+  },
+  {
+   "sonda": "Sonda TAES (Instituto Tepeyac/UPA)",
+   "gateway": "ITPA-IOT-GW01-kibts",
+   "n": 69,
+   "margen_previsto_med": 39.3,
+   "margen_previsto_min": 31.5,
+   "margen_snr_real_med": 7.5,
+   "margen_snr_real_min": -1.5,
+   "margen_rssi_real_med": 10.0,
+   "margen_rssi_real_min": 2.0
+  },
+  {
+   "sonda": "Sonda TAES (Instituto Tepeyac/UPA)",
+   "gateway": "picaro-lab-ags-001",
+   "n": 19,
+   "margen_previsto_med": 29.5,
+   "margen_previsto_min": 26.0,
+   "margen_snr_real_med": 2.0,
+   "margen_snr_real_min": -0.8,
+   "margen_rssi_real_med": -1.5,
+   "margen_rssi_real_min": -5.2
+  }
+ ],
+ "nulo_cenital": {
+  "bins": [
+   {
+    "elev_deg": "0-5",
+    "n_pares": 7,
+    "ds_med": -1.0,
+    "ds_p10": -5.2,
+    "ds_p90": 2.8,
+    "dsnr_med": -3.8,
+    "exceso_gw00_med": 23.5,
+    "n_gw00": 9,
+    "exceso_gw01_med": 24.2,
+    "n_gw01": 10
+   },
+   {
+    "elev_deg": "5-10",
+    "n_pares": 11,
+    "ds_med": -3.0,
+    "ds_p10": -7.0,
+    "ds_p90": 1.0,
+    "dsnr_med": -5.0,
+    "exceso_gw00_med": 23.0,
+    "n_gw00": 14,
+    "exceso_gw01_med": 24.7,
+    "n_gw01": 11
+   },
+   {
+    "elev_deg": "10-20",
+    "n_pares": 41,
+    "ds_med": -8.0,
+    "ds_p10": -11.8,
+    "ds_p90": 2.5,
+    "dsnr_med": -7.2,
+    "exceso_gw00_med": 26.4,
+    "n_gw00": 49,
+    "exceso_gw01_med": 33.5,
+    "n_gw01": 44
+   },
+   {
+    "elev_deg": "20-35",
+    "n_pares": 35,
+    "ds_med": -2.0,
+    "ds_p10": -12.7,
+    "ds_p90": 4.0,
+    "dsnr_med": -3.8,
+    "exceso_gw00_med": 30.8,
+    "n_gw00": 41,
+    "exceso_gw01_med": 32.6,
+    "n_gw01": 34
+   },
+   {
+    "elev_deg": "35-60",
+    "n_pares": 29,
+    "ds_med": -2.0,
+    "ds_p10": -13.2,
+    "ds_p90": 10.0,
+    "dsnr_med": -0.5,
+    "exceso_gw00_med": 36.1,
+    "n_gw00": 31,
+    "exceso_gw01_med": 39.1,
+    "n_gw01": 32
+   }
+  ],
+  "n_pares": 123,
+  "pendiente_db_por_grado": 0.083,
+  "ordenada_db": -5.6,
+  "corr": 0.15,
+  "elev_max": 52.6
+ },
+ "sf": {
+  "Sonda Orbitium (Sci-Fi), ITPA": {
+   "cadencia_med_s": 46.9,
+   "aire_total_vuelo_s": 34.4,
+   "duracion_vuelo_s": 3465.0,
+   "ocupacion_pct": 0.99,
+   "entrega_red_pct": 95.9,
+   "perdidos": 4
+  },
+  "Sonda TAES (Instituto Tepeyac/UPA)": {
+   "cadencia_med_s": 30.0,
+   "aire_total_vuelo_s": 6.7,
+   "duracion_vuelo_s": 2606.0,
+   "ocupacion_pct": 0.26,
+   "entrega_red_pct": 94.3,
+   "perdidos": 5
+  },
+  "toa_igual_payload_11B": {
+   "SF7": 61.7,
+   "SF8": 113.2,
+   "SF9": 205.8,
+   "SF10": 370.7
+  },
+  "toa_igual_payload_27B": {
+   "SF7": 82.2,
+   "SF8": 154.1,
+   "SF9": 287.7,
+   "SF10": 534.5
+  },
+  "dl_toa_marco_sf12_500k": 288.8
+ },
+ "toa": [
+  {
+   "sonda": "Sonda Orbitium (Sci-Fi), ITPA",
+   "sf": 10,
+   "bytes_frmpayload": 4,
+   "bytes_phy": 17,
+   "n_uplinks": 24,
+   "toa_ms": 329.7
+  },
+  {
+   "sonda": "Sonda Orbitium (Sci-Fi), ITPA",
+   "sf": 10,
+   "bytes_frmpayload": 11,
+   "bytes_phy": 24,
+   "n_uplinks": 1545,
+   "toa_ms": 370.7
+  },
+  {
+   "sonda": "Sonda TAES (Instituto Tepeyac/UPA)",
+   "sf": 7,
+   "bytes_frmpayload": 26,
+   "bytes_phy": 39,
+   "n_uplinks": 847,
+   "toa_ms": 82.2
+  },
+  {
+   "sonda": "Sonda TAES (Instituto Tepeyac/UPA)",
+   "sf": 7,
+   "bytes_frmpayload": 27,
+   "bytes_phy": 40,
+   "n_uplinks": 342,
+   "toa_ms": 82.2
+  }
+ ],
+ "lab": {
+  "Sonda Orbitium (Sci-Fi), ITPA": {
+   "n_rx": 56,
+   "n_rx_fuera_vuelo": 0,
+   "n_uplinks_vuelo": 94,
+   "pct_vuelo": 59.6,
+   "alt_min_recibido": 3399.0,
+   "alt_max_no_recibido": 8056.0,
+   "primera_rx_t_s": 412.694,
+   "primera_rx_alt": 3399.0,
+   "rssi_med": -123.0,
+   "rssi_min": -129.0,
+   "snr_med": -10.0,
+   "snr_min": -16.0,
+   "margen_snr_min": -1.0,
+   "d_min_km": 30.0,
+   "d_max_km": 50.0,
+   "el_min": 3.0,
+   "el_max": 7.0,
+   "bandas_ascenso": [
+    {
+     "alt_m": "1500-2500",
+     "n": 1,
+     "lab": 0
+    },
+    {
+     "alt_m": "2500-3500",
+     "n": 13,
+     "lab": 1
+    },
+    {
+     "alt_m": "3500-4500",
+     "n": 7,
+     "lab": 5
+    },
+    {
+     "alt_m": "4500-5500",
+     "n": 11,
+     "lab": 10
+    },
+    {
+     "alt_m": "5500-6500",
+     "n": 13,
+     "lab": 9
+    },
+    {
+     "alt_m": "6500-7500",
+     "n": 15,
+     "lab": 13
+    },
+    {
+     "alt_m": "7500-8500",
+     "n": 11,
+     "lab": 10
+    }
+   ]
+  },
+  "Sonda TAES (Instituto Tepeyac/UPA)": {
+   "n_rx": 19,
+   "n_rx_fuera_vuelo": 0,
+   "n_uplinks_vuelo": 82,
+   "pct_vuelo": 23.2,
+   "alt_min_recibido": 2946.0,
+   "alt_max_no_recibido": 5065.0,
+   "primera_rx_t_s": 266.183,
+   "primera_rx_alt": 2946.0,
+   "rssi_med": -120.0,
+   "rssi_min": -121.0,
+   "snr_med": -5.5,
+   "snr_min": -8.25,
+   "margen_snr_min": -0.8,
+   "d_min_km": 29.0,
+   "d_max_km": 51.0,
+   "el_min": 2.0,
+   "el_max": 4.0,
+   "bandas_ascenso": [
+    {
+     "alt_m": "1500-2500",
+     "n": 8,
+     "lab": 0
+    },
+    {
+     "alt_m": "2500-3500",
+     "n": 15,
+     "lab": 5
+    },
+    {
+     "alt_m": "3500-4500",
+     "n": 28,
+     "lab": 9
+    },
+    {
+     "alt_m": "4500-5500",
+     "n": 31,
+     "lab": 5
+    }
+   ]
+  },
+  "horizonte_km_por_h_sobre_antena": {
+   "100": 41.0,
+   "500": 92.0,
+   "1000": 130.0,
+   "3000": 226.0,
+   "6500": 332.0
+  }
+ },
+ "downlinks": [
+  {
+   "dl_n": "1",
+   "t_desde_lanz_s": "",
+   "gateway_tx": "ITPA-IOT-GW01-kibts",
+   "polo_rssi_dbm": "-78.0",
+   "polo_snr_db": 3.0,
+   "margen_dl_sf12_db": 23.0,
+   "ul_snr_mismo_gw_db": 15.0,
+   "ul_margen_sf10_db": 30.0,
+   "d_slant_km": "",
+   "elev_deg": null,
+   "en_vuelo": false
+  },
+  {
+   "dl_n": "2",
+   "t_desde_lanz_s": "",
+   "gateway_tx": "ITPA-IOT-GW00",
+   "polo_rssi_dbm": "-56.0",
+   "polo_snr_db": 3.25,
+   "margen_dl_sf12_db": 23.2,
+   "ul_snr_mismo_gw_db": 13.5,
+   "ul_margen_sf10_db": 28.5,
+   "d_slant_km": "",
+   "elev_deg": null,
+   "en_vuelo": false
+  },
+  {
+   "dl_n": "3",
+   "t_desde_lanz_s": "",
+   "gateway_tx": "ITPA-IOT-GW01-kibts",
+   "polo_rssi_dbm": "-87.0",
+   "polo_snr_db": 2.75,
+   "margen_dl_sf12_db": 22.8,
+   "ul_snr_mismo_gw_db": 15.0,
+   "ul_margen_sf10_db": 30.0,
+   "d_slant_km": 0.1,
+   "elev_deg": -35.3,
+   "en_vuelo": false
+  },
+  {
+   "dl_n": "4",
+   "t_desde_lanz_s": "",
+   "gateway_tx": "ITPA-IOT-GW00",
+   "polo_rssi_dbm": "-50.0",
+   "polo_snr_db": 3.25,
+   "margen_dl_sf12_db": 23.2,
+   "ul_snr_mismo_gw_db": 14.5,
+   "ul_margen_sf10_db": 29.5,
+   "d_slant_km": "",
+   "elev_deg": null,
+   "en_vuelo": false
+  },
+  {
+   "dl_n": "5",
+   "t_desde_lanz_s": "",
+   "gateway_tx": "ITPA-IOT-GW01-kibts",
+   "polo_rssi_dbm": "-83.0",
+   "polo_snr_db": 2.75,
+   "margen_dl_sf12_db": 22.8,
+   "ul_snr_mismo_gw_db": 15.0,
+   "ul_margen_sf10_db": 30.0,
+   "d_slant_km": "",
+   "elev_deg": null,
+   "en_vuelo": false
+  },
+  {
+   "dl_n": "6",
+   "t_desde_lanz_s": "",
+   "gateway_tx": "ITPA-IOT-GW01-kibts",
+   "polo_rssi_dbm": "-82.0",
+   "polo_snr_db": 2.75,
+   "margen_dl_sf12_db": 22.8,
+   "ul_snr_mismo_gw_db": 15.0,
+   "ul_margen_sf10_db": 30.0,
+   "d_slant_km": 0.1,
+   "elev_deg": -14.58,
+   "en_vuelo": false
+  },
+  {
+   "dl_n": "9",
+   "t_desde_lanz_s": "",
+   "gateway_tx": "ITPA-IOT-GW01-kibts",
+   "polo_rssi_dbm": "-98.0",
+   "polo_snr_db": 1.5,
+   "margen_dl_sf12_db": 21.5,
+   "ul_snr_mismo_gw_db": 10.0,
+   "ul_margen_sf10_db": 25.0,
+   "d_slant_km": "",
+   "elev_deg": null,
+   "en_vuelo": false
+  },
+  {
+   "dl_n": "27",
+   "t_desde_lanz_s": "",
+   "gateway_tx": "ITPA-IOT-GW01-kibts",
+   "polo_rssi_dbm": "-98.0",
+   "polo_snr_db": 2.0,
+   "margen_dl_sf12_db": 22.0,
+   "ul_snr_mismo_gw_db": 15.0,
+   "ul_margen_sf10_db": 30.0,
+   "d_slant_km": "",
+   "elev_deg": null,
+   "en_vuelo": false
+  },
+  {
+   "dl_n": "28",
+   "t_desde_lanz_s": "",
+   "gateway_tx": "ITPA-IOT-GW01-kibts",
+   "polo_rssi_dbm": "-92.0",
+   "polo_snr_db": 2.0,
+   "margen_dl_sf12_db": 22.0,
+   "ul_snr_mismo_gw_db": 5.0,
+   "ul_margen_sf10_db": 20.0,
+   "d_slant_km": "",
+   "elev_deg": null,
+   "en_vuelo": false
+  },
+  {
+   "dl_n": "29",
+   "t_desde_lanz_s": "",
+   "gateway_tx": "ITPA-IOT-GW01-kibts",
+   "polo_rssi_dbm": "-79.0",
+   "polo_snr_db": 3.0,
+   "margen_dl_sf12_db": 23.0,
+   "ul_snr_mismo_gw_db": 15.0,
+   "ul_margen_sf10_db": 30.0,
+   "d_slant_km": 0.0,
+   "elev_deg": -23.33,
+   "en_vuelo": false
+  },
+  {
+   "dl_n": "30",
+   "t_desde_lanz_s": "",
+   "gateway_tx": "ITPA-IOT-GW00",
+   "polo_rssi_dbm": "-81.0",
+   "polo_snr_db": 3.25,
+   "margen_dl_sf12_db": 23.2,
+   "ul_snr_mismo_gw_db": -0.5,
+   "ul_margen_sf10_db": 14.5,
+   "d_slant_km": 0.2,
+   "elev_deg": -1.6,
+   "en_vuelo": false
+  },
+  {
+   "dl_n": "32",
+   "t_desde_lanz_s": "",
+   "gateway_tx": "ITPA-IOT-GW00",
+   "polo_rssi_dbm": "-78.0",
+   "polo_snr_db": 3.25,
+   "margen_dl_sf12_db": 23.2,
+   "ul_snr_mismo_gw_db": 14.2,
+   "ul_margen_sf10_db": 29.2,
+   "d_slant_km": "",
+   "elev_deg": null,
+   "en_vuelo": false
+  },
+  {
+   "dl_n": "35",
+   "t_desde_lanz_s": "-10043.0",
+   "gateway_tx": "ITPA-IOT-GW01-kibts",
+   "polo_rssi_dbm": "-91.0",
+   "polo_snr_db": 2.5,
+   "margen_dl_sf12_db": 22.5,
+   "ul_snr_mismo_gw_db": 13.0,
+   "ul_margen_sf10_db": 28.0,
+   "d_slant_km": 0.2,
+   "elev_deg": -20.51,
+   "en_vuelo": false
+  },
+  {
+   "dl_n": "36",
+   "t_desde_lanz_s": "-1527.0",
+   "gateway_tx": "ITPA-IOT-GW00",
+   "polo_rssi_dbm": "-86.0",
+   "polo_snr_db": 3.25,
+   "margen_dl_sf12_db": 23.2,
+   "ul_snr_mismo_gw_db": 10.0,
+   "ul_margen_sf10_db": 25.0,
+   "d_slant_km": 0.1,
+   "elev_deg": -7.45,
+   "en_vuelo": false
+  },
+  {
+   "dl_n": "38",
+   "t_desde_lanz_s": "79.0",
+   "gateway_tx": "ITPA-IOT-GW00",
+   "polo_rssi_dbm": "-92.0",
+   "polo_snr_db": 2.5,
+   "margen_dl_sf12_db": 22.5,
+   "ul_snr_mismo_gw_db": 7.8,
+   "ul_margen_sf10_db": 22.8,
+   "d_slant_km": 1.0,
+   "elev_deg": 40.0,
+   "en_vuelo": true
+  },
+  {
+   "dl_n": "39",
+   "t_desde_lanz_s": "373.0",
+   "gateway_tx": "ITPA-IOT-GW00",
+   "polo_rssi_dbm": "-100.0",
+   "polo_snr_db": -0.25,
+   "margen_dl_sf12_db": 19.8,
+   "ul_snr_mismo_gw_db": -5.8,
+   "ul_margen_sf10_db": 9.2,
+   "d_slant_km": 2.4,
+   "elev_deg": 35.37,
+   "en_vuelo": true
+  },
+  {
+   "dl_n": "40",
+   "t_desde_lanz_s": "411.0",
+   "gateway_tx": "ITPA-IOT-GW00",
+   "polo_rssi_dbm": "-93.0",
+   "polo_snr_db": 2.75,
+   "margen_dl_sf12_db": 22.8,
+   "ul_snr_mismo_gw_db": 9.5,
+   "ul_margen_sf10_db": 24.5,
+   "d_slant_km": 2.7,
+   "elev_deg": 34.37,
+   "en_vuelo": true
+  },
+  {
+   "dl_n": "41",
+   "t_desde_lanz_s": "701.0",
+   "gateway_tx": "ITPA-IOT-GW00",
+   "polo_rssi_dbm": "-95.0",
+   "polo_snr_db": 2.25,
+   "margen_dl_sf12_db": 22.2,
+   "ul_snr_mismo_gw_db": 7.5,
+   "ul_margen_sf10_db": 22.5,
+   "d_slant_km": 4.8,
+   "elev_deg": 30.03,
+   "en_vuelo": true
+  },
+  {
+   "dl_n": "42",
+   "t_desde_lanz_s": "904.0",
+   "gateway_tx": "ITPA-IOT-GW00",
+   "polo_rssi_dbm": "-102.0",
+   "polo_snr_db": -3.75,
+   "margen_dl_sf12_db": 16.2,
+   "ul_snr_mismo_gw_db": 4.5,
+   "ul_margen_sf10_db": 19.5,
+   "d_slant_km": 6.5,
+   "elev_deg": 27.48,
+   "en_vuelo": true
+  },
+  {
+   "dl_n": "43",
+   "t_desde_lanz_s": "1285.0",
+   "gateway_tx": "ITPA-IOT-GW00",
+   "polo_rssi_dbm": "-122.0",
+   "polo_snr_db": -20.0,
+   "margen_dl_sf12_db": 0.0,
+   "ul_snr_mismo_gw_db": -8.5,
+   "ul_margen_sf10_db": 6.5,
+   "d_slant_km": 10.6,
+   "elev_deg": 21.9,
+   "en_vuelo": true
+  },
+  {
+   "dl_n": "44",
+   "t_desde_lanz_s": "1509.0",
+   "gateway_tx": "ITPA-IOT-GW00",
+   "polo_rssi_dbm": "-103.0",
+   "polo_snr_db": -4.75,
+   "margen_dl_sf12_db": 15.2,
+   "ul_snr_mismo_gw_db": "",
+   "ul_margen_sf10_db": "",
+   "d_slant_km": "",
+   "elev_deg": "",
+   "en_vuelo": true
+  },
+  {
+   "dl_n": "45",
+   "t_desde_lanz_s": "1962.0",
+   "gateway_tx": "ITPA-IOT-GW00",
+   "polo_rssi_dbm": "-106.0",
+   "polo_snr_db": -6.75,
+   "margen_dl_sf12_db": 13.2,
+   "ul_snr_mismo_gw_db": 1.0,
+   "ul_margen_sf10_db": 16.0,
+   "d_slant_km": 17.7,
+   "elev_deg": 17.42,
+   "en_vuelo": true
+  },
+  {
+   "dl_n": "46",
+   "t_desde_lanz_s": "2198.0",
+   "gateway_tx": "ITPA-IOT-GW01-kibts",
+   "polo_rssi_dbm": "-121.0",
+   "polo_snr_db": -20.0,
+   "margen_dl_sf12_db": 0.0,
+   "ul_snr_mismo_gw_db": -14.0,
+   "ul_margen_sf10_db": 1.0,
+   "d_slant_km": 20.4,
+   "elev_deg": 16.26,
+   "en_vuelo": true
+  },
+  {
+   "dl_n": "47",
+   "t_desde_lanz_s": "2423.0",
+   "gateway_tx": "ITPA-IOT-GW00",
+   "polo_rssi_dbm": "-116.0",
+   "polo_snr_db": -15.5,
+   "margen_dl_sf12_db": 4.5,
+   "ul_snr_mismo_gw_db": -3.2,
+   "ul_margen_sf10_db": 11.8,
+   "d_slant_km": 23.1,
+   "elev_deg": 15.33,
+   "en_vuelo": true
+  }
+ ],
+ "linea_base": {
+  "dias": {
+   "ITPA-IOT-GW00": {
+    "2026-10-27": {
+     "rx_paquetes": 354,
+     "tx_paquetes": 24
+    },
+    "2026-10-28": {
+     "rx_paquetes": 812,
+     "tx_paquetes": 22
+    },
+    "2026-10-29": {
+     "rx_paquetes": 1705,
+     "tx_paquetes": 28
+    },
+    "2026-10-30": {
+     "rx_paquetes": 3,
+     "tx_paquetes": 0
+    },
+    "2026-10-31": {
+     "rx_paquetes": 1,
+     "tx_paquetes": 0
+    },
+    "2026-11-01": {
+     "rx_paquetes": 1,
+     "tx_paquetes": 0
+    },
+    "2026-11-02": {
+     "rx_paquetes": 5,
+     "tx_paquetes": 0
+    }
+   },
+   "ITPA-IOT-GW01-kibts": {
+    "2026-10-27": {
+     "rx_paquetes": 3727,
+     "tx_paquetes": 16
+    },
+    "2026-10-28": {
+     "rx_paquetes": 4583,
+     "tx_paquetes": 18
+    },
+    "2026-10-29": {
+     "rx_paquetes": 5061,
+     "tx_paquetes": 14
+    },
+    "2026-10-30": {
+     "rx_paquetes": 2705,
+     "tx_paquetes": 0
+    },
+    "2026-10-31": {
+     "rx_paquetes": 3413,
+     "tx_paquetes": 0
+    },
+    "2026-11-01": {
+     "rx_paquetes": 2987,
+     "tx_paquetes": 0
+    },
+    "2026-11-02": {
+     "rx_paquetes": 2418,
+     "tx_paquetes": 0
+    }
+   },
+   "picaro-lab-ags-001": {
+    "2026-10-27": {
+     "rx_paquetes": 24019,
+     "tx_paquetes": 0
+    },
+    "2026-10-28": {
+     "rx_paquetes": 25689,
+     "tx_paquetes": 0
+    },
+    "2026-10-29": {
+     "rx_paquetes": 28146,
+     "tx_paquetes": 0
+    },
+    "2026-10-30": {
+     "rx_paquetes": 25432,
+     "tx_paquetes": 0
+    },
+    "2026-10-31": {
+     "rx_paquetes": 24971,
+     "tx_paquetes": 0
+    },
+    "2026-11-01": {
+     "rx_paquetes": 25158,
+     "tx_paquetes": 0
+    },
+    "2026-11-02": {
+     "rx_paquetes": 19774,
+     "tx_paquetes": 0
+    }
+   }
+  },
+  "hour_cobertura": {
+   "ITPA-IOT-GW00": [
+    "2026-11-01T05",
+    "2026-11-02T10",
+    5
+   ],
+   "ITPA-IOT-GW01-kibts": [
+    "2026-10-31T18",
+    "2026-11-02T18",
+    49
+   ],
+   "picaro-lab-ags-001": [
+    "2026-10-31T18",
+    "2026-11-02T18",
+    49
+   ]
+  },
+  "tx_estados": {
+   "ITPA-IOT-GW00|OK": 269,
+   "ITPA-IOT-GW00|TOO_EARLY": 1,
+   "ITPA-IOT-GW01-kibts|OK": 241,
+   "picaro-lab-ags-001|OK": 136
+  },
+  "huecos_noche": {
+   "ITPA-IOT-GW00": {
+    "n_uplinks_noche": 1680,
+    "no_recibidos": 61,
+    "racha_max": 1,
+    "racha_ini_local": "2026-10-28 18:20:37",
+    "racha_dur_s": 0.0,
+    "racha_ini_utc": "2026-10-29T00:20:37.690000+00:00"
+   },
+   "ITPA-IOT-GW01-kibts": {
+    "n_uplinks_noche": 1680,
+    "no_recibidos": 60,
+    "racha_max": 5,
+    "racha_ini_local": "2026-10-28 18:00:42",
+    "racha_dur_s": 27.0,
+    "racha_ini_utc": "2026-10-29T00:00:42.576000+00:00"
+   }
+  }
+ },
+ "exceso_suelo": {
+  "Sonda Orbitium (Sci-Fi), ITPA|ITPA-IOT-GW00": {
+   "n": 42,
+   "exceso_med_db": 45.4,
+   "d_med_m": 113.0,
+   "rssi_med": -90.5
+  },
+  "Sonda Orbitium (Sci-Fi), ITPA|ITPA-IOT-GW01-kibts": {
+   "n": 43,
+   "exceso_med_db": 49.9,
+   "d_med_m": 146.0,
+   "rssi_med": -96.0
+  },
+  "Sonda TAES (Instituto Tepeyac/UPA)|ITPA-IOT-GW00": {
+   "n": 313,
+   "exceso_med_db": 37.7,
+   "d_med_m": 101.0,
+   "rssi_med": -83.0
+  },
+  "Sonda TAES (Instituto Tepeyac/UPA)|ITPA-IOT-GW01-kibts": {
+   "n": 315,
+   "exceso_med_db": 42.6,
+   "d_med_m": 154.0,
+   "rssi_med": -91.0
+  }
+ },
+ "canales": {
+  "Sonda Orbitium (Sci-Fi), ITPA": {
+   "10": 198,
+   "11": 195,
+   "12": 194,
+   "13": 197,
+   "14": 193,
+   "15": 194,
+   "8": 198,
+   "9": 200
+  },
+  "Sonda TAES (Instituto Tepeyac/UPA)": {
+   "10": 150,
+   "11": 150,
+   "12": 146,
+   "13": 148,
+   "14": 149,
+   "15": 148,
+   "8": 149,
+   "9": 149
+  }
+ },
+ "margen_por_distancia": [
+  {
+   "d_km": "0-5",
+   "n_Orbitium (SF10)": 38,
+   "margen_med_Orbitium (SF10)": 21.9,
+   "snr_med_Orbitium (SF10)": 6.9,
+   "n_TAES (SF7)": 47,
+   "margen_med_TAES (SF7)": 16.3,
+   "snr_med_TAES (SF7)": 8.8
+  },
+  {
+   "d_km": "5-10",
+   "n_Orbitium (SF10)": 27,
+   "margen_med_Orbitium (SF10)": 19.0,
+   "snr_med_Orbitium (SF10)": 4.0,
+   "n_TAES (SF7)": 27,
+   "margen_med_TAES (SF7)": 9.5,
+   "snr_med_TAES (SF7)": 2.0
+  },
+  {
+   "d_km": "10-20",
+   "n_Orbitium (SF10)": 44,
+   "margen_med_Orbitium (SF10)": 10.0,
+   "snr_med_Orbitium (SF10)": -5.0,
+   "n_TAES (SF7)": 39,
+   "margen_med_TAES (SF7)": 7.5,
+   "snr_med_TAES (SF7)": 0.0
+  },
+  {
+   "d_km": "20-32",
+   "n_Orbitium (SF10)": 21,
+   "margen_med_Orbitium (SF10)": 11.0,
+   "snr_med_Orbitium (SF10)": -4.0,
+   "n_TAES (SF7)": 32,
+   "margen_med_TAES (SF7)": 8.5,
+   "snr_med_TAES (SF7)": 1.0
+  }
+ ],
+ "lab_igual_altitud_3500_5500": {
+  "Sonda Orbitium (Sci-Fi), ITPA": {
+   "n": 18,
+   "lab": 15,
+   "pct": 83.3
+  },
+  "Sonda TAES (Instituto Tepeyac/UPA)": {
+   "n": 59,
+   "lab": 14,
+   "pct": 23.7
+  }
+ }
+}

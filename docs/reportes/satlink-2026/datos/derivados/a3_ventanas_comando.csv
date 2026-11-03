@@ -1,0 +1,4 @@
+objetivo,objetivo_s,seq_marco_mas_cercano,t_encolado_local,t_rel_s,desfase_s,desfase_min_s,desfase_max_s,latencia_s,rssi_dl_dbm,snr_dl_db
+T+5,300,44,22:43:17,373,73,46,75,0.7,-100.0,-0.25
+T+15,900,47,22:52:08,904,4,-23,6,0.8,-102.0,-3.75
+T+30,1800,50,23:09:46,1962,162,135,164,0.8,-106.0,-6.75

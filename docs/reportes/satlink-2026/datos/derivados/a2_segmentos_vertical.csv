@@ -1,0 +1,14 @@
+sonda,fase,t_ini_local,t_fin_local,z_ini_m,z_fin_m,dt_s,vz_mps,z_medio_m,t_medio_min
+"Sonda Orbitium (Sci-Fi), ITPA",,22:37:04,22:40:38,1883.0,2764.0,213.71,4.1224,2323.5,1.7809
+"Sonda Orbitium (Sci-Fi), ITPA",,22:40:38,22:50:40,2764.0,4686.0,602.376,3.1907,3725.0,8.5816
+"Sonda Orbitium (Sci-Fi), ITPA",,22:50:40,23:00:42,4686.0,6173.0,602.241,2.4691,5429.5,18.6201
+"Sonda Orbitium (Sci-Fi), ITPA",,23:00:42,23:10:36,6173.0,7319.0,593.437,1.9311,6746.0,28.5841
+"Sonda Orbitium (Sci-Fi), ITPA",,23:10:36,23:20:36,7319.0,8390.0,600.213,1.7844,7854.5,38.5312
+"Sonda Orbitium (Sci-Fi), ITPA",,23:20:36,23:21:16,8390.0,8478.0,40.173,2.1905,8434.0,43.8677
+"Sonda Orbitium (Sci-Fi), ITPA",,23:21:16,23:21:46,8478.0,8408.0,30.327,-2.3082,8443.0,44.4552
+"Sonda Orbitium (Sci-Fi), ITPA",,23:21:46,23:30:36,8408.0,4278.0,529.416,-7.801,6343.0,49.1197
+Sonda TAES (Instituto Tepeyac/UPA),ascenso 1,22:53:18,23:04:44,1897.0,4345.0,,3.5675,,
+Sonda TAES (Instituto Tepeyac/UPA),meseta/descenso leve,23:05:14,23:11:14,4429.0,4240.0,,-0.525,,
+Sonda TAES (Instituto Tepeyac/UPA),ascenso 2,23:11:44,23:21:44,4265.0,5065.0,,1.3333,,
+Sonda TAES (Instituto Tepeyac/UPA),descenso lento,23:22:14,23:29:14,5062.0,4683.0,,-0.9023,,
+Sonda TAES (Instituto Tepeyac/UPA),descenso rápido,23:29:44,23:36:44,4572.0,2124.0,,-5.8282,,

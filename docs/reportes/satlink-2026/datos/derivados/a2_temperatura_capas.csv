@@ -1,0 +1,16 @@
+sonda,rama,z_base_m,z_tope_m,z_medio_m,n,Tv_K,Tv_C,err_Tv_K,T_isa_C,T_sensor_medio_C
+Sonda TAES (Instituto Tepeyac/UPA),ascenso,2000,2500,2264.4,5,294.654,21.504,3.3235,0.2814,22.802
+Sonda TAES (Instituto Tepeyac/UPA),ascenso,2500,3000,2772.75,4,285.6094,12.4594,1.19,-3.0229,22.305
+Sonda TAES (Instituto Tepeyac/UPA),ascenso,3000,3500,3254.8,5,283.2657,10.1157,0.8905,-6.1562,21.522
+Sonda TAES (Instituto Tepeyac/UPA),ascenso,3500,4000,3732.75,4,279.1614,6.0114,0.7518,-9.2629,20.4975
+Sonda TAES (Instituto Tepeyac/UPA),ascenso,4000,4500,4330.1,20,277.0837,3.9337,0.4522,-13.1456,17.2565
+Sonda TAES (Instituto Tepeyac/UPA),ascenso,4500,5000,4737.0,11,273.2717,0.1217,0.3806,-15.7905,14.6764
+Sonda TAES (Instituto Tepeyac/UPA),descenso,2100,2700,2367.75,4,285.4844,12.3344,1.1136,-0.3904,11.15
+Sonda TAES (Instituto Tepeyac/UPA),descenso,2700,3300,3027.25,4,285.0659,11.9159,1.2533,-4.6771,10.2925
+Sonda TAES (Instituto Tepeyac/UPA),descenso,4500,5100,4867.125,16,273.4231,0.2731,0.6494,-16.6363,10.9969
+"Sonda Orbitium (Sci-Fi), ITPA",ascenso,1903.536,2785.049,2344.2925,2,288.2216,15.0716,9.8143,-0.2379,27.835
+"Sonda Orbitium (Sci-Fi), ITPA",ascenso,2785.049,4702.2887,3743.6689,2,279.2082,6.0582,4.3713,-9.3338,27.13
+"Sonda Orbitium (Sci-Fi), ITPA",ascenso,4702.2887,6185.757,5444.0229,2,270.8888,-2.2612,5.4812,-20.3861,25.43
+"Sonda Orbitium (Sci-Fi), ITPA",ascenso,6185.757,7334.1368,6759.9469,2,263.3622,-9.7878,6.8838,-28.9397,22.915
+"Sonda Orbitium (Sci-Fi), ITPA",ascenso,7334.1368,8412.3477,7873.2423,2,258.8184,-14.3316,7.2053,-36.1761,19.98
+"Sonda Orbitium (Sci-Fi), ITPA",ascenso/descenso,4226.4429,8412.3477,6319.3953,2,270.5205,-2.6295,1.9399,-26.0761,16.965

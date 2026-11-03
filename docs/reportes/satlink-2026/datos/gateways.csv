@@ -1,0 +1,4 @@
+gateway,modelo,protocolo,sitio,antena,lat,lon,alt_m,alt_ref,precision_publicada
+ITPA-IOT-GW00,Seeed SenseCAP M2 (US915),Semtech UDP (packet forwarder),"campus ITPA, Pabellón de Arteaga","dipolo, ~2.5 dBi (nominal)",22.160755,-102.268736,1902.0,antena: suelo 1890 m + 12 m de mástil,exacta (6 decimales)
+ITPA-IOT-GW01-kibts,Kerlink Wirnet iBTS (US915),Semtech UDP (packet forwarder),"campus ITPA, Pabellón de Arteaga","colineal, 6 dBi (nominal)",22.161434,-102.269012,1912.0,antena: suelo 1890 m + 22 m de mástil,exacta (6 decimales)
+picaro-lab-ags-001,Seeed SenseCAP M2 (US915),LoRa Basics Station (TLS mutuo),"laboratorio en Aguascalientes, ~27 km al sur del ITPA","dipolo RAIGEN, 5.8 dBi",21.91,-102.27,1929.5,altitud de la antena registrada en el LNS,aproximada: punto de referencia desplazado 1-2 km de la antena; distancias y elevaciones del laboratorio en recepciones.csv calculadas desde este punto y redondeadas a 1 km y 1 grado
